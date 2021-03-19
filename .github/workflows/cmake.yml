@@ -41,7 +41,7 @@ jobs:
     - name: Test
       working-directory: ${{github.workspace}}/build
       shell: bash
-      run: ./testerin
+      run: Parser/testerin
 
     #- name: Test
     #  working-directory: ${{github.workspace}}/build
