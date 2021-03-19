@@ -34,3 +34,5 @@
 # VS stuff
 .vs/
 out/
+build/
+.vscode/
