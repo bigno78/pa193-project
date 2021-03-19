@@ -2,7 +2,11 @@
 
 project (parse CXX)
 
-set(WARNINGS -Wall -Wextra -Wnull-dereference)
+if(MSVC)
+  set(WARNINGS /W4)
+else()
+  set(WARNINGS -Wall -Wextra -Wnull-dereference)
+endif()
 
 add_library(project_options INTERFACE)
 target_compile_options(project_options INTERFACE -std=c++11 ${WARNINGS})
