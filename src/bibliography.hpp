@@ -49,7 +49,6 @@ inline std::pair<std::wstring, std::wstring> parse_entry(const std::wstring& lin
     if (!std::regex_match(line, res, reg)) {
         throw std::runtime_error("Something bad happened");
     }
-    //std::wcout << res[1] << L" " << res[2] << std::endl;
     return { res[1], res[2] };
 }
 
@@ -136,9 +135,9 @@ inline nlohmann::json parse_bibliography(const std::vector<std::wstring>& data) 
                 if (j >= data.size() || is_empty_line(data[j])) break;
             }
             append_line(citation, join_columns(data[j]));
-            //std::wcout << citation << std::endl;
             j++;
         }
+        // convert to std::string
         using convert_type = std::codecvt_utf8<wchar_t>;
         std::wstring_convert<convert_type, wchar_t> converter;
         std::string string_key = converter.to_bytes(key);
