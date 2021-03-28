@@ -4,15 +4,16 @@
 #include <cctype>
 #include <regex>
 #include <string_view>
+#include <cwctype>
 
 /**
  * Append line at the end of json entry using the rules:
  *  - if the previous line ends in '-' don't add a space
  *  - otherwise add a space
  */
-inline void append_line(std::string& s, const std::string& line) {
+inline void append_line(std::wstring& s, const std::wstring& line) {
     if (!s.empty() && s.back() != '-') {
-        s += " ";
+        s += L" ";
     }
     s += line;
 }
@@ -20,20 +21,20 @@ inline void append_line(std::string& s, const std::string& line) {
 /**
  * Replace all string of spaces longer then 1 by a single space.
  */
-inline std::string join_columns(const std::string& line) {
-    std::string res;
+inline std::wstring join_columns(const std::wstring& line) {
+    std::wstring res;
     size_t i = 0;
 
-    std::string sep = "";
+    std::wstring sep = L"";
     while(i < line.size()) {
-        while(i < line.size() && std::isspace(line[i])) {
+        while(i < line.size() && std::iswspace(line[i])) {
             ++i;
         }
         if (i >= line.size()) {
             break;
         }
         res += sep;
-        while(i < line.size() && !std::isspace(line[i])) {
+        while(i < line.size() && !std::iswspace(line[i])) {
             res += line[i];
             ++i;
         }
@@ -46,18 +47,18 @@ inline std::string join_columns(const std::string& line) {
 }
 
 // slooooow
-inline std::string join_columns_regex(const std::string& line) {
-    static std::regex reg{ R"(\s\s\s*)" };
+inline std::wstring join_columns_regex(const std::wstring& line) {
+    static std::wregex reg{ LR"(\s\s\s*)" };
     
     auto it = find_if(
                 line.begin(),
                 line.end(),
-                [](char c){ return !std::isspace(c); } );
+                [](char c){ return !std::iswspace(c); } );
     
-    std::string res;
+    std::wstring res;
     std::regex_replace(
             std::back_inserter(res),
-            it, line.end(), reg, " "
+            it, line.end(), reg, L" "
     );
     
     return res;

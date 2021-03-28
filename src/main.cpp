@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 	if (argc > 1) {
 		// go through all the arguments, assume they are files and parse them
 		for (int i = 1; i < argc; ++i) {
-			std::ifstream file{ argv[i] };
+			std::wifstream file{ argv[i] };
 			if (!file) {
 				std::cerr << "Failed to open file: " << argv[i] << "\n";
 				continue;
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 			std::cout << j.dump(4) << "\n";
 		}
 	} else { // no arguments -> take input from std::cin
-		auto j = parse_document(std::cin);
+		auto j = parse_document(std::wcin);
 		std::cout << j.dump(4) << "\n";
 	}
 }

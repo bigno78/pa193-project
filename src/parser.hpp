@@ -9,16 +9,16 @@
 #include "bibliography.hpp"
 #include "revisions.hpp"
 
-inline nlohmann::json parse_document(std::istream& in) {
+inline nlohmann::json parse_document(std::wistream& in) {
     // load all the data
-    std::vector< std::string > data;
-    std::string line;
+    std::vector< std::wstring > data;
+    std::wstring line;
     while( std::getline(in, line) ) {
         data.push_back( std::move(line) );
     }
 
     nlohmann::json out;
-    //out["bibliography"] = parse_bibliography(data);
+    out["bibliography"] = parse_bibliography(data);
     
     RevisionsParser par(data);
     out["revisions"] = par.parse();
