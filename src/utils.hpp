@@ -6,14 +6,19 @@
 #include <string_view>
 #include <cwctype>
 
+//isspace() workaround
+inline bool is_space(char c) {
+    return std::isspace(static_cast<unsigned char>(c));
+}
+
 /**
  * Append line at the end of json entry using the rules:
  *  - if the previous line ends in '-' don't add a space
  *  - otherwise add a space
  */
-inline void append_line(std::wstring& s, const std::wstring& line) {
+inline void append_line(std::string& s, const std::string& line) {
     if (!s.empty() && s.back() != '-') {
-        s += L" ";
+        s += " ";
     }
     s += line;
 }
@@ -21,20 +26,20 @@ inline void append_line(std::wstring& s, const std::wstring& line) {
 /**
  * Replace all string of spaces longer then 1 by a single space.
  */
-inline std::wstring join_columns(const std::wstring& line) {
-    std::wstring res;
+inline std::string join_columns(const std::string& line) {
+    std::string res;
     size_t i = 0;
 
-    std::wstring sep = L"";
+    std::string sep = "";
     while(i < line.size()) {
-        while(i < line.size() && std::iswspace(line[i])) {
+        while(i < line.size() && is_space(line[i])) {
             ++i;
         }
         if (i >= line.size()) {
             break;
         }
         res += sep;
-        while(i < line.size() && !std::iswspace(line[i])) {
+        while(i < line.size() && !is_space(line[i])) {
             res += line[i];
             ++i;
         }
@@ -47,18 +52,18 @@ inline std::wstring join_columns(const std::wstring& line) {
 }
 
 // slooooow
-inline std::wstring join_columns_regex(const std::wstring& line) {
-    static std::wregex reg{ LR"(\s\s\s*)" };
+inline std::string join_columns_regex(const std::string& line) {
+    static std::regex reg{ R"(\s\s\s*)" };
     
     auto it = find_if(
                 line.begin(),
                 line.end(),
-                [](char c){ return !std::iswspace(c); } );
+                [](char c){ return !is_space(c); } );
     
-    std::wstring res;
+    std::string res;
     std::regex_replace(
             std::back_inserter(res),
-            it, line.end(), reg, L" "
+            it, line.end(), reg, " "
     );
     
     return res;

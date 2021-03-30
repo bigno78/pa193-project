@@ -17,13 +17,13 @@
 #include <codecvt>
 
 // is this line the begining of bibliography entry - does it start with '['?
-inline bool is_entry(const std::wstring& line) {
+inline bool is_entry(const std::string& line) {
     size_t i = 0;
     while (i < line.size()) {
-        if (line[i] == L'[') {
+        if (line[i] == '[') {
             return true;
         }
-        if (!iswspace(line[i])) {
+        if (!is_space(line[i])) {
             break;
         }
         ++i;
@@ -31,11 +31,11 @@ inline bool is_entry(const std::wstring& line) {
     return false;
 }
 
-inline bool is_empty_line(const std::wstring& line) {
+inline bool is_empty_line(const std::string& line) {
     return std::find_if(
                     line.begin(),
                     line.end(),
-                    [](char c){ return !std::iswspace(c); }
+                    [](char c){ return !is_space(c); }
            ) == line.end();
 }
 
@@ -43,9 +43,9 @@ inline bool is_empty_line(const std::wstring& line) {
  * Parses the first line of a bibliography entry.
  * Returns the key (the stuff in []) and the start of the citation following it.
  */
-inline std::pair<std::wstring, std::wstring> parse_entry(const std::wstring& line) {
-    static std::wregex reg(LR"(\s*(\[.+?\])\s*(.*))");
-    std::wsmatch res;
+inline std::pair<std::string, std::string> parse_entry(const std::string& line) {
+    static std::regex reg(R"(\s*(\[.+?\])\s*(.*))");
+    std::smatch res;
     if (!std::regex_match(line, res, reg)) {
         throw std::runtime_error("Something bad happened");
     }
@@ -53,9 +53,9 @@ inline std::pair<std::wstring, std::wstring> parse_entry(const std::wstring& lin
 }
 
 /*
-inline void add_refs(const std::wstring& s, std::set<std::string>& ref_set) {
-    //static std::wregex leading_ref_reg(R"(\s*\[(.+?)\].*)");
-    static std::wregex ref_reg(R"(\[(.+?)\])");
+inline void add_refs(const std::string& s, std::set<std::string>& ref_set) {
+    //static std::regex leading_ref_reg(R"(\s*\[(.+?)\].*)");
+    static std::regex ref_reg(R"(\[(.+?)\])");
 
     auto start = std::sregex_iterator(s.begin(), s.end(), ref_reg);
     auto end = std::sregex_iterator{};
@@ -66,10 +66,10 @@ inline void add_refs(const std::wstring& s, std::set<std::string>& ref_set) {
     }
 }
 
-inline std::string get_ref(const std::wstring& s) {
-    static std::wregex leading_ref_reg(R"(\s*\[(.+?)\].*)");
+inline std::string get_ref(const std::string& s) {
+    static std::regex leading_ref_reg(R"(\s*\[(.+?)\].*)");
     
-    std::wsmatch res;
+    std::smatch res;
     if (std::regex_match(s, res, leading_ref_reg)) {
         return res[1];
     }
@@ -84,7 +84,7 @@ inline std::string get_ref(const std::wstring& s) {
  * and groups all such lines close to each other into one candidate bibliography.
  * Then the candidate with most lines is picked.
  */
-inline std::vector<size_t> find_bibliography(const std::vector<std::wstring>& data) {
+inline std::vector<size_t> find_bibliography(const std::vector<std::string>& data) {
     size_t line_no = 0;
     
     size_t cutoff_distance = 50;
@@ -116,7 +116,7 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::wstring>& da
     return *it;
 }
 
-inline nlohmann::json parse_bibliography(const std::vector<std::wstring>& data) {
+inline nlohmann::json parse_bibliography(const std::vector<std::string>& data) {
     auto entries = find_bibliography(data);
     if (entries.empty()) {
         return {};
@@ -138,11 +138,11 @@ inline nlohmann::json parse_bibliography(const std::vector<std::wstring>& data) 
             j++;
         }
         // convert to std::string
-        using convert_type = std::codecvt_utf8<wchar_t>;
-        std::wstring_convert<convert_type, wchar_t> converter;
-        std::string string_key = converter.to_bytes(key);
-        std::string string_cit = converter.to_bytes(citation);
-        res[string_key] = string_cit;
+        //using convert_type = std::codecvt_utf8<wchar_t>;
+        //std::wstring_convert<convert_type, wchar_t> converter;
+        //std::string string_key = converter.to_bytes(key);
+        //std::string string_cit = converter.to_bytes(citation);
+        res[key] = citation;
     }
 
     return res;

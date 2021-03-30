@@ -10,22 +10,22 @@
 #include "json.hpp"
 
 class RevisionsParser {
-    const std::vector<std::wstring>& data;
+    const std::vector<std::string>& data;
     
 public:
-    RevisionsParser(const std::vector<std::wstring>& data) : data(data) {}
+    RevisionsParser(const std::vector<std::string>& data) : data(data) {}
 
     nlohmann::json parse() {
-        static std::wregex title_reg(LR"(revision|evolution)", std::regex_constants::icase);
+        static std::regex title_reg(R"(revision|evolution)", std::regex_constants::icase);
         size_t limit = 200;
-        std::wsmatch match;
+        std::smatch match;
         for (size_t i = 0; i < limit; ++i) {
             if (std::regex_search(data[i], match, title_reg) && count_words(data[i]) <= 3) {
                 for (int j = 0; j < 5; ++j) {
-                    std::wcout << L"Line " << i + 1 << L": " << data[i] << L"\n";
+                    std::cout << "Line " << i + 1 << ": " << data[i] << "\n";
                     ++i;
                 }
-                std::wcout << L"-----------------------------------------------\n";
+                std::wcout << "-----------------------------------------------\n";
             }
         }
         return {};
@@ -33,9 +33,9 @@ public:
 
 private:
 
-    size_t count_words(const std::wstring& line) {
-        std::wstringstream s(line);
-        std::wstring tok;
+    size_t count_words(const std::string& line) {
+        std::stringstream s(line);
+        std::string tok;
         size_t count = 0;
         while (s) {
             s >> tok;
