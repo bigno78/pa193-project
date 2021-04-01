@@ -11,6 +11,17 @@ inline bool is_space(char c) {
     return std::isspace(static_cast<unsigned char>(c));
 }
 
+size_t count_words(const std::string& line) {
+    std::stringstream s(line);
+    std::string tok;
+    size_t count = 0;
+    while (s) {
+        s >> tok;
+        count++;
+    }
+    return count;
+}
+
 /**
  * Append line at the end of json entry using the rules:
  *  - if the previous line ends in '-' don't add a space

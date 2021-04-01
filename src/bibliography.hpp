@@ -8,6 +8,7 @@
 #include <set>
 #include <regex>
 #include <map>
+#include <algorithm>
 
 #include <string_view>
 
@@ -19,15 +20,25 @@
 // is this line the begining of bibliography entry - does it start with '['?
 inline bool is_entry(const std::string& line) {
     size_t i = 0;
-    while (i < line.size()) {
-        if (line[i] == '[') {
-            return true;
-        }
+    while (i < line.size() && line[i] != '[') {
         if (!is_space(line[i])) {
-            break;
+            return false;
         }
         ++i;
     }
+    
+    ++i;
+    if (i >= line.size() || line[i] == ']') {
+        return false;
+    }
+
+    while(i < line.size()) {
+        if (line[i] == ']') {
+            return true;
+        }
+        ++i;
+    }
+
     return false;
 }
 
@@ -52,30 +63,21 @@ inline std::pair<std::string, std::string> parse_entry(const std::string& line) 
     return { res[1], res[2] };
 }
 
-/*
-inline void add_refs(const std::string& s, std::set<std::string>& ref_set) {
-    //static std::regex leading_ref_reg(R"(\s*\[(.+?)\].*)");
-    static std::regex ref_reg(R"(\[(.+?)\])");
 
-    auto start = std::sregex_iterator(s.begin(), s.end(), ref_reg);
-    auto end = std::sregex_iterator{};
-
-    for (auto it = start; it != end; ++it) {
-        auto match = *it;
-        ref_set.insert(match.str());
-    }
-}
-
-inline std::string get_ref(const std::string& s) {
-    static std::regex leading_ref_reg(R"(\s*\[(.+?)\].*)");
+inline bool has_header(const std::vector<std::string>& data, size_t line_no) {
+    static std::regex header_reg(R"(reference|bibliography)", std::regex_constants::icase);
+    std::smatch match;
     
-    std::smatch res;
-    if (std::regex_match(s, res, leading_ref_reg)) {
-        return res[1];
+    size_t max_dist = std::min(line_no, (size_t) 5);
+    for (size_t offset = 1; offset <= max_dist; ++offset) {
+        size_t i = line_no - offset;
+        if (std::regex_search(data[i], match, header_reg) && count_words(data[i]) <= 3) {
+            return true;
+        }
     }
-    return {};
+
+    return false;
 }
-*/
 
 /**
  * Find the place in the document where the bibliography is.
@@ -90,19 +92,33 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
     size_t cutoff_distance = 50;
     size_t current_distance = cutoff_distance + 1;
     std::vector< std::vector<size_t> > candidates; 
-    
+    bool i_am_sure = false;
+
     for (const auto& line : data) {
+        // we finished a candidate and we are sure its him
+        if (current_distance > cutoff_distance && i_am_sure) {
+            return candidates.back();
+        }
+
         if (is_entry(line)) {
-            if (current_distance > cutoff_distance) {
+            if (current_distance > cutoff_distance) { // begin new candidate
+                // if there is header above we are sure this is it
+                i_am_sure = has_header(data, line_no);
                 candidates.emplace_back();
             }
             candidates.back().push_back(line_no);
             current_distance = 0;
         }
+
         current_distance++;
         line_no++;
     }
 
+    if (i_am_sure) {
+        return candidates.back();
+    }
+
+    // we didn't find candidate with header, pick the one with most entries
     auto it = std::max_element(
                 candidates.begin(),
                 candidates.end(),

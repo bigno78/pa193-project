@@ -2,6 +2,13 @@
 
 project (parse CXX)
 
+option(USE_SANITIZERS OFF)
+
+set(SANITIZERS "")
+if(USE_SANITIZERS)
+  set(SANITIZERS "-fsanitize=address,undefined")
+endif()
+
 if(MSVC)
   set(WARNINGS /W4)
 else()
@@ -9,7 +16,8 @@ else()
 endif()
 
 add_library(project_options INTERFACE)
-target_compile_options(project_options INTERFACE ${WARNINGS})
+target_compile_options(project_options INTERFACE ${SANITIZERS} ${WARNINGS})
+target_link_options(project_options INTERFACE ${SANITIZERS})
 target_include_directories(project_options INTERFACE "libs/" "src/")
 target_compile_features(project_options INTERFACE cxx_std_17)
 

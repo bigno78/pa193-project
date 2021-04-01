@@ -31,16 +31,4 @@ public:
         return {};
     }
 
-private:
-
-    size_t count_words(const std::string& line) {
-        std::stringstream s(line);
-        std::string tok;
-        size_t count = 0;
-        while (s) {
-            s >> tok;
-            count++;
-        }
-        return count;
-    }
 };
