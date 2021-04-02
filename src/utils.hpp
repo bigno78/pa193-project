@@ -11,12 +11,15 @@ inline bool is_space(char c) {
     return std::isspace(static_cast<unsigned char>(c));
 }
 
+inline bool is_digit(char c) {
+    return std::isdigit(static_cast<unsigned char>(c));
+}
+
 size_t count_words(const std::string& line) {
     std::stringstream s(line);
     std::string tok;
     size_t count = 0;
-    while (s) {
-        s >> tok;
+    while (s >> tok) {
         count++;
     }
     return count;

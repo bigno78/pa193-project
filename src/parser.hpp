@@ -18,10 +18,9 @@ inline nlohmann::json parse_document(std::istream& in) {
     }
 
     nlohmann::json out;
-    out["bibliography"] = parse_bibliography(data);
-    
-    RevisionsParser par(data);
-    out["revisions"] = par.parse();
+
+    //out["bibliography"] = parse_bibliography(data);
+    out["revisions"] = parse_revisions(data);
 
     return out;
 }
