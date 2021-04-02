@@ -5,6 +5,7 @@
 #include <regex>
 #include <string_view>
 #include <cwctype>
+#include <sstream>
 
 //isspace() workaround
 inline bool is_space(char c) {

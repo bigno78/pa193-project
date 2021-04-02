@@ -64,7 +64,7 @@ inline std::pair<std::string, std::string> parse_entry(const std::string& line) 
 }
 
 
-inline bool has_header(const std::vector<std::string>& data, size_t line_no) {
+inline bool has_title(const std::vector<std::string>& data, size_t line_no) {
     static std::regex header_reg(R"(reference|bibliography)", std::regex_constants::icase);
     std::smatch match;
     
@@ -103,7 +103,7 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
         if (is_entry(line)) {
             if (current_distance > cutoff_distance) { // begin new candidate
                 // if there is header above we are sure this is it
-                i_am_sure = has_header(data, line_no);
+                i_am_sure = has_title(data, line_no);
                 candidates.emplace_back();
             }
             candidates.back().push_back(line_no);

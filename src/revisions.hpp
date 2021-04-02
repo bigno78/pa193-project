@@ -76,7 +76,7 @@ inline Table parse_revisions_table(const std::vector<std::string>& data, size_t 
     size_t lines_searched = max_search;
 
     while(true) {
-        if (lines_searched <= 0) {
+        if (lines_searched == 0) {
             return table;
         }
         if (i >= n) {
@@ -110,10 +110,8 @@ inline nlohmann::json read_revision_table(const Table& table) {
 
     // first check if all rows have the same length, otherwise this is probably wrong
     size_t len = table.data[0].size();
-    for (const auto& row : table.data) {
-        if (row.size() != len) {
-            throw std::runtime_error("Rows of different size!");
-        }
+    if (std::any_of(table.data.begin(), table.data.end(), [len](const auto &row) {return row.size() != len; })) {
+        throw std::runtime_error("Rows of different size!");
     }
 
     // now check if the first row is the header
@@ -125,8 +123,9 @@ inline nlohmann::json read_revision_table(const Table& table) {
             has_header = false;
             break;
         }
-        for (char c : caption) {
-            has_header = has_header && !is_digit(c); 
+        if (std::any_of(caption.begin(), caption.end(), is_digit)) {
+            has_header = false;
+            break;
         }
     } 
 
