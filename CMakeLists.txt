@@ -3,16 +3,25 @@
 project (parse CXX)
 
 option(USE_SANITIZERS OFF)
+option(USE_FUZZING OFF)
+
+if(USE_FUZZING)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        add_subdirectory("fuzzing/")
+    else()
+        message(WARNING "Fuzzing can be used only with clang!")
+    endif()
+endif()
 
 set(SANITIZERS "")
 if(USE_SANITIZERS)
-  set(SANITIZERS "-fsanitize=address,undefined")
+    set(SANITIZERS "-fsanitize=address,undefined")
 endif()
 
 if(MSVC)
-  set(WARNINGS /W4)
+    set(WARNINGS /W4)
 else()
-  set(WARNINGS -Wall -Wextra -Wnull-dereference)
+    set(WARNINGS -Wall -Wextra -Wnull-dereference)
 endif()
 
 add_library(project_options INTERFACE)

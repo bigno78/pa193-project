@@ -125,7 +125,7 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
                 [](const auto& a, const auto& b) {return a.size() < b.size();} );
 
     if (it == candidates.end()) {
-        std::wcout << " COULD NOT FIND ANY CANDIDATE FOR BIBLIOGRAPHY!!!!!\n";
+        //std::wcout << " COULD NOT FIND ANY CANDIDATE FOR BIBLIOGRAPHY!!!!!\n";
         return {};
     }
 
