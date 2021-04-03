@@ -59,12 +59,6 @@ struct Table {
     std::vector< std::vector< std::string > > data;
 };
 
-inline bool is_revisions_header(const std::string& line) {
-    static std::regex title_reg(R"(revision|evolution|version)", std::regex_constants::icase);
-    std::smatch match;
-    return std::regex_search(line, match, title_reg) && count_words(line) <= 3;
-}
-
 inline Table parse_revisions_table(const std::vector<std::string>& data, size_t start_pos) {
     size_t i = start_pos;
     size_t n = data.size();
@@ -138,7 +132,7 @@ inline nlohmann::json read_revision_table(const Table& table) {
     
     static std::regex version_reg(R"(ver|rev)", std::regex_constants::icase);
     static std::regex date_reg(R"(date)", std::regex_constants::icase);
-    static std::regex description_reg(R"(description|changes)", std::regex_constants::icase);
+    static std::regex description_reg(R"(description|changes|subject)", std::regex_constants::icase);
     std::smatch match;
 
     // now try to guess what data each column contains
@@ -183,6 +177,62 @@ inline nlohmann::json read_revision_table(const Table& table) {
     }
 
     return j;
+}
+
+/**
+ * Returns true iff the provided line is a title of the section containing the revisions table
+ * 
+ * Rules:
+ *  - title should be reasonable short - at most 3 words
+ *  - title should contain one of the keywords: 'revision', 'evolution', 'version'
+ */
+inline bool is_revisions_title(const std::string& line) {
+    static std::regex title_reg(R"(revision|evolution|version)", std::regex_constants::icase);
+    std::smatch match;
+    return std::regex_search(line, match, title_reg) && count_words(line) <= 3;
+}
+
+/**
+ * Determines if the provided line contains a header of the revisions table
+ * 
+ * Rules:
+ *  - the header has at least 2 columns (since the table must have at least two columns)
+ *  - the table typically contains columns 'version', 'date' and 'description' so
+ *    we have to succesfully find at least two of those
+ *  - ??? the header probably contains no numbers ???
+ */
+inline bool is_revisions_header(const std::string& line) {
+    std::vector<Column> cols = split_line_into_columns(line);
+    if (cols.size() < 2) {
+        return false;
+    }
+
+    static std::regex version_reg(R"(ver|rev)", std::regex_constants::icase);
+    static std::regex date_reg(R"(date)", std::regex_constants::icase);
+    static std::regex description_reg(R"(description|changes|subject)", std::regex_constants::icase);
+    std::smatch match;
+
+    int matched = 0;
+    int ver = 1;
+    int date = 1;
+    int desc = 1;
+    for (const auto& caption : cols) {
+        if (count_words(caption.data) > 4) {
+            continue;
+        }
+        if (std::regex_search(caption.data, match, version_reg)) {
+            matched += ver;
+            ver = 0;
+        } else if (std::regex_search(caption.data, match, date_reg)) {
+            matched += date;
+            date = 0;
+        } else if (std::regex_search(caption.data, match, description_reg)) {
+            matched += desc;
+            desc = 0;
+        }
+    }
+
+    return matched >= 2;
 }
 
 inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {

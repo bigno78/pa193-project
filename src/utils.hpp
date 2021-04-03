@@ -4,18 +4,28 @@
 #include <cctype>
 #include <regex>
 #include <string_view>
-#include <cwctype>
 #include <sstream>
 
-//isspace() workaround
+/**
+ * Wrapper function for std::isspace.
+ * Used since std::isspace is valid only for unsigned char.
+ */
 inline bool is_space(char c) {
     return std::isspace(static_cast<unsigned char>(c));
 }
 
+/**
+ * Wrapper function for std::isdigit.
+ * Used since std::isdigit is valid only for unsigned char.
+ */
 inline bool is_digit(char c) {
     return std::isdigit(static_cast<unsigned char>(c));
 }
 
+/**
+ * Counts the number of words in a line.
+ * A word is a continues string of alphanumeric characters without any whitespace.
+ */
 size_t count_words(const std::string& line) {
     std::stringstream s(line);
     std::string tok;
@@ -39,7 +49,8 @@ inline void append_line(std::string& s, const std::string& line) {
 }
 
 /**
- * Replace all string of spaces longer then 1 by a single space.
+ * Join all columns in the <line> with only one space.
+ * Columns are strings of characters separated by two or more spaces.
  */
 inline std::string join_columns(const std::string& line) {
     std::string res;
@@ -63,23 +74,5 @@ inline std::string join_columns(const std::string& line) {
         }
     }
 
-    return res;
-}
-
-// slooooow
-inline std::string join_columns_regex(const std::string& line) {
-    static std::regex reg{ R"(\s\s\s*)" };
-    
-    auto it = find_if(
-                line.begin(),
-                line.end(),
-                [](char c){ return !is_space(c); } );
-    
-    std::string res;
-    std::regex_replace(
-            std::back_inserter(res),
-            it, line.end(), reg, " "
-    );
-    
     return res;
 }
