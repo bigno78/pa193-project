@@ -115,3 +115,34 @@ TEST_CASE("Test join_columns") {
     }
 
 }
+
+TEST_CASE("Test trim") {
+    SECTION("None") {
+        std::string s = "string that should not be trimmed"; trim(s);
+        CHECK( s == "string that should not be trimmed");
+        s = "another one"; trim(s);
+        CHECK(s == "another one");
+        s = "spaces   in \n\t  the \n\n\t  middle"; trim(s);
+        CHECK(s == "spaces   in \n\t  the \n\n\t  middle");
+    }
+    SECTION("Leading") {
+        std::string s = "\n\n\t  \t leading spaces"; trim(s);
+        CHECK(s == "leading spaces");
+        s = "\n\n\n  \t\t\n  spaces \n \t middle"; trim(s);
+        CHECK(s == "spaces \n \t middle");
+    }
+    SECTION("Trailing") {
+        std::string s = "word word word   \n \t"; trim(s);
+        CHECK(s == "word word word");
+        s = "middle\n\n\nspace\t\t\t"; trim(s);
+        CHECK(s == "middle\n\n\nspace");
+    }
+    SECTION("Leading and trailing") {
+        std::string s = "             one\t \t \n  "; trim(s);
+        CHECK(s == "one");
+        s = "\n \t \n multiple words "; trim(s);
+        CHECK(s == "multiple words");
+        s = "  \n spaces \n\n\t  in    the \n\n\n\nmiddle \t\t\t \t"; trim(s);
+        CHECK(s == "spaces \n\n\t  in    the \n\n\n\nmiddle");
+    }
+}

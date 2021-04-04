@@ -8,6 +8,7 @@
 
 #include "bibliography.hpp"
 #include "revisions.hpp"
+#include "title.hpp"
 
 inline nlohmann::json parse_document(std::istream& in) {
     // load all the data
@@ -19,8 +20,9 @@ inline nlohmann::json parse_document(std::istream& in) {
 
     nlohmann::json out;
 
-    out["bibliography"] = parse_bibliography(data);
+    //out["bibliography"] = parse_bibliography(data);
     //out["revisions"] = parse_revisions(data);
+    out["title"] = parse_title(data);
 
     return out;
 }

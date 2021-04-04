@@ -80,3 +80,32 @@ inline std::string join_columns(const std::string& line) {
 
     return res;
 }
+
+inline bool is_empty_line(const std::string& line) {
+    return std::find_if(
+        line.begin(),
+        line.end(),
+        [](char c) { return !is_space(c); }
+    ) == line.end();
+}
+
+const std::string WHITESPACE = " \n\r\t\f\v";
+
+// Left trim
+static inline void ltrim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// Right trim
+static inline void rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+static inline void trim(std::string& s) {
+    ltrim(s);
+    rtrim(s);
+}
