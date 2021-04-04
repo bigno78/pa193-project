@@ -36,12 +36,23 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE --target parser-test
+      run: cmake --build . --config $BUILD_TYPE
 
     - name: Test
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: test/parser-test
+
+    - name: Create out folder
+      run: cmake -E make_directory ${{github.workspace}}/out
+
+    - name: Parse the data set
+      working-directory: ${{github.workspace}}
+      run: sh test/test.sh build/src/parser dataset/ out/
+
+    - name: Compare parsed data
+      working-directory: ${{github.workspace}}
+      run: sh test/compare_all.sh test/output_compare.py dataset/ out/
 
     #- name: Test
     #  working-directory: ${{github.workspace}}/build
