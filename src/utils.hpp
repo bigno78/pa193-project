@@ -89,8 +89,6 @@ inline bool is_empty_line(const std::string& line) {
     ) == line.end();
 }
 
-const std::string WHITESPACE = " \n\r\t\f\v";
-
 // Left trim
 static inline void ltrim(std::string& s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
@@ -108,4 +106,49 @@ static inline void rtrim(std::string& s) {
 static inline void trim(std::string& s) {
     ltrim(s);
     rtrim(s);
+}
+
+struct Column {
+    size_t start;
+    std::string data;
+};
+
+inline std::vector<Column> split_line_into_columns(const std::string& line) {
+    std::vector<Column> cols;
+    size_t i = 0;
+    size_t n = line.size();
+
+    while (true) {
+        // search for the beginning of a column - first non-space character
+        while (i < n && is_space(line[i])) {
+            ++i;
+        }
+
+        if (i >= n) {
+            return cols;
+        }
+
+        Column col = { i, {} };
+
+        // read till the end of the column - two consecutive spaces
+        int spaces = 0;
+        while (i < n && spaces < 2) {
+            if (is_space(line[i]))
+                ++spaces;
+            else
+                spaces = 0;
+            ++i;
+        }
+
+        if (i >= n) {
+            col.data = line.substr(col.start, i - col.start);
+            cols.push_back(col);
+            return cols;
+        }
+
+        col.data = line.substr(col.start, i - 2 - col.start);
+        cols.push_back(col);
+    }
+
+    assert(false);
 }
