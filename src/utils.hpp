@@ -22,11 +22,15 @@ inline bool is_digit(char c) {
     return std::isdigit(static_cast<unsigned char>(c));
 }
 
+inline bool is_alpha(char c) {
+    return std::isalpha(static_cast<unsigned char>(c));
+}
+
 /**
  * Counts the number of words in a line.
  * A word is a continues string of alphanumeric characters without any whitespace.
  */
-size_t count_words(const std::string& line) {
+inline size_t count_words(const std::string& line) {
     std::stringstream s(line);
     std::string tok;
     size_t count = 0;
