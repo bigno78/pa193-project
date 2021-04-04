@@ -1,0 +1,225 @@
+ [22] FMT_SMR.1 for BAC
+FMT_MTD.1.1/INI_ENA The TSF shall restrict the ability to write the Initialisation Data and Pre-personalisation
+                    Data to the Manufacturer.
+Application Note: The application note 42 of [PP_BAC] applies. This application note provides a definition, what
+is meant by “Pre-personalization Data”. This definition is also applicable to FMT_MTD.1/INI_ENA from
+[PP_SAC]. Therefore FMT_MTD.1/INI_ENA from [PP_BAC] and [PP_SAC] can be combined.
+
+
+
+CC Document                                            15                                                     3.5
+                                                                                                       2020-07-15
+Security Target Mercury ePassport v2.20
+
+Security Requirements (ASE_REQ)
+
+6.2.3              Class FPT Protection of the Security Functions
+FPT_TST.1               TSF testing
+Hierarchical to:        No other components.
+Dependencies:           No dependencies.
+FPT_TST.1.1             The TSF shall run a suite of self tests during initial start-up, to demonstrate the correct
+                        operation of the TSF.
+FPT_TST.1.2             The TSF shall provide authorised users with the capability to verify the integrity of the
+                        TSF data.
+FPT_TST.1.3             The TSF shall provide authorised users with the capability to verify the integrity of
+                        stored TSF executable code.
+Application Note: There is no contradiction between application note 46 of [PP_BAC] and application note 52 of
+[PP_SAC]. In fact, although the wording is slightly different, the meaning of these application notes is identical.
+Therefore either of these application notes applies and FPT_TST.1 from [PP_BAC] and [PP_SAC] can be
+combined.
+
+
+FPT_PHP.3               Resistance to physical attack
+Hierarchical to:        No other components.
+Dependencies:           No dependencies.
+FPT_PHP.3.1             The TSF shall resist physical manipulation and physical probing to the TSF by
+                        responding automatically such that the SFRs are always enforced.
+Application Note: Application note 47 of [PP_BAC] and 53 of [PP_SAC] are equivalent. Application note 48 of
+[PP_BAC] is only informative to the reader in the sense, that it provides a context to an older CC standard, but
+not relevant for the interpretation of FPT_PHP.3. Therefore either application note 47 of [PP_BAC] or
+application note 53 of [PP_SAC] applies and FPT_PHP.3 from [PP_BAC] and [PP_SAC] can be combined.
+
+
+6.3                SFRs specifically from [PP_SAC]
+
+6.3.1              Class FCS: Cryptographic Support
+FCS_CKM.1/DH_PACE Cryptographic key generation – Diffie-Hellman for PACE session keys
+Hierarchical to:        No other components.
+Dependencies:           [FCS_CKM.1 Cryptographic key distribution or FCS_COP.1 Cryptographic operation]
+                        Justification: A Diffie-Hellman key agreement is used in order to have no key
+                        distribution, therefore FCS_CKM.2 makes no sense in this case. FCS_CKM.4
+                        Cryptographic key destruction: fulfilled by FCS_CKM.4
+FCS_CKM.1.1/DH_PACE       The TSF shall generate cryptographic keys in accordance with a specified
+                   cryptographic key generation algorithm Diffie-Hellman-Protocol compliant to
+                   [PKCS#3], ECDH compliant to [TR_ECC] and specified cryptographic key size Table 6
+                                                                                             SN100x IC Package (as part of SN100 certificate)              B2.1 C58
+                                                                                                  (platform)
+
+                                                                                                                    Factory Page                                                  18652
+                                                                                                  Data
+                                                                                                                    System Page Common                                            18468
+                                                                                                  configuration
+                                                                                                  (platform)                                                                      4.2.0 PL5
+                                                                                                                    BootOS Patch (part of SN100 certificate)
+                                                                                                                                                                                  v16
+
+                                                                                                                    Factory OS (part of SN100 certificate)                        4.2.0
+
+                                                                                                                    Boot OS (part of SN100 certificate)                           4.2.0
+
+                                                                                                  Software          Flash Driver Software (part of SN100 certificate)             4.0.8
+                                                                                                  (Platform)
+                                                                                                                    Services Software (part of SN100 certificate, specific to
+                                                                                                                                                                              4.14.0.1
+                                                                                                                    C58)
+
+                                                                                                                    Crypto Library (part of SN100 certificate, specific to C58)   2.0.0
+
+                                                                                                                    JCOP5.2                                                       R1.01.1
+
+                                                                                                                             Platform ID: N5C2M00261A70600
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                                             Platform Build ID: 0261A7
+
+                                                                                                                             eUICC plug-in                                        1.5.129
+
+                                                                                                                    JCOP5.2                                 ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????                                                               Platform ID: N5C2M0029E7D0600
+                                                                                                  Software
+                                                                                                  TOE
+                                                                                                                             Platform Build ID: 029E7D
+
+                                                                                                                             eUICC plug-in                                        1.5.146
+
+                                                                                                                    JCOP5.2                                                       R2.02.1
+
+                                                                                                                             Platform ID: N5C2M002A62D0600
+
+                                                                                                                             Platform Build ID: 02A62D
+
+                                                                                                                             eUICC plug-in                                        1.5.148
+
+
+                                                                                                 To ensure secure usage a set of guidance documents is provided together with the NXP JCOP 5.2 on
+                                                                                                 SN100.C58 Secure Element. Details cqn be found in section “Documentation” of this report.
+                                                                                                 For a detailed and precise description of the TOE lifecycle refer to the [ST], chapter 1.3.3.
+                                                                                                 Page: 7/14 of report number: NSCIB-CC-0023577-CR2, dated 09 July 2020
+
+
+
+
+           y3DES, 3-key 3DES, Retail-MAC, CMAC and CBC-MAC).
+                                                                                                                o AES (Advanced Encryption Standard) for en-/decryption (GCM, CBC and ECB) and
+                                                                                                                     MAC generation and verification (CMAC, CBC-MAC).
+                                                                                                                o RSA and RSA CRT for en-/decryption and signature generation and verification.
+                                                                                                                o RSA and RSA CRT key generation.
+                                                                                                                o SHA-1, SHA-224, SHA-256, SHA-384, SHA-512 hash algorithm.
+                                                                                                                o Secure SHA-1, Secure SHA-224, Secure SHA-256, Secure SHA-384, Secure SHA-
+                                                                       NXP Secure Sm                                                512 hash algorithm.
+                                                                                                                o HMAC.
+                                                                                                                o ECC over GF(p) for signature generation and verification (ECDSA).
+                                                                                                                o ECC over GF(p) key generation for key agreement.
+                                                                                                                o Random number generation according to class DRG.3 of AIS 20.
+                                                                                                           Java Card 3.0.5 functionality.
+                                                                                                           GlobalPlatform 2.3 functionality including Amendments A,B,C,D,E,F,H and I and is compliant
+                                                                                                            with the Common Implementation Configuration.
+                                                                                                           GSMA ’Remote SIM Provisioning Architecture for consumer Devices’.
+                                                                                                           Cryptographic Service Provider (CSP) features.
+                                                                                                           NXP Proprietary Functionality:
+                                                                                                                o MiFare functionality accessible via Applets using the MiFare API – no security
+                                                                                                                     functionality is claimed.
+                                                                                                                o OSSCA (Chinese Crypto) functionality accessible via Applets using the OSSCA API –
+                                                                                                                     No security functionality is claimed.
+                                                                                                                o Felica functionality accessible via Applets using the Felica API - no security
+                                                                                                                     functionality is claimed for this functionality.
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                                o Config Applet: JCOP5.2 OS includes a Config Applet that can be used for
+                                                                                                                     configuration of the TOE.
+                                                                                                                o OS Update Component: Proprietary functionality that can update JCOP5.2 OS or
+                                                                                                                     UpdaterOS.
+                                                                                                                o UAI update component: Proprietary functionality that is can update JCOP5.2 OS- no
+                                                                                                                     security functionality is claimed.
+                                                                                                                o Restricted Mode: In Restricted Mode only very limited functionality of the TOE is
+                                                                                                                     available such as, e.g.: reading logging information or resetting the Attack Counter.
+                                                                                                                o Error Detection Code (EDC) API.
+                                                                                                           Functionality introduced in R2, for which there are no specific additional security claims:
+                                                                                                                o CAT-TP, with limitations as described in the [AGD_UGM] Section 8.1.
+                                                                                                                o 5G features as per SIM Alliance 2.3, as in [AGD_UGM] Section 2.4.4 and 8.1.
+                                                                                                                o Extension to Global Platform Amendment H, as in [AGD_UGM] Section 3.5.7.
+                                                                                                                o CPLC data made available through SystemInfo, as in [AGD_UGM] Section 2.1.3.22.
+
+                                                                                                 2.3       Assumptions and Clarification of Scope
+
+                                                                                                 2.3.1      Assumptions
+                                                                                                 The assumptions defined in the Security Target are not covered by the TOE itself. These aspects lead
+                                                                                                 to specific Security Objectives to be fulfilled by the TOE-Environment. Detailed information on these
+                                                                                                 security objectives that must be fulfilled by the TOE environment can be found in section 5.2 of the
+                                                                                                 [ST].
+                                                                                                 Page: 8/14 of report number: NSCIB-CC-0023577-CR2, dated 09 July 2020
+
+
+
+
+                                                                                                 2.3.2    Clarification of scope
+                                                                                                 The evaluation did not reveal any threats to the TOE that are not countered by the evaluated security
+                                                                                                 functions of the product.
+                                                                                                 Note that proprietary applications have been included in the TOE, but as there are no security claims
+                                                                                                 on these functionalities, these application functionality has not been assessed, only the self-protection
+                                                                                                 of the TSF.
+
+                                                                                                 2.4     Architectural Information
+                                                                                                 The TOE consists of a certified Hardware IC, with Micro Controller Firmware (Boot OS, Factory OS
+                                                         art Card
+  Controller P6022y VB
+  Security Targe                                        and Flash driver software) and certified security software library consisting of a crypto library and
+                                                                                                 services software. All these parts are depicted in the figure below with the shaded box marked
+                                                                                                 SE100_SE. Since, this TOE is a composite on top of this certified platform, this block is not depicted
+                                                                                                 in more detail.
+                                                                                                 The Software stack consists of the JCOP Core parts marked with salmon coloured blocks
+                                                                                                 implementing the Native OS, Global platform functionality and the Java Card 3.05 functionality. The
+                                                                                                 TOE also implements a Cryptographic Service Provider marked with an orange coloured block. It
+                                                                                                 implements a number of NXP proprietary features like the JCOP extension APIs for MiFare, Felica,
+                                                                                                 Updater O/S and Config applet (note there are no security claims relating to MiFare and Felica).
+                                                                                                 Furthermore the TOE implements GSMA ‘Remote SIM Provisioning Architecture for consumer
+                                                                                                 Devices’, referred to as eUICC. The JCOP O/S supports the eUICC APIs and uses the Broker API to
+                                                                                                 forward to the eSIM/SIM/UICC/ISIM commands to the eUICC Plugin Library.
+                                                                                                 The TOE supports two domains, the eSE for the Java Card Secure Element domain and an eUICC
+                                                                                                 domain providing UICC functionality in accordance with the GSMA Specification.
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+                                                                                                 Page: 9/14 of report number: NSCIB-CC-0023577-CR2, dated 09 July 2020
+
+
+
+
+                                                                                                 2.5     Documentation
+                                                                                                 The following documentation is provided with the product by the developer to the customer:
+
+                                                                                                  JCOP Version       Identifier                                                        Version
+                                                                                                  JCOP 5.2 R1        [AGD_UGM52R1] JCOP 5.2 R1.01.1 User Guidance Manual               1.8, 2019-10-30
+                                                                                                                     [AGD_UGMSEMS52R1] JCOP 5.2 R1.01.1 User Guidance
+                                                                                                                                                                                       1.1, 2019-10-17
+                                                                                                                     Manual Addendum for SEMS API
+                                                                                                                     [AGD_CSP52R1] JCOP 5.2 R1.01.1 User Guidance Manual
+                                                                                                                                                                                       1.6, 2019-10-15
+                                                                                                                     Addendum for CSPAPI
+                                                                                                [GP]OP 5.2 R2        [AGD_UGM52R2] JCOP 5.2 R2, User Guidance Manual,
+                                                                                                                                                                                       1.3, 2020-06-08
+           *                                                                                                         doc. no. 608813
+                                                                                                                     [AGD_UGMSEMS52R2] JCOP 5.2 R2, User Guidance
+                                                                                                                                        t Lite
+  Rev. 2.1 — 6 April 2018                                        Evaluation document
+  BSI-DSZ-CC-1059                                                             PUBLIC
+
+
+
+
+Document inf                                               1.2, 2020-06-08
+                                                                              ormation
+Informat            

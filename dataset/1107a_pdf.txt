@@ -1,0 +1,1674 @@
+             BSI-DSZ-CC-1107-2020
+
+                       for
+
+      IFX_CCI_00002Dh, IFX_CCI_000039h,
+      IFX_CCI_00003Ah, IFX_CCI_000044h,
+       IFX_CCI_000045h, IFX_CCI_000046h,
+       IFX_CCI_000047h, IFX_CCI_000048h,
+      IFX_CCI_000049h, IFX_CCI_00004Ah,
+      IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+IFX_CCI_00004Dh, IFX_CCI_00004Eh design step
+T11 with firmware 80.306.16.0, optional NRG™ SW
+ 05.03.4097, optional HSL v3.52.9708, UMSLC lib
+v01.30.0564, optional SCL v2.11.003, optional ACL
+            v3.02.000 and user guidance
+
+                      from
+
+           Infineon Technologies AG
+                     BSI - Bundesamt für Sicherheit in der Informationstechnik, Postfach 20 03 63, D-53133 Bonn
+                      Phone +49 (0)228 99 9582-0, Fax +49 (0)228 9582-5477, Infoline +49 (0)228 99 9582-111
+
+
+
+
+Certification Report V1.0                                                                                         CC-Zert-327 V5.3
+       BSI-DSZ-CC-1107-2020 (*)
+       IFX_CCI_00002Dh, IFX_CCI_000039h, IFX_CCI_00003Ah, IFX_CCI_000044h,
+       IFX_CCI_000045h, IFX_CCI_000046h, IFX_CCI_000047h, IFX_CCI_000048h,
+       IFX_CCI_000049h, IFX_CCI_00004Ah, IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+       IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware
+       80.306.16.0, optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC
+       lib v01.30.0564, optional SCL v2.11.003, optional ACL v3.02.000 and user                                       SOGIS
+       guidance                                                                                                 Recognition Agreement
+
+
+
+
+       from                          Infineon Technologies AG
+       PP Conformance:              Security IC Platform Protection Profile with Augmentation
+                                    Packages Version 1.0, 13 January 2014, BSI-CC-PP-
+                                    0084-2014
+       Functionality:               PP conformant plus product specific extensions
+                                    Common Criteria Part 2 extended
+       Assurance:                   Common Criteria Part 3 conformant
+                                    EAL 6 augmented by ALC_FLR.1
+
+
+
+The IT Product identified in this certificate has been evaluated at an approved evaluation facility
+using the Common Methodology for IT Security Evaluation (CEM), Version 3.1 extended by
+Scheme Interpretations, by advice of the Certification Body for components beyond EAL 5 and CC
+Supporting Documents as listed in the Certification Report for conformance to the Common Criteria
+for IT Security Evaluation (CC), Version 3.1. CC and CEM are also published as ISO/IEC 15408
+and ISO/IEC 18045.
+(*) This certificate applies only to the specific version and release of the product in its evaluated
+configuration and in conjunction with the complete Certification Report and Notification. For details
+on the validity see Certification Report part A chapter 5.                                              Common Criteria
+                                                                                                    Recognition Arrangement
+The evaluation has been conducted in accordance with the provisions of the certification scheme of recognition for components
+the German Federal Office for Information Security (BSI) and the conclusions of the evaluation up to EAL 2 and ALC_FLR
+facility in the evaluation technical report are consistent with the evidence adduced.                          only
+
+This certificate is not an endorsement of the IT Product by the Federal Office for Information
+Security or any other organisation that recognises or gives effect to this certificate, and no warranty
+of the IT Product by the Federal Office for Information Security or any other organisation that
+recognises or gives effect to this certificate, is either expressed or implied.
+Bonn, 17 November 2020
+For the Federal Office for Information Security
+
+
+
+
+Sandro Amendola                      L.S.
+Head of Division
+
+
+                                      Bundesamt für Sicherheit in der Informationstechnik
+                         Godesberger Allee 185-189 - D-53175 Bonn -     Postfach 20 03 63 - D-53133 Bonn
+                      Phone +49 (0)228 99 9582-0 - Fax +49 (0)228 9582-5477 - Infoline +49 (0)228 99 9582-111
+Certification Report                                            BSI-DSZ-CC-1107-2020
+
+
+
+
+                       This page is intentionally left blank.
+
+
+
+
+                                                                               4 / 36
+BSI-DSZ-CC-1107-2020                                                                                           Certification Report
+
+
+
+
+Contents
+A. Certification......................................................................................................................6
+   1.   Preliminary Remarks....................................................................................................6
+   2.   Specifications of the Certification Procedure...............................................................6
+   3.   Recognition Agreements..............................................................................................7
+   4.   Performance of Evaluation and Certification................................................................8
+   5.   Validity of the Certification Result.................................................................................8
+   6.   Publication....................................................................................................................9
+B. Certification Results.......................................................................................................10
+   1. Executive Summary....................................................................................................11
+   2. Identification of the TOE.............................................................................................12
+   3. Security Policy............................................................................................................14
+   4. Assumptions and Clarification of Scope.....................................................................15
+   5. Architectural Information.............................................................................................16
+   6. Documentation...........................................................................................................16
+   7. IT Product Testing.......................................................................................................16
+   8. Evaluated Configuration.............................................................................................17
+   9. Results of the Evaluation............................................................................................18
+   10. Obligations and Notes for the Usage of the TOE.....................................................27
+   11. Security Target..........................................................................................................28
+   12. Regulation specific aspects (eIDAS, QES)..............................................................28
+   13. Definitions.................................................................................................................29
+   14. Bibliography..............................................................................................................30
+C. Excerpts from the Criteria..............................................................................................33
+
+D. Annexes.........................................................................................................................34
+
+
+
+
+                                                                                                                                 5 / 36
+Certification Report                                                                  BSI-DSZ-CC-1107-2020
+
+
+
+
+A.      Certification
+
+1.      Preliminary Remarks
+Under the BSIG1 Act, the Federal Office for Information Security (BSI) has the task of
+issuing certificates for information technology products.
+Certification of a product is carried out on the instigation of the vendor or a distributor,
+hereinafter called the sponsor.
+A part of the procedure is the technical examination (evaluation) of the product according
+to the security criteria published by the BSI or generally recognised security criteria.
+The evaluation is normally carried out by an evaluation facility recognised by the BSI or by
+BSI itself.
+The result of the certification procedure is the present Certification Report. This report
+contains among others the certificate (summarised assessment) and the detailed
+Certification Results.
+The Certification Results contain the technical description of the security functionality of
+the certified product, the details of the evaluation (strength and weaknesses) and
+instructions for the user.
+
+2.      Specifications of the Certification Procedure
+The certification body conducts the procedure according to the criteria laid down in the
+following:
+●   Act on the Federal Office for Information Security 1
+●   BSI Certification and Approval Ordinance2
+●   BSI Schedule of Costs3
+●   Special decrees issued by the Bundesministerium des Innern (Federal Ministry of the
+    Interior)
+●   DIN EN ISO/IEC 17065 standard
+●   BSI certification: Scheme documentation describing the certification process (CC-
+    Produkte) [3]
+●   BSI certification: Scheme documentation on requirements for the Evaluation Facility, its
+    approval and licencing process (CC-Stellen) [3]
+●   Common Criteria for IT Security Evaluation (CC), Version 3.1 4 [1] also published as
+    ISO/IEC 15408.
+
+1
+     Act on the Federal Office for Information Security (BSI-Gesetz - BSIG) of 14 August 2009,
+     Bundesgesetzblatt I p. 2821
+2
+     Ordinance on the Procedure for Issuance of Security Certificates and approval by the Federal Office for
+     Information Security (BSI-Zertifizierungs- und -Anerkennungsverordnung - BSIZertV) of 17 December
+     2014, Bundesgesetzblatt 2014, part I, no. 61, p. 2231
+3
+     Schedule of Cost for Official Procedures of the Bundesamt für Sicherheit in der Informationstechnik
+     (BSI-Kostenverordnung, BSI-KostV) of 3 March 2005, Bundesgesetzblatt I, p. 519
+
+
+
+                                                                                                           6 / 36
+BSI-DSZ-CC-1107-2020                                                                 Certification Report
+
+
+
+
+●   Common Methodology for IT Security Evaluation (CEM), Version 3.1 [2] also published
+    as ISO/IEC 18045
+●   BSI certification: Application Notes and Interpretation of the Scheme (AIS) [4]
+
+3.      Recognition Agreements
+In order to avoid multiple certification of the same product in different countries a mutual
+recognition of IT security certificates - as far as such certificates are based on ITSEC or
+CC - under certain conditions was agreed.
+
+3.1.    European Recognition of CC – Certificates (SOGIS-MRA)
+The SOGIS-Mutual Recognition Agreement (SOGIS-MRA) Version 3 became effective in
+April 2010. It defines the recognition of certificates for IT-Products at a basic recognition
+level and, in addition, at higher recognition levels for IT-Products related to certain SOGIS
+Technical Domains only.
+The basic recognition level includes Common Criteria (CC) Evaluation Assurance Levels
+EAL 1 to EAL 4. For "Smartcards and similar devices" a SOGIS Technical Domain is in
+place. For "HW Devices with Security Boxes" a SOGIS Technical Domains is in place, too.
+In addition, certificates issued for Protection Profiles based on Common Criteria are part of
+the recognition agreement.
+The current list of signatory nations and approved certification schemes, details on
+recognition, and the history of the agreement can be seen on the website at
+https://www.sogis.eu.
+The SOGIS-MRA logo printed on the certificate indicates that it is recognised under the
+terms of this agreement by the related bodies of the signatory nations. A disclaimer
+beneath the logo indicates the specific scope of recognition.
+This certificate is recognized under SOGIS-MRA for all assurance components selected.
+
+3.2.    International Recognition of CC – Certificates (CCRA)
+The international arrangement on the mutual recognition of certificates based on the CC
+(Common Criteria Recognition Arrangement, CCRA-2014) has been ratified on 08
+September 2014. It covers CC certificates based on collaborative Protection Profiles (cPP)
+(exact use), CC certificates based on assurance components up to and including EAL 2 or
+the assurance family Flaw Remediation (ALC_FLR) and CC certificates for Protection
+Profiles and for collaborative Protection Profiles (cPP).
+The current list of signatory nations and approved certification schemes can be seen on
+the website: https://www.commoncriteriaportal.org.
+The Common Criteria Recognition Arrangement logo printed on the certificate indicates
+that this certification is recognised under the terms of this agreement by the related bodies
+of the signatory nations. A disclaimer beneath the logo indicates the specific scope of
+recognition.
+This certificate is recognized according to the rules of CCRA-2014, i. e. up to and including
+CC part 3 EAL 2+ ALC_FLR components.
+
+4
+     Proclamation of the Bundesministerium des Innern of 12 February 2007 in the Bundesanzeiger dated
+     23 February 2007, p. 3730
+
+
+
+                                                                                                    7 / 36
+Certification Report                                                          BSI-DSZ-CC-1107-2020
+
+
+
+
+4.      Performance of Evaluation and Certification
+The certification body monitors each individual evaluation to ensure a uniform procedure, a
+uniform interpretation of the criteria and uniform ratings.
+The     product       IFX_CCI_00002Dh,        IFX_CCI_000039h,   IFX_CCI_00003Ah,
+IFX_CCI_000044h,        IFX_CCI_000045h,        IFX_CCI_000046h, IFX_CCI_000047h,
+IFX_CCI_000048h,        IFX_CCI_000049h,       IFX_CCI_00004Ah,  IFX_CCI_00004Bh,
+IFX_CCI_00004Ch, IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware
+80.306.16.0, optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib
+v01.30.0564, optional SCL v2.11.003, optional ACL v3.02.000 and user guidance has
+undergone the certification procedure at BSI.
+The evaluation of the product IFX_CCI_00002Dh, IFX_CCI_000039h, IFX_CCI_00003Ah,
+IFX_CCI_000044h,         IFX_CCI_000045h,     IFX_CCI_000046h,  IFX_CCI_000047h,
+IFX_CCI_000048h,         IFX_CCI_000049h,    IFX_CCI_00004Ah,   IFX_CCI_00004Bh,
+IFX_CCI_00004Ch, IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware
+80.306.16.0, optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib
+v01.30.0564, optional SCL v2.11.003, optional ACL v3.02.000 and user guidance was
+conducted by TÜV Informationstechnik GmbH. The evaluation was completed on 16
+November 2020. TÜV Informationstechnik GmbH is an evaluation facility (ITSEF)5
+recognised by the certification body of BSI.
+For this certification procedure the sponsor and applicant is: Infineon Technologies AG.
+The product was developed by: Infineon Technologies AG.
+The certification is concluded with the comparability check and the production of this
+Certification Report. This work was completed by the BSI.
+
+5.      Validity of the Certification Result
+This Certification Report applies only to the version of the product as indicated. The
+confirmed assurance package is valid on the condition that
+●   all stipulations regarding generation, configuration and operation, as given in the
+    following report, are observed,
+●   the product is operated in the environment described, as specified in the following report
+    and in the Security Target.
+For the meaning of the assurance components and assurance levels please refer to CC
+itself. Detailed references are listed in part C of this report.
+The Certificate issued confirms the assurance of the product claimed in the Security Target
+at the date of certification. As attack methods evolve over time, the resistance of the
+certified version of the product against new attack methods needs to be re-assessed.
+Therefore, the sponsor should apply for the certified product being monitored within the
+assurance continuity program of the BSI Certification Scheme (e.g. by a re-assessment or
+re-certification). Specifically, if results of the certification are used in subsequent evaluation
+and certification procedures, in a system integration process or if a user's risk
+management needs regularly updated results, it is recommended to perform a re-
+assessment on a regular e.g. annual basis.
+
+
+5
+     Information Technology Security Evaluation Facility
+
+
+
+                                                                                             8 / 36
+BSI-DSZ-CC-1107-2020                                                           Certification Report
+
+
+
+
+In order to avoid an indefinite usage of the certificate when evolved attack methods would
+require a re-assessment of the products resistance to state of the art attack methods, the
+maximum validity of the certificate has been limited. The certificate issued on 17
+November 2020 is valid until 16 November 2025. Validity can be re-newed by re-
+certification.
+The owner of the certificate is obliged:
+     1. when advertising the certificate or the fact of the product's certification, to refer to
+        the Certification Report as well as to provide the Certification Report, the Security
+        Target and user guidance documentation mentioned herein to any customer of the
+        product for the application and usage of the certified product,
+     2. to inform the Certification Body at BSI immediately about vulnerabilities of the
+        product that have been identified by the developer or any third party after issuance
+        of the certificate,
+     3. to inform the Certification Body at BSI immediately in the case that security relevant
+        changes in the evaluated life cycle, e.g. related to development and production sites
+        or processes, occur, or the confidentiality of documentation and information related
+        to the Target of Evaluation (TOE) or resulting from the evaluation and certification
+        procedure where the certification of the product has assumed this confidentiality
+        being maintained, is not given any longer. In particular, prior to the dissemination of
+        confidential documentation and information related to the TOE or resulting from the
+        evaluation and certification procedure that do not belong to the deliverables
+        according to the Certification Report part B, or for those where no dissemination
+        rules have been agreed on, to third parties, the Certification Body at BSI has to be
+        informed.
+In case of changes to the certified version of the product, the validity can be extended to
+the new versions and releases, provided the sponsor applies for assurance continuity (i.e.
+re-certification or maintenance) of the modified product, in accordance with the procedural
+requirements, and the evaluation does not reveal any security deficiencies.
+
+6.      Publication
+The      product       IFX_CCI_00002Dh,           IFX_CCI_000039h,         IFX_CCI_00003Ah,
+IFX_CCI_000044h,          IFX_CCI_000045h,          IFX_CCI_000046h,        IFX_CCI_000047h,
+IFX_CCI_000048h,         IFX_CCI_000049h,          IFX_CCI_00004Ah,        IFX_CCI_00004Bh,
+IFX_CCI_00004Ch, IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware
+80.306.16.0, optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib
+v01.30.0564, optional SCL v2.11.003, optional ACL v3.02.000 and user guidance has been
+included in the BSI list of certified products, which is published regularly (see also Internet:
+https://www.bsi.bund.de and [5]). Further information can be obtained from BSI-Infoline
++49 228 9582-111.
+Further copies of this Certification Report can be requested from the developer 6 of the
+product. The Certification Report may also be obtained in electronic form at the internet
+address stated above.
+
+
+6
+     Infineon Technologies AG
+     Am Campeon 1-12
+     85579 Neubiberg
+
+
+
+                                                                                              9 / 36
+Certification Report                                                    BSI-DSZ-CC-1107-2020
+
+
+
+
+B.      Certification Results
+The following results represent a summary of
+●   the Security Target of the sponsor for the Target of Evaluation,
+●   the relevant evaluation results from the evaluation facility, and
+●   complementary notes and stipulations of the certification body.
+
+
+
+
+                                                                                      10 / 36
+BSI-DSZ-CC-1107-2020                                                                Certification Report
+
+
+
+
+1.     Executive Summary
+The Target of Evaluation (TOE) is a Smart Card security controller called
+IFX_CCI_00002Dh,       IFX_CCI_000039h,       IFX_CCI_00003Ah,     IFX_CCI_000044h,
+IFX_CCI_000045h,       IFX_CCI_000046h,        IFX_CCI_000047h,    IFX_CCI_000048h,
+IFX_CCI_000049h,      IFX_CCI_00004Ah,        IFX_CCI_00004Bh,    IFX_CCI_00004Ch,
+IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware 80.306.16.0,
+optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib v01.30.0564,
+optional SCL v2.11.003, optional ACL v3.02.000 and user guidance.
+It provides a 32-bit ARMv7-M CPU-architecture. The major components of the core system
+are the CPU (Central Processing Unit), an MPU (Memory Protection Unit), a Nested
+Vectored Interrupt Controller (NVIC) and an Instruction Stream Signature Checking (ISS).
+The dual interface controller is able to communicate using either the contact based or the
+contactless interface. Also, a variety of software libraries is present or optionally available,
+i.e. NRGTM library, HSL (hardware support library), UMSLC (user mode security life control)
+library, SCL (symmetric cryptographic library) and ACL (asymmetric cryptographic library).
+This TOE is intended to be used in smart cards for particular security relevant applications
+and as a developing platform for smart card operating systems. The term smartcard
+embedded software is used in the following for all operating systems and applications
+stored and executed on the TOE. The TOE is the platform for the smartcard embedded
+software.
+Depending on the blocking configuration, the TOE can have e.g. different user available
+memory sizes and can come with or without individual accessible cryptographic
+coprocessors. All products are identical in regard to module design, layout and footprint.
+The Security Target [6] is the basis for this certification. It is based on the certified
+Protection Profile Security IC Platform Protection Profile with Augmentation Packages
+Version 1.0, 13 January 2014, BSI-CC-PP-0084-2014 [8].
+The TOE Security Assurance Requirements (SAR) are based entirely on the assurance
+components defined in Part 3 of the Common Criteria (see part C or [1], Part 3 for details).
+The TOE meets the assurance requirements of the Evaluation Assurance Level EAL 6
+augmented by ALC_FLR.1.
+The TOE Security Functional Requirements (SFR) relevant for the TOE are outlined in the
+Security Target [6] and [9], chapter 6. They are selected from Common Criteria Part 2 and
+some of them are newly defined. Thus the TOE is CC Part 2 extended.
+The TOE Security Functional Requirements are implemented by the following TOE
+Security Functionality:
+       TOE Security Functionality            Addressed issue
+       SF_DPM                                Device Phase Management
+       SF_PS                                 Protection against Snooping
+       SF_PMA                                Protection against Modifying Attacks
+       SF_PLA                                Protection against Logical Attacks
+       SF_CS                                 Cryptographic Support
+
+                               Table 1: TOE Security Functionalities
+
+
+
+
+                                                                                                  11 / 36
+Certification Report                                                        BSI-DSZ-CC-1107-2020
+
+
+
+
+For more details please refer to the Security Target [6] and [9], chapter 7.
+The assets to be protected by the TOE are defined in the Security Target [6] and [9],
+chapter 3.1.2 . Based on these assets the TOE Security Problem is defined in terms of
+Assumptions, Threats and Organisational Security Policies. This is outlined in the Security
+Target [6] and [9], chapter 3.
+This certification covers the configurations of the TOE as outlined in chapter 8.
+The vulnerability assessment results as stated within this certificate do not include a rating
+for those cryptographic algorithms and their implementation suitable for encryption and
+decryption (see BSIG Section 9, Para. 4, Clause 2).
+The certification results only apply to the version of the product indicated in the certificate
+and on the condition that all the stipulations are kept as detailed in this Certification
+Report. This certificate is not an endorsement of the IT product by the Federal Office for
+Information Security (BSI) or any other organisation that recognises or gives effect to this
+certificate, and no warranty of the IT product by BSI or any other organisation that
+recognises or gives effect to this certificate, is either expressed or implied.
+
+2.      Identification of the TOE
+The Target of Evaluation (TOE) is called:
+    IFX_CCI_00002Dh, IFX_CCI_000039h, IFX_CCI_00003Ah, IFX_CCI_000044h,
+     IFX_CCI_000045h, IFX_CCI_000046h, IFX_CCI_000047h, IFX_CCI_000048h,
+    IFX_CCI_000049h, IFX_CCI_00004Ah, IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+  IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware 80.306.16.0,
+  optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib v01.30.0564,
+        optional SCL v2.11.003, optional ACL v3.02.000 and user guidance.
+The following table outlines the TOE deliverables:
+     Type       Identifier                             Release             Form of Delivery
+     Hardware
+                IFX_CCI_00002Dh, IFX_CCI_000039h,      T11 (design step)   Wafer, IC case,
+                IFX_CCI_00003Ah, IFX_CCI_000044h,                          packages
+                IFX_CCI_000045h, IFX_CCI_000046h,
+                IFX_CCI_000047h, IFX_CCI_000048h,
+                IFX_CCI_000049h, IFX_CCI_00004Ah,
+                IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+                IFX_CCI_00004Dh, IFX_CCI_00004Eh
+     Firmware
+                BOS & POWS                             80.306.16.0         stored on the delivered
+                                                                           hardware
+                Flash Loader                           09.12.0005
+     Software
+                NRGTM SW (optional)                    05.03.4097          L251 Library File
+                                                                           (object code), secured
+                HSL (optional)                         3.52.9708           download
+                UMSLC                                  01.30.0564
+                SCL (optional)                         2.11.003
+                ACL (optional)                         3.02.000
+
+
+
+
+                                                                                             12 / 36
+BSI-DSZ-CC-1107-2020                                                               Certification Report
+
+
+
+
+     Type     Identifier                                        Release        Form of Delivery
+     User Guidance
+              32-bit Security Controller – V11, Hardware        V5.2,          Personalized PDF via
+              Reference Manual                                                 secure iShare server
+                                                                2020-02-05
+              32-bit Security Controller, SLx1/SLx3 Controller V4.5,
+              Family, Programmer’s Reference Manual
+                                                               2020-06-22
+              32-bit Security Controller – V11, Security        V1.00-2661,
+              Guidelines
+                                                                2020-10-05
+              Production and personalization, 32-bit security   V09.12,
+              controller
+                                                                2020-07-03
+              32-bit Security Controller, Crypto2304T V3,       V2.0
+              User Manual (optional)
+                                                                2019-04-24
+              HSL for SLCx7V11a Hardware Support Library        V03.52.9708,
+              (optional)
+                                                                2020-02-03
+              UMSLC library for SLCx7 in 40nm, User Mode        V01.30.0564,
+              Security Life Control
+                                                                2019-06-19
+              SCL37-SCP-v440-C40, Symmetric Crypto              V2.11.003,
+              Library for SCP-v440 AES/DES/MAC, 32-bit
+                                                                2020-02-10
+              Security Controller, User interface manual
+              (optional)
+              ACL37-Crypto2304T-C40, Asymmetric Crypto       V3.02.000,
+              Library for Crypto2304T RSA/ECC/Toolbox, 32-
+                                                             2020-02-07
+              bit Security Controller, User interface manual
+              (optional)
+
+                                      Table 2: Deliverables of the TOE
+
+Please note that NRG functionality and toolbox are out of scope of this evaluation, hence
+no evaluated TOE guidance documentation applies. However, respective developer
+provided documentation may be available. User discretion is advised.
+The delivery documentation describes all procedures that are necessary to maintain
+security when distributing versions of the TOE or parts of it to the user’s site including the
+necessary intermediate delivery procedures.
+Furthermore, the delivery documentation describes in a sufficient manner how the various
+procedures and technical measures provide for the detection of modifications and any
+discrepancies between the TOE respective parts of it send by the TOE Manufacturer and
+the version received by the Composite Product Manufacturer.
+Three different delivery procedures have to be taken into consideration:
+●   Delivery of the IC dedicated software components (IC dedicated SW, guidance) from the
+    TOE Manufacturer to the IC Embedded Software Developer.
+●   Delivery of the IC Embedded Software (ROM / Flash data, initialisation and pre-
+    personalisation data) from the IC Embedded Software Developer to the TOE
+    Manufacturer.
+
+
+
+
+                                                                                                13 / 36
+Certification Report                                                      BSI-DSZ-CC-1107-2020
+
+
+
+
+●   Delivery of the final TOE from the TOE Manufacturer to the Composite Product
+    Manufacturer. After phase 3 the TOE is delivered in form of wafers or sawn wafers, after
+    phase 4 in form of modules (with or without inlay antenna) or any other packaging form
+    as offered.
+Respective distribution centers are listed in Appendix B (see end of document).
+The individual TOE hardware is uniquely identified by its identification data. Each individual
+TOE can therefore be traced unambiguously and thus assigned to the entire development
+and production process.
+The hardware part of the TOE is identified by IFX_CCI_00002Dh, IFX_CCI_000039h,
+IFX_CCI_00003Ah,     IFX_CCI_000044h,       IFX_CCI_000045h,   IFX_CCI_000046h,
+IFX_CCI_000047h,     IFX_CCI_000048h,      IFX_CCI_000049h,    IFX_CCI_00004Ah,
+IFX_CCI_00004Bh, IFX_CCI_00004Ch, IFX_CCI_00004Dh, IFX_CCI_00004Eh design
+step T11.
+Another characteristic of the TOE are the chip identification data. These chip identification
+data is accessible via the Generic Chip Identification Mode (GCIM) (see [12], section 4.5).
+At TOE start-up the so called GCIM can be chosen by applying special signalling in
+contactless or contact based communication and the TOE outputs then the generic chip
+identification data (unless another configuration option is chosen). This data contain the
+firmware identifier accompanied with the certification identifier, the design step and even
+more tracking information. In combination with [12] (section 4.5) the user can identify the
+data, interpret it and retrieve the TOE versioning information. This information includes
+also the required mapping of firmware identifier and certification identifier.
+The optional software libraries can be identified by their unique version numbers and by
+calculating a hash value (e.g. SHA-256) over the delivered lib-files (.lib) and comparing the
+calculated vales to the values stated in Security Target [6] and [9], sections 9 - 13.
+
+3.      Security Policy
+The security policy enforced is defined by the selected set of security functional
+requirements and implemented by the TOE. It covers the following issues:
+The security policy of the TOE is to provide basic security functionalities to be used by the
+smart card operating system and the smart card application, thus providing an overall
+smart card system security. Therefore, the TOE will implement a symmetric cryptographic
+block cipher algorithm (Triple-DES and AES) to ensure the confidentiality of plain text data
+by encryption and to support secure authentication protocols and it will provide different
+random number generators.
+The RSA library is used to provide a high-level interface to RSA (Rivest, Shamir, Adleman)
+cryptography implemented on the hardware component Crypto@2304T and includes
+countermeasures against SPA, DPA and DFA attacks. The EC library is used to provide a
+high-level interface to Elliptic Curve cryptography implemented on the hardware
+component Crypto@2304T and includes countermeasures against SPA, DPA and DFA
+attacks.
+Besides that, the TOE can come with the optional Hardware Support Library (HSL)
+providing a simplified interface for NVM management and provides the possibility to write
+tearing safe into the NVM.
+
+
+
+
+                                                                                        14 / 36
+BSI-DSZ-CC-1107-2020                                                          Certification Report
+
+
+
+
+As the TOE is a hardware security platform, the security policy of the TOE is also to
+provide protection against leakage of information (e.g. to ensure the confidentiality of
+cryptographic keys during AES, Triple-DES, RSA and EC cryptographic functions
+performed by the TOE), against physical probing, against malfunctions, against physical
+manipulations and against abuse of functionality. Hence the TOE shall:
+●   maintain the integrity and the confidentiality of data stored in the memory of the TOE,
+    and
+●   maintain the integrity, the correct operation and the confidentiality of security
+    functionalities (security mechanisms and associated functions) provided by the TOE.
+Specific details concerning the above mentioned security policies can be found in sections
+6 and 7 of the Security Target [6] and [9].
+
+4.      Assumptions and Clarification of Scope
+The assumptions defined in the Security Target and some aspects of threats and
+organisational security policies are not covered by the TOE itself. These aspects lead to
+specific security objectives to be fulfilled and measures to be taken by the IT environment,
+the user or the risk manager. The following topics are of relevance:
+The objective OE.Resp-Appl states that the IC embedded software developer shall treat
+user data (especially keys) of the composite product appropriately. The IC embedded
+software developer gets sufficient information on how to protect user data adequately in
+the security guidelines [14].
+The ST includes the following security objectives for the operational environment, which
+are relevant for the Composite Product Manufacturer: OE.Process-Sec-IC,
+OE.Lim_Block_Loader, OE.Loader_Usage, OE.TOE_Auth, and OE.Prevent_Masquerade.
+The objective OE.Process-Sec-IC requires the protection of the TOE, as well as of its
+manufacturing and test data up to the delivery to the end-consumer. As defined in [6] and
+[9] section 1.4.5 the TOE can be delivered to the composite product manufacturer after
+phase 3 or after phase 4. However, the single chips are identical in all cases. This means
+that the test mode is deactivated and the TOE is locked in the user mode. Therefore, it is
+not necessary to distinguish between these forms of delivery. Since Infineon has no
+information about the security requirements of the implemented IC embedded software it is
+not possible to define any concrete security requirements for the environment of the
+composite product manufacturer.
+The objective OE.TOE_Auth requires that the environment has to support the
+authentication and verification mechanism and has to know the corresponding
+authentication reference data. The composite product manufacturer receives sufficient
+information with regard to the authentication mechanism in [15], section 2.1.5. Please note
+that this objective is only valid in case the Flash Loader is ordered with mutual
+authentication (i.e., option External Authentication is unavailable).
+The objective OE.Prevent_Masquerade is valid in case the Flash Loader is ordered with
+External Authentication (EA) instead of mutual authentication. In this case, customers
+need to take care that not masquerading attacks can be performed. The objective replaces
+OE.Loader-Usage. A description of the External Authentication is given in [15], section
+2.1.5 and further highlights the risks of masquerading attacks when using this order option
+of the flash loader:
+
+
+
+
+                                                                                           15 / 36
+Certification Report                                                      BSI-DSZ-CC-1107-2020
+
+
+
+
+         The objective OE.Prevent_Masquerade is valid in case the Flash Loader is ordered
+         with External Authentication (EA) instead of a mutual authentication. In this case,
+         customers need to take care that not masquerading attacks can be performed.
+The objective OE.Loader_Usage requires that the authorised user has to support the
+trusted communication with the TOE by protecting the confidentiality and integrity of the
+loaded data and he has to meet the access conditions defined by the flash loader. [ 15],
+section 4 provides sufficient information regarding this topic.
+The objective OE.Lim_Block_Loader requires the composite product manufacturer to
+protect the loader against misuse, to limit the capability of the loader and to terminate the
+loader irreversibly after the intended usage. The permanent deactivation of the flash loader
+is described in [15], section 2.1.2.2. This objective for the environment originates from the
+“Package 1: Loader dedicated for usage in secured environment only”. However, this TOE
+also implements “Package 2: Loader dedicated for usage by authorized users only” and
+thus the flash loader can also be used in an unsecure environment and is able to protect
+itself against misuse if the authentication and download keys are handled appropriately.
+
+5.      Architectural Information
+For further information on the TOE architecture, see Security Target [6] and [9], section 1
+(especially sections 1.3 and 1.4).
+
+6.      Documentation
+The evaluated documentation as outlined in table 2 is being provided with the product to
+the customer. This documentation contains the required information for secure usage of
+the TOE in accordance with the Security Target.
+Additional obligations and notes for secure usage of the TOE as outlined in chapter 10 of
+this report have to be followed.
+
+7.      IT Product Testing
+Regarding functional testing:
+Different classes of functional tests were performed by the developer to test the TOE:
+●   Simulation tests (design verification),
+●   Qualification tests,
+●   Verification Tests,
+●   Security Evaluation Tests,
+●   Production Tests.
+The developer’s testing results demonstrate that the TSFs behave as specified. The
+developer’s testing results also demonstrate that the TOE behaves as expected.
+In the course of the evaluation of the TOE, the following classes of functional tests were
+carried out by the ITSEF:
+●   Module tests,
+●   Simulation tests,
+
+
+
+
+                                                                                         16 / 36
+BSI-DSZ-CC-1107-2020                                                         Certification Report
+
+
+
+
+●   Emulation tests,
+●   Tests in user mode,
+●   Tests in test mode,
+●   Hardware tests,
+●   Optional library tests,
+●   repetition of developer tests (see above).
+With these kinds of tests the entire security functionality of the TOE was tested.
+The results of the (functional) developer tests, which have been repeated by the evaluator,
+matched the results the developer stated.
+Overall the TSF has been functionally tested against the functional specification, the TOE
+design and the security architecture description. The tests demonstrate that the TSF
+performs as specified.
+Regarding AVA related tests:
+The overall test result is that no deviations were found between the expected and the
+actual test results. No attack scenario with the attack potential high was actually
+successful in the TOE’s operational environment as defined in [6] and [9], provided that all
+measures required by the developer are applied.
+The embedded software has to implement the security advices given in [11] - [20].
+
+8.      Evaluated Configuration
+In the broadest sense, the production of the mask sets for the chip production may be
+looked upon as the procedure for the system generation. The TOE can be delivered in the
+following hardware configurations
+IFX_CCI_00002Dh,    IFX_CCI_000039h,             IFX_CCI_00003Ah,         IFX_CCI_000044h,
+IFX_CCI_000045h,    IFX_CCI_000046h,              IFX_CCI_000047h,        IFX_CCI_000048h,
+IFX_CCI_000049h,   IFX_CCI_00004Ah,              IFX_CCI_00004Bh,        IFX_CCI_00004Ch,
+IFX_CCI_00004Dh and IFX_CCI_00004Eh.
+This TOE is represented by various configurations called products. The module design,
+layout and footprint, of all products are identical. The degree of freedom for configuring the
+TOE is predefined by the developer.
+Furthermore comprising of firmware and optional software libraries with revisions stated in
+section 2. The flash loader (part of FW) was enabled on evaluated derivative.
+An extensive overview over all possible configuration options is given in the Security
+Target [6] and [9] in sections 1.4.5 and 1.4.7.
+The evaluation results, also including results of tests performed by the developer, are valid
+for all hardware derivates mentioned above. All identifiers represent the equal hardware
+platform but name differences in configurations or market segments. Configuration
+differences are achieved by blocking only. The firmware and optional software libraries
+were examined in those revisions, which are stated in table 2 (above).
+The evaluation results are valid for all configurations and blocking options of the hardware
+stated in section 1.4.7 of the Security Target [6] and [9]. Depending on configuration,
+blocking option and on selection of optional software libraries, some of the services might
+
+
+
+                                                                                          17 / 36
+Certification Report                                                     BSI-DSZ-CC-1107-2020
+
+
+
+
+be unavailable to the user. The unavailable services have no security impact on the TOE.
+The user must ensure a working configuration. The evaluation results apply to all
+configurations of Flash Loader, BPU and PIN-Letter as stated in the Security Target [6] and
+[9].
+The evaluation results cannot be extended to further versions/derivates of the TOE and/or
+other production sites without any extra investigations.
+Developer and evaluator tested the TOE in these configurations in which the TOE is
+delivered and which is described above and in Section 2.
+
+9.      Results of the Evaluation
+9.1.    CC specific results
+The Evaluation Technical Report (ETR) [7] was provided by the ITSEF according to the
+Common Criteria [1], the Methodology [2], the requirements of the Scheme [3] and all
+interpretations and guidelines of the Scheme (AIS) [4] as relevant for the TOE.
+The Evaluation Methodology CEM [2] was used for those components up to EAL 5
+extended by advice of the Certification Body for components beyond EAL 5 and guidance
+specific for the technology of the product [4] (AIS 34).
+The following guidance specific for the technology was used:
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 1, Durchführung
+    der Ortsbesichtigung in der Entwicklungsumgebung des Herstellers, Version 14, 2017-
+    10-11, Bundesamt für Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 14, Anforderungen
+    an Aufbau und Inhalt der ETR-Teile (Evaluation Technical Report) für Evaluationen nach
+    CC (Common Criteria), Version 7, 2010-08-03, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 19, Anforderungen
+    an Aufbau und Inhalt der Zusammenfassung des ETR (Evaluation Technical Report) für
+    Evaluationen nach CC (Common Criteria), Version 9, 2014-11-03, Bundesamt für
+    Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 20,
+    Funktionalitätsklassen und Evaluationsmethodologie für deterministische
+    Zufallszahlengeneratoren, Version 3, 2013-05-15, Herausgeber: Zertifizierungsstelle des
+    BSI im Rahmen des Zertifizierungsschemas, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   A proposal for: Functionality classes for random number generators, W. Killmann, W.
+    Schindler, Version 2.0, 2011-09-18, T-Systems GEI GmbH and Bundesamt für Sicherheit
+    in der Informationstechnik. (same as [AIS31_KS2011])
+●   Developer evidence for the evaluation of a deterministic random number generator,
+    Version 0.9, 2013-02-28, Bundesamt für Sicherheit in der Informationstechnik.
+●   Evaluation Report as part of the Evaluation Technical Report, Part B – ETR-Part
+    Deterministic Random Number Generator, Template-Version 0.10, 2013-02-28,
+    Bundesamt für Sicherheit in der Informationstechnik.
+
+
+
+
+                                                                                        18 / 36
+BSI-DSZ-CC-1107-2020                                                           Certification Report
+
+
+
+
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 23,
+    Zusammentragen von Nachweisen der Entwickler, Version 4, 2017-03-15, Bundesamt
+    für Sicherheit in der Informationstechnik.
+●   CC Supporting Document Guidance – Collection of Developer Evidence, Version 1.5,
+    April 2012, CCDB-2012-04-005.
+●   Joint Interpretation Library – Collection of Developer Evidence, Version 1.5, January
+    2012.
+●   Application Notes and Interpretation of the Scheme (AIS) – AIS 25, Anwendungen der
+    CC auf integrierte Schaltungen, Version 9, 2017-03-15, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   CC Supporting Document Mandatory Technical Document – Security Architecture
+    requirements (ADV_ARC) for smart cards and similar devices, Version 2.1, April 2014,
+    CCDB-2012-04-004.
+●   CC Supporting Document Guidance – Security Architecture requirements (ADV_ARC)
+    for smart cards and similar devices – Appendix 1, Version 2.0, April 2012.
+●   CC Supporting Document Mandatory Technical Document – The Application of CC to
+    Integrated Circuits, Version 3.0, Revision 1, March 2009, CCDB-2009-03-002.
+●   Joint Interpretation Library – Security Architecture requirements (ADV_ARC) for smart
+    cards and similar devices – Appendix 1, Version 2.0, January 2012.
+●   Joint Interpretation Library – The Application of CC to Integrated Circuits, Version 3.0,
+    February 2009.
+●   Joint Interpretation Library – Security requirements for post-delivery code loading,
+    Version 1.0, February 2016.
+●   Validity of conducted tests on Security Smart Card ICs in dependence of test date,
+    Version 1, 2017-03-15, Bundesamt für Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 26,
+    Evaluationsmethodologie für in Hardware Integrierte Schaltungen, Version 10, 2017-07-
+    03, Bundesamt für Sicherheit in der Informationstechnik.
+●   Auswahl geeigneter Chips für DPA-Messungen, Version 1.1, 2008-12-07, Bundesamt für
+    Sicherheit in der Informationstechnik.
+●   Special Attack Methods for Smartcards and Similar Devices, Version 1.4, 2011-06-08,
+    Bundesamt für Sicherheit in der Informationstechnik.
+●   CC Supporting Document Mandatory Technical Document – Requirements to perform
+    Integrated Circuit Evaluations, Version 1.1, May 2013, CCDB-2013-05-001.
+●   Joint Interpretation Library – Application of Attack Potential to Smartcards, Version 2.9,
+    2013-01.
+●   Joint Interpretation Library – Attack Methods for Smartcards and Similar Devices,
+    Version 2.4, 2020-01, confidential.
+●   Joint Interpretation Library – Requirements to perform Integrated Circuit Evaluations,
+    Version 1.1, February 2013.
+●   Application Notes and Interpretation of the Scheme (AIS) – AIS 27, Transition from
+    ITSEC to CC, Version 5, 2010-08-17, Bundesamt für Sicherheit in der
+    Informationstechnik.
+
+
+                                                                                            19 / 36
+Certification Report                                                         BSI-DSZ-CC-1107-2020
+
+
+
+
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 31,
+    Funktionalitätsklassen und Evaluationsmethodologie für physikalische
+    Zufallszahlengeneratoren, Version 3, 2013-05-15, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   Developer evidence for the evaluation of a physical true random generator, Version 0.8,
+    2013-02-28, Bundesamt für Sicherheit in der Informationstechnik.
+●   Evaluation Report as part of the Evaluation Technical Report, Part B – ETR-Part True
+    Physical and Hybrid Random Number Generator, Template-Version 0.7, 2013-02-28,
+    Bundesamt für Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 32, CC-
+    Interpretationen im deutschen Zertifizierungsschema, Version 7, 2011-06-08,
+    Bundesamt für Sicherheit in der Informationstechnik.
+●   Application Notes and Interpretation of the Scheme (AIS) – AIS 34, Evaluation
+    Methodology for CC Assurance Classes for EAL5+ (CC v2.3 & v3.1) and EAL6 (CC
+    v3.1), Version 3, 2009-09-03, Bundesamt für Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 35, Öffentliche
+    Fassung eines Security Target (ST-lite), Version 2, 2007-11-12, Bundesamt für
+    Sicherheit in der Informationstechnik.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 36,
+    Kompositionsevaluierung, Version 5, 2017-03-15, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   CC Supporting Document Mandatory Technical Document – Composite product
+    evaluation for Smart Cards and similar devices, Version 1.4, December 2015, CCDB-
+    2015-12-001.
+●   Joint Interpretation Library – Composite product evaluation for Smart Cards and similar
+    devices, Version 1.5.1, May 2018.
+●   CC Supporting Document Guidance – ETR template for composite evaluation of Smart
+    Cards and similar devices, Version 1.1, December 2015, CCDB-2015-12-002.
+●   Joint Interpretation Library – ETR template for composite evaluation of Smart Cards and
+    similar devices, Version 1.1, August 2015.
+●   Joint Interpretation Library – Certification of “open” smart card products, Version 1.1 (for
+    trial use), 2013-02-04.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 37, Terminologie
+    und Vorbereitung von Smartcard-Evaluierungen, Version 3, 2010-05-17, Bundesamt für
+    Sicherheit in der Informationstechnik.
+●   CC Supporting Document Guidance – Smartcard Evaluation, Version 2.0, February
+    2010, CCDB-2010-03-001.
+●   Application Notes and Interpretation of the Scheme (AIS) – AIS 38, Reuse of evaluation
+    results, Version 2, 2007-09-28, Bundesamt für Sicherheit in der Informationstechnik.
+●   Application Notes and Interpretation of the Scheme (AIS) – AIS 41, Guidelines for PPs
+    and STs, Version 2, 2011-01-31, Bundesamt für Sicherheit in der Informationstechnik.
+●   Guidance Document – The PP/ST Guide, Version 2, Revision 0, 2010-08, Bundesamt
+    für Sicherheit in der Informationstechnik.
+
+
+
+                                                                                           20 / 36
+BSI-DSZ-CC-1107-2020                                                          Certification Report
+
+
+
+
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 46, Informationen
+    zur Evaluierung von kryptographischen Algorithmen und ergänzende Hinweise für die
+    Evaluierung von Zufallszahlengeneratoren, Version 3, 2013-12-04, Bundesamt für
+    Sicherheit in der Informationstechnik.
+●   Review-Protokoll zum (Krypto-)AVA-KickOff, Template-Version/Date: 2019-08-23,
+    Bundesamt für Sicherheit in der Informationstechnik.
+●   Minimal Requirements for Evaluating Side-Channel Attack Resistance of Elliptic Curve
+    Implementations, Version 1.0.4, 2011-07-01, BSI.
+●   Methodology for cryptographic rating of memory encryption schemes used in smartcards
+    and similar devices, Version 1.0, 2013-10-31, BSI.
+●   Minimum Requirements for Evaluating Side-Channel Attack Resistance of RSA, DSA
+    and Diffie-Hellman Key Exchange Implementations, Version 1.0, 2013-01-14, BSI.
+●   Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS 47, Regelungen zu
+    Site Certification, Version 1.1, 2013-12-04, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   Guidance for Site Certification, Version 1.1, 2013-12-04, Bundesamt für Sicherheit in der
+    Informationstechnik.
+●   Joint Interpretation Library – Minimum Site Security Requirements, 04/2019.
+(see [4] for respective AIS references).
+For RNG assessment the scheme interpretations AIS 20/31 was used (see [4]).
+The assurance refinements outlined in the Security Target were followed in the course of
+the evaluation of the TOE.
+As a result of the evaluation, the verdict PASS is confirmed for the following assurance
+components:
+●   All components of the EAL 6 package including the class ASE as defined in the CC (see
+    also part C of this report),
+●   The components ALC_FLR.1 augmented for this TOE evaluation.
+The evaluation has confirmed:
+●   PP Conformance:          Security IC Platform Protection Profile with Augmentation
+                             Packages Version 1.0, 13 January 2014, BSI-CC-PP-0084-2014
+                             [8],
+●   for the Functionality:   PP conformant plus product specific extensions
+                             Common Criteria Part 2 extended,
+●   for the Assurance:       Common Criteria Part 3 conformant
+                             EAL 6 augmented by ALC_FLR.1.
+For specific evaluation results regarding the development and production environment see
+annex B in part D of this report.
+The results of the evaluation are only applicable to the TOE as defined in chapter 2 and
+the configuration as outlined in chapter 8 above.
+
+
+
+
+                                                                                           21 / 36
+Certification Report                                                          BSI-DSZ-CC-1107-2020
+
+
+
+
+9.2.    Results of cryptographic assessment
+The strength of the cryptographic algorithms was not rated in the course of this certification
+procedure (see BSIG Section 9, Para. 4, Clause 2). But cryptographic functionalities with a
+security level of lower than 100 bits can no longer be regarded as secure without
+considering the application context. Therefore, for these functionalities it shall be checked
+whether the related crypto operations are appropriate for the intended system. Some
+further hints and guidelines can be derived from the 'Technische Richtlinie BSI TR-02102'
+(https://www.bsi.bund.de).
+The following table (which originates from the ITSEF-evaluated table in [7] and in this
+certification report is enhanced by the 100 bit column) provides an overview of the
+cryptographic functionalities inside the TOE to enforce the security policy and outlines its
+rating from cryptographic point of view. Any Cryptographic Functionality that is marked in
+column 'Security Level above 100 Bits' of the following table with 'no' achieves a security
+level of lower than 100 Bits (in general context) only.
+
+  #        Purpose /         Cryptographic         Standard of     Key Size in Bits     Security
+            Service           Mechanism          Implementation                          Level
+                                                                                         above
+                                                                                        100 Bits
+SCP (Symmetric Cryptographic Processor)
+  1      Cryptographic           TDES           [NIST SP800-67],      112, 168          Yes (for |
+           primitive                              [ISO18033-3]                           k|=168
+                                                                                           bit)
+  2      Cryptographic            AES               [FIPS197],      128, 192, 256          Yes
+           primitive                              [ISO18033-3]
+  3      Confidentiality    TDES (see #1) in    [NIST SP800-38A]      112, 168             No
+                             ECB mode for
+                             encryption and
+                               decryption
+  4      Confidentiality    TDES (see #1) in    [NIST SP800-38A]      112, 168          Yes (for |
+                             CBC mode for                                                k|=168
+                             encryption and                                                bit)
+                               decryption
+  5      Confidentiality   AES (see #2) in ECB [NIST SP800-38A]     128, 192, 256          No
+                           mode for encryption
+                             and decryption
+  6      Confidentiality   AES (see #2) in CBC [NIST SP800-38A]     128, 192, 256          Yes
+                           mode for encryption
+                             and decryption
+SCL (Symmetric Cryptographic Library)
+  7      Cryptographic           TDES           [NIST SP800-67],      112, 168          Yes (for |
+           primitive                              [ISO18033-3]                           k|=168
+                                                                                           bit)
+  8      Cryptographic            AES               [FIPS197],      128, 192, 256          Yes
+           primitive                              [ISO18033-3]
+  9       Confidentility   #7 in ECB mode for   [NIST SP800-38A]      112, 168             No
+                             encryption and
+                                decryption
+  10      Confidentility   #7 in CBC mode for   [NIST SP800-38A]      112, 168          Yes (for |
+                             encryption and                                              k|=168
+
+
+
+                                                                                            22 / 36
+BSI-DSZ-CC-1107-2020                                                                 Certification Report
+
+
+
+
+  #       Purpose /         Cryptographic         Standard of         Key Size in Bits        Security
+           Service           Mechanism          Implementation                                 Level
+                                                                                               above
+                                                                                              100 Bits
+                              decryption                                                         bit)
+ 11     Confidentility    #7 in CTR mode for    [NIST SP800-38A]         112, 168             Yes (for |
+                            encryption and                                                     k|=168
+                               decryption                                                        bit)
+ 12     Confidentility    #7 in CFB mode for    [NIST SP800-38A]         112, 168             Yes (for |
+                            encryption and                                                     k|=168
+                               decryption                                                        bit)
+ 13        Integrity       #7 in CMAC mode      [NIST SP800-38B]         112, 168             Yes (for |
+                          for MAC generation                                                   k|=168
+                            and verification                                                     bit)
+ 14        Integrity       #7 in Retail MAC       [ISO9797-1]               112                  No
+                           (Algorithm 3) for
+                          MAC generation and
+                              verification
+ 15     Confidentiality   #8 in ECB mode for    [NIST SP800-38A]       128, 192, 256             No
+                            encryption and
+                               decryption
+ 16     Confidentiality   #8 in CBC mode for    [NIST SP800-38A]       128, 192, 256             Yes
+                            encryption and
+                               decryption
+ 17     Confidentiality   #8 in CTR mode for    [NIST SP800-38A]       128, 192, 256             Yes
+                            encryption and
+                               decryption
+ 18     Confidentiality   #8 in CFB mode for    [NIST SP800-38A]       128, 192, 256             Yes
+                            encryption and
+                               decryption
+ 19        Integrity       #8 in CMAC mode      [NIST SP800-38B]       128, 192, 256             Yes
+                          for MAC generation
+                            and verification
+ACL (Asymmetric Cryptographic Library)
+ 20     Confidentiality    RSAEP encryption     [PKCS #1, 5.1.1]        512 – 2112            Yes (for |
+                                                                                              k|≥1976
+                                                                                                 bit)
+ 21     Confidentiality   IFEP-RSA encryption    [IEEE_P1363,           512 – 2112            Yes (for |
+                                                     8.2.2]                                   k|≥1976
+                                                                                                 bit)
+ 22     Confidentiality    RSADP decryption     [PKCS #1, 5.1.2]        512 – 2112            Yes (for |
+                                                                                              k|≥1976
+                                                                                                 bit)
+ 23     Confidentiality       IFDP-RSA           [IEEE_P1363,           512 – 2112            Yes (for |
+                              decryption         8.2.1 (I) / 8.2.3]                           k|≥1976
+                                                                                                 bit)
+ 24     Confidentiality    RSADP decryption     [PKCS #1, 5.1.2]        512 – 4224            Yes (for |
+                              with CRT                                                        k|≥1976
+                                                                                                 bit)
+
+
+
+
+                                                                                                  23 / 36
+Certification Report                                                                    BSI-DSZ-CC-1107-2020
+
+
+
+
+  #        Purpose /         Cryptographic          Standard of             Key Size in Bits         Security
+            Service           Mechanism           Implementation                                      Level
+                                                                                                      above
+                                                                                                     100 Bits
+  25     Confidentiality       IFDP-RSA           [IEEE_P1363,                 512 – 4224            Yes (for |
+                           decryption with CRT    8.2.1 (I) / 8.2.3]                                 k|≥1976
+                                                                                                        bit)
+  26      Authenticity     RSASP1 signature       [PKCS #1, 5.2.1]             512 – 2112            Yes (for |
+                              generation                                                             k|≥1976
+                                                                                                        bit)
+  27      Authenticity         IFSP-RSA1          [IEEE_P1363,                 512 – 2112            Yes (for |
+                           signature generation   8.2.1 (I) / 8.2.4]                                 k|≥1976
+                                                                                                        bit)
+  28      Authenticity      RSASP1 signature      [PKCS #1, 5.2.1]             512 – 4224            Yes (for |
+                           generation with CRT                                                       k|≥1976
+                                                                                                        bit)
+  29      Authenticity         IFSP-RSA1          [IEEE_P1363,                 512 – 4224            Yes (for |
+                           signature generation   8.2.1 (I) / 8.2.4]                                 k|≥1976
+                                with CRT                                                                bit)
+  30      Authenticity     RSAVP1 signature       [PKCS #1, 5.2.2]             512 – 4224            Yes (for |
+                              verification                                                           k|≥1976
+                                                                                                        bit)
+  31      Authenticity         IFVP-RSA1           [IEEE_P1363,                512 – 4224            Yes (for |
+                                                       8.2.5]                                        k|≥1976
+                                                                                                        bit)
+  32    Key generation Proprietary RSA key-       [PKCS #1, 3.1 /              512 – 4224              N/A
+       (see below table) pair generation with         3.2]                                             (see
+                                 CRT                                                                  below
+                                                   [IEEE_P1363,
+                                                                                                      table)
+                                                      8.1.3.1]
+  33    Key generation Proprietary RSA key-       [PKCS #1, 3.1 /              512 – 2112              N/A
+       (see below table)    pair generation           3.2]                                             (see
+                             without CRT                                                              below
+                                                   [IEEE_P1363,
+                             returning key                                                            table)
+                                                      8.1.3.1]
+                         representation n and
+                                   d
+  34    Key generation Proprietary RSA key-        [IEEE_P1363,                512 – 2112              N/A
+       (see below table)   pair generation            8.1.3.1]                                         (see
+                            without CRT                                                               below
+                            returning key                                                             table)
+                         representation p, q
+                                and d
+  35    (supplementary     Certified ECC curve [FIPS186-4]             Key sizes corresponding         N/A
+          information)         parameters                              to the used elliptic curves
+                                               [RFC5639]
+                                                                       NIST: P-{192, 224, 256,
+                                                                       384, 521}, K-{163, 233,
+                                                                       283, 409}, B-{233, 283,
+                                                                       409} [FIPS186-4];
+                                                                       brainpool: P{160, 192,
+                                                                       224, 256, 320, 384,
+                                                                       512}t1, P{160, 192, 224,
+                                                                       256, 320, 384, 512}r1
+                                                                       [RFC5639]
+
+
+
+
+                                                                                                         24 / 36
+BSI-DSZ-CC-1107-2020                                                                        Certification Report
+
+
+
+
+  #       Purpose /         Cryptographic           Standard of              Key Size in Bits        Security
+           Service           Mechanism            Implementation                                      Level
+                                                                                                      above
+                                                                                                     100 Bits
+ 36     Cryptographic     EC point addition on           N/A                    160 - 521               N/A
+          primitive /     curves listed in #35
+         functionality
+ 37      Authenticity      ECDSA signature        [ANS X9.62, 7.3],             160 – 521            Yes (for |
+                          generation on curves      [IEEE_P1363,                                      k|≥224
+                              listed in #35             7.2.7]                                          bit)
+ 38      Authenticity       ECDSA signature      [ANS X9.62, 7.4.1]             160 – 521            Yes (for |
+                          verification on curves                                                      k|≥250
+                                                   [IEEE_P1363,
+                                listed in #35                                                           bit)
+                                                       7.2.8]
+ 39    Key agreement       Elliptic Curve Diffie- [ANS X9.63, 5.4.1],           160 – 521            Yes (for |
+                          Hellman (ECDH) key [ISO_11770-3, D.6]                                       k|≥250
+                          agreement on curves       [IEEE_P1363,                                        bit)
+                                listed in #35           7.2.1]
+ 40    Key generation       Elliptic Curve key [ANS X9.62, A.4.3]               160 – 521            Yes (for |
+                          generation on curves   [IEEE_P1363,                                         k|≥224
+                               listed in #35         A.16.9]                                            bit)
+Flash Loader
+ 41     Confidentiality   #2 in CCM mode for     [NIST SP800-38C]                  128                  Yes
+                            encryption and
+                               decryption
+ 42      Authenticity     #2 in CCM mode for     [NIST SP800-38C]                  128                  Yes
+                           MAC verification
+ 43      Authenticity       #2 in ECB mode       [NIST SP800-38A]                  128                  No
+ 44      Authenticity           Mutual              [AGD_PPUM,                     128                  Yes
+                             authentication            2.1.5]
+                           protocol based on
+                                  #42
+ 45      Authenticity           External            [AGD_PPUM,                     128                  N/A
+                             authentication            2.1.5]                                           (see
+                           protocol based on                                                           below
+                                  #43                                                                  table)
+Random Number Generation
+ 46         RNG              Physical RNG         PTG.2 in [AIS31]                 N/A                  N/A
+ 47         RNG               Hybrid RNG          Corresponds to                   N/A                  N/A
+                                                  PTG.3 in [AIS31]
+ 48         RNG            Deterministic RNG       Corresponds to                  N/A                  N/A
+                                                  DRG.3 in [AIS20]
+ 49         RNG            Deterministic RNG       Corresponds to                  N/A                  N/A
+                                                  DRG.4 in [AIS20]
+
+                                  Table 3: TOE cryptographic functionality
+
+The TOE’s memory enryption, named ICS (“ICS-C8”) and not separately listed above, was
+evaluated according to BSI’s “Methodology for cryptographic rating of memory encryption
+schemes used in smartcards and similar devices” (Version 1.0, 2013-10-31).
+
+
+
+
+                                                                                                         25 / 36
+Certification Report                                                     BSI-DSZ-CC-1107-2020
+
+
+
+
+Regarding the cryptographic functionalities listed in rows #32 - #34 (RSA key generation
+based on CryptoRsaKeyGenMask_PQ), the following applies:
+        CryptoRsaKeyGenMask_PQ is used for key component p, q (i.e. prime number)
+        generation. It implements [FIPS186-4] section B.3.3 method using AIS31 PTG.2
+        RBG for prime generation and [FIPS186-4] section C.3.1 primality test, extended by
+        additional tests. It is to be remarked that [FIPS186-4] section B.3.3 allows this
+        generation method only for 2048 and 3072 bit keys. That kind of conformance then
+        was confirmed by the ITSEF in the course of the evaluation, regardless of said
+        standard not being explicitly claimed in the respective FCS_CKM.1 SFRs of the
+        Security Target [6] and [9].
+The Flash Loader's cryptographic strength with regard to the mode “external authenticate”
+(see #45 in table 4) was not assessed by BSI. However, the evaluation according to the
+TOE's Evaluation Assurance Level (including VAN.5) did not reveal any implementation
+weaknesses.
+Please note, that this holds true also for those algorithms, where no cryptographic 100-Bit-
+Level assessment was given at all (i.e where ”N/A” was stated). Consequently, the
+targeted Evaluation Assurance Level has been achieved for those functionalities as well.
+Further conformance evaluation and assessment to claimed cryptographic functionality
+standards is documented in the confidential report “Cryptographic Standards Compliance
+Verification” [21].
+
+Reference of Legislatives and Standards quoted above:
+[AIS20]                Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS
+                       20, Funktionalitätsklassen und Evaluationsmethodologie für
+                       deterministische Zufallszahlengeneratoren, Version 3, 2013-05-15,
+                       Bundesamt für Sicherheit in der Informationstechnik
+[AIS31]                Anwendungshinweise und Interpretationen zum Schema (AIS) – AIS
+                       31, Funktionalitätsklassen und Evaluationsmethodologie für
+                       physikalische Zufallszahlengeneratoren, Version 3, 2013-05-15,
+                       Bundesamt für Sicherheit in der Informationstechnik
+[ANS X9.62]            American National Standard for Financial Services ANS X9.62-2005,
+                       Public Key Cryptography for the Financial Services Industry, The
+                       Elliptic Curve Digital Signature Algorithm (ECDSA), November 16,
+                       2005, American National Standards Institute.
+[ANS X9.63]            American National Standard for Financial Services X9.63-2011,
+                       Public Key Cryptography for the Financial Services Industry - Key
+                       Agreement and Key Transport Using Elliptic Curve Cryptography,
+                       December 21, 2011, American National Standards Institute
+[AGD_PPUM]             see reference [15] in bibliography (section 14)
+[FIPS186-4]            Federal Information Processing Standards Publication FIPS PUB
+                       186-4, Digital Signature Standard (DSS), July 2013, U.S. department
+                       of Commerce / National Institute of Standards and Technology
+                       (NIST)
+[FIPS197]              Federal Information Processing Standards Publication 197,
+                       Announcing the ADVANCED ENCRYPTION STANDARD (AES),
+                       2001-11-26, National Institute of Standards and Technology (NIST)
+
+
+                                                                                       26 / 36
+BSI-DSZ-CC-1107-2020                                                         Certification Report
+
+
+
+
+[IEEE_P1363]           IEEE P1363. Standard specifications for public key cryptography.
+                       IEEE, 2000
+[ISO_9797-1]           Information technology - Security techniques - Message
+                       Authentication Codes (MACs) - Part 1: Mechanisms using a block
+                       cipher, 1999-12, ISO/IEC
+[ISO_11770-3]          ISO 11770-3: Information technology - Security techniques – Key
+                       management Part 3: Mechanisms using asymmetric techniques, ISO/
+                       IEC 11770-3:2008
+[ISO_18033-3]          ISO 18033-3: Information technology - Security techniques –
+                       Encryption algorithms – Part 3: Block ciphers, ISO/IEC 18033-3:2005
+[NIST SP800-38A]       NIST SP800-38A, Recommendation for Block Cipher Modes of
+                       Operation, Methods and Techniques, 2001, National Institute of
+                       Standards and Technology (NIST)
+[NIST SP800-38B]       NIST SP800-38B, Recommendation for Block Cipher Modes of
+                       Operation, The CMAC Mode for Authentication, 2005-05, National
+                       Institute of Standards and Technology (NIST)
+[NIST SP800-38C]       NIST SP800-38C, Recommendation for Block Cipher Modes of
+                       Operation: the CCM Mode for Authentication and Confidentiality,
+                       2004-05 with updates as of 2007-07-20, National Institute of
+                       Standards and Technology (NIST)
+[NIST SP800-67]        NIST Special Publication 800-67 – Revision 2, Recommendation for
+                       the Triple Data Encryption Algorithm (TDEA) Block Cipher – Revised
+                       November 2017, National Institute of Standards and Technology
+                       (NIST), Technology Administration, U.S. Department of Commerce
+[PKCS-1]               PKCS #1: RSA Cryptography Standard, Version 2.2, October 27,
+                       2012, RSA Laboratories
+[RFC5639]              RFC 5639 - Elliptic Curve Cryptography (ECC) Brainpool Standard
+                       Curves and Curve Generation, IETF Trust and the persons identified
+                       as        the        document         authors,  March       2010
+                       (http://www.ietf.org/rfc/rfc5639.txt)
+
+10. Obligations and Notes for the Usage of the TOE
+The documents as outlined in table 2 contain necessary information about the usage of the
+TOE and all security hints therein have to be considered. In addition all aspects of
+Assumptions, Threats and OSPs as outlined in the Security Target not covered by the TOE
+itself need to be fulfilled by the operational environment of the TOE.
+The customer or user of the product shall consider the results of the certification within his
+system risk management process. In order for the evolution of attack methods and
+techniques to be covered, he should define the period of time until a re-assessment of the
+TOE is required and thus requested from the sponsor of the certificate.
+The limited validity for the usage of cryptographic algorithms as outlined in chapter 9 has
+to be considered by the user and his system risk management process, too.
+Some security measures are partly implemented in this certified TOE, but require
+additional configuration or control or measures to be implemented by a product layer on
+
+
+
+                                                                                          27 / 36
+Certification Report                                                        BSI-DSZ-CC-1107-2020
+
+
+
+
+top, e.g. the Embedded Software using the TOE. For this reason the TOE includes
+guidance documentation (see table 2) which contains obligations and guidelines for the
+developer of the product layer on top on how to securely use this certified TOE and which
+measures have to be implemented in order to fulfil the security requirements of the
+Security Target of the TOE. In the course of the evaluation of the composite product or
+system it must be examined if the required measures have been correctly and effectively
+implemented by the product layer on top. Additionally, the evaluation of the composite
+product or system must also consider the evaluation results as outlined in the document
+"ETR for composite evaluation" [10].
+At the point in time when evaluation and certification results are reused there might be an
+update of the document "ETR for composite evaluation" available. Therefore, the certified
+products list on the BSI website has to be checked for latest information on
+reassessments, recertifications or maintenance result available for the product.
+Furthermore:
+The TOE is delivered to the composite product manufacturer and to the security IC
+embedded software developer. The actual end-consumer obtains the TOE from the
+composite product issuer together with the application which runs on the TOE.
+The security IC embedded software developer receives all necessary recommendations
+and hints to develop his software in form of the delivered documentation.
+●   All security hints described in the delivered documents in [11] - [20] have to be
+    considered.
+The composite product manufacturer receives all necessary recommendations and hints to
+develop his software in form of the delivered documentation.
+●   All security hints described in [15] have to be considered.
+In addition the following hint resulting from the evaluation of the ALC evaluation aspect has
+to be considered:
+●   The security IC embedded software developer can deliver his software either to Infineon
+    to let them implement it in the TOE (in the Flash memory) or to the composite product
+    manufacturer to let him download the software in the Flash memory.
+●   The delivery procedure from the security IC embedded software developer to the
+    composite product manufacturer is not part of this evaluation and a secure delivery is
+    required. The TOE provides a flash loader with mutual authentication to establish a
+    secure channel. In this case a secure transport is not required.
+●   The TOE can come with a pre-loaded image called Performance Flash Loader, which is
+    a non-TOE component. Using the PFL results in a non-certified product.
+
+11.     Security Target
+For the purpose of publishing, the Security Target [9] of the Target of Evaluation (TOE) is
+provided within a separate document as Annex A of this report. It is a sanitised version of
+the complete Security Target [6] used for the evaluation performed. Sanitisation was
+performed according to the rules as outlined in the relevant CCRA policy (see AIS 35 [4]).
+
+12. Regulation specific aspects (eIDAS, QES)
+None.
+
+
+                                                                                          28 / 36
+BSI-DSZ-CC-1107-2020                                                        Certification Report
+
+
+
+
+13. Definitions
+13.1. Acronyms
+AIS           Application Notes and Interpretations of the Scheme
+BSI           Bundesamt für Sicherheit in der Informationstechnik / Federal Office for
+              Information Security, Bonn, Germany
+BSIG          BSI-Gesetz / Act on the Federal Office for Information Security
+CCRA          Common Criteria Recognition Arrangement
+CC            Common Criteria for IT Security Evaluation
+CEM           Common Methodology for Information Technology Security Evaluation
+cPP           Collaborative Protection Profile
+EAL           Evaluation Assurance Level
+ETR           Evaluation Technical Report
+IT            Information Technology
+ITSEF         Information Technology Security Evaluation Facility
+PP            Protection Profile
+SAR           Security Assurance Requirement
+SFP           Security Function Policy
+SFR           Security Functional Requirement
+ST            Security Target
+TOE           Target of Evaluation
+TSF           TOE Security Functionality
+
+13.2. Glossary
+Augmentation - The addition of one or more requirement(s) to a package.
+Collaborative Protection Profile - A Protection Profile collaboratively developed by an
+International Technical Community endorsed by the Management Committee.
+Extension - The addition to an ST or PP of functional requirements not contained in CC
+part 2 and/or assurance requirements not contained in CC part 3.
+Formal - Expressed in a restricted syntax language with defined semantics based on well-
+established mathematical concepts.
+Informal - Expressed in natural language.
+Object - A passive entity in the TOE, that contains or receives information, and upon which
+subjects perform operations.
+Package - named set of either security functional or security assurance requirements
+Protection Profile - A formal document defined in CC, expressing an implementation
+independent set of security requirements for a category of IT Products that meet specific
+consumer needs.
+
+
+
+
+                                                                                         29 / 36
+Certification Report                                                       BSI-DSZ-CC-1107-2020
+
+
+
+
+Security Target - An implementation-dependent statement of security needs for a specific
+identified TOE.
+Semiformal - Expressed in a restricted syntax language with defined semantics.
+Subject - An active entity in the TOE that performs operations on objects.
+Target of Evaluation - An IT Product and its associated administrator and user guidance
+documentation that is the subject of an Evaluation.
+TOE Security Functionality - Combined functionality of all hardware, software, and
+firmware of a TOE that must be relied upon for the correct enforcement of the SFRs.
+
+14. Bibliography
+[1]       Common Criteria for Information Technology Security Evaluation, Version 3.1,
+          Part 1: Introduction and general model, Revision 5, April 2017
+          Part 2: Security functional components, Revision 5, April 2017
+          Part 3: Security assurance components, Revision 5, April 2017
+          https://www.commoncriteriaportal.org
+[2]       Common Methodology for Information Technology Security Evaluation (CEM),
+          Evaluation Methodology, Version 3.1, Rev. 5, April 2017,
+          https://www.commoncriteriaportal.org
+[3]       BSI certification: Scheme documentation describing the certification process (CC-
+          Produkte) and Scheme documentation on requirements for the Evaluation Facility,
+          approval and licencing (CC-Stellen), https://www.bsi.bund.de/zertifizierung
+[4]       Application Notes and Interpretations of the Scheme (AIS) as relevant for the TOE 7
+          https://www.bsi.bund.de/AIS
+[5]       German IT Security Certificates (BSI 7148), periodically updated list published also
+          on the BSI Website, https://www.bsi.bund.de/zertifizierungsreporte
+[6]       Security   Target     BSI-DSZ-CC-1107-2020, Version      4.0,    2020-10-15,
+          “IFX_CCI_00002Dh, IFX_CCI_000039h, IFX_CCI_00003Ah, IFX_CCI_000044h,
+          IFX_CCI_000045h, IFX_CCI_000046h, IFX_CCI_000047h, IFX_CCI_000048h,
+          IFX_CCI_000049h, IFX_CCI_00004Ah, IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+          IFX_CCI_00004Dh, IFX_CCI_00004Eh T11 Security Target”, Infineon Technologies
+          AG (confidential document)
+[7]       Evaluation Technical Report, Version 3, 2020-11-13, “ETR Summary”, TÜV
+          Informationstechnik GmbH (confidential document)
+[8]       Security IC Platform Protection Profile with Augmentation Packages Version 1.0, 13
+          January 2014, BSI-CC-PP-0084-2014
+[9]       Security Target Lite BSI-DSZ-CC-1107-2020, Version 4.0, 2020-10-15,
+          “IFX_CCI_00002Dh, IFX_CCI_000039h, IFX_CCI_00003Ah, IFX_CCI_000044h,
+          IFX_CCI_000045h, IFX_CCI_000046h, IFX_CCI_000047h, IFX_CCI_000048h,
+          IFX_CCI_000049h, IFX_CCI_00004Ah, IFX_CCI_00004Bh, IFX_CCI_00004Ch,
+          IFX_CCI_00004Dh, IFX_CCI_00004Eh T11 Security Target Lite”, Infineon
+          Technologies AG (sanitised public document)
+
+
+
+7
+    See section 9.1 for relevant AIS
+
+
+
+                                                                                         30 / 36
+BSI-DSZ-CC-1107-2020                                                      Certification Report
+
+
+
+
+[10]   ETR for composite evaluation according to AIS 36 for BSI-DSZ-CC-1107-2020,
+       Version 3, 2020-11-13, “ETR for Composition”, TÜV Informationstechnik GmbH
+       (confidential document)
+[11]   Configuration list for the TOE, 2019-09-13, “Configuration Management Plan”
+       (confidential document)
+[12]   “32-bit Security Controller – V11, Hardware Reference Manual”, V5.2, 2020-02-05,
+       Infineon Technologies AG
+[13]   “32-bit Security Controllers, SLx1/SLx3 Controller Family, Programmer’s Reference
+       Manual”, V4.5, 2020-06-22, Infineon Technologies AG
+[14]   “32-bit Security Controller – V11, Security Guidelines”, v1.00-2661, 2020-10-05,
+       Infineon Technologies AG
+[15]   “Production and personalization, 32-bit security controller”, v.09.12, 2020-07-03,
+       Infineon Technologies AG
+[16]   “32-bit Security Controller Crypto2304T V3, User Manual”, V2.0, 2019-04-24,
+       Infineon Technologies AG
+[17]   “HSL for SLCx7V11a Hardware Support Library”, v3.52.9708, 2020-02-03, Infineon
+       Technologies AG
+[18]   “UMSLC library for SLCx7 in 40nm”, v01.30.0564, 2019-06-19,                  Infineon
+       Technologies AG
+[19]   “SCL37-SCP-v440-C40 Symmetric Crypto Library for SCPv440 AES/DES/MAC”,
+       v2.11.003, 2020-02-10, Infineon Technologies AG
+[20]   “ACL37-Crypto2304T-C40 Asymmetric        Crypto    Library   for  Crypto2304T
+       RSA/ECC/Toolbox”, v3.02.000, 2020-02-07, Infineon Technologies AG
+[21]   “Cryptographic Standards Compliance Verification”, Version 1, 2020-07-14, TÜV
+       Informationstechnik GmbH (confidential document)
+[22]   “Site Technical Audit Report (STAR) Amkor Technology, Portugal”, Version 1, 2020-
+       10-12, TÜV Informationstechnik GmbH
+[23]   “Site Technical Audit Report (STAR) Amkor Technologies Inc., Philippines”, Version
+       1, 2020-10-12, TÜV Informationstechnik GmbH
+[24]   “Site Technical Audit Report (STAR) DHL Supply Chain Singapore Pte Ltd.,
+       Advanced Regional Center”, Version 1, 2020-10-12, TÜV Informationstechnik
+       GmbH
+[25]   “Site Technical Audit Report (STAR) DNP Photomask Europe S.p.A., Agrate, Italy”,
+       Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[26]   “Site Technical Audit Report (STAR) exceet Card Austria GmbH”, Version 1, 2020-
+       10-12, TÜV Informationstechnik GmbH
+[27]   “Site Technical Audit Report (STAR) Infineon Technologies AG, Augsburg”, Version
+       1, 2020-10-12, TÜV Informationstechnik GmbH
+[28]   “Site Technical Audit Report (STAR) Infineon Technologies India Pvt. Ltd, Bangalore,
+       India”, Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[29]   “Site Technical Audit Report (STAR) Infineon Technologies AG, Bucharest”, Version
+       1, 2020-10-12, TÜV Informationstechnik GmbH
+
+
+
+                                                                                       31 / 36
+Certification Report                                                    BSI-DSZ-CC-1107-2020
+
+
+
+
+[30]    “Site Technical Audit Report (STAR) Infineon Technologies GmbH & Co. KG,
+        Dresden”, Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[31]    “Site Technical Audit Report (STAR) Infineon Technologies Austria AG, Graz”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[32]    “Site Technical Audit Report (STAR) Infineon Technologies IT Services GmbH,
+        Klagenfurt”, Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[33]    “Site Technical Audit Report (STAR) Infineon Technologies AG, Munich”, Version 1,
+        2020-10-12, TÜV Informationstechnik GmbH
+[34]    “Site Technical Audit Report (STAR) Infineon Technologies Sdn. Bhd., Melaka,
+        Malaysia”, Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[35]    “Site Technical Audit Report (STAR) Infineon Technologies North America Corp.,
+        Morgan Hill”, 2020-10-12, TÜV Informationstechnik GmbH
+[36]    “Site Technical Audit Report (STAR) Infineon Technologies AG, Milpitas, CA, USA”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[37]    “Site Technical Audit Report (STAR) Infineon Technologies AG, Regensburg”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[38]    “Site Technical Audit Report (STAR) Infineon Technologies AG, Singapore, Kallang”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[39]    “Site Technical Audit Report (STAR) Infineon Technologies Austria AG, Villach”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[40]    “Site Technical Audit Report (STAR) Infineon Technologies Co Ltd, Wuxi, China”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[41]    “Site Technical Audit Report (STAR) Kuehne & Nagel, Großostheim”, Version 1,
+        2020-10-12, TÜV Informationstechnik GmbH
+[42]    “Site Technical Audit Report (STAR) KWE Kintetsu World Express (China) Co., Ltd.”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[43]    “Site Technical Audit Report (STAR) Paragon ID, Burlington, USA”, Version 1, 2020-
+        10-12, TÜV Informationstechnik GmbH
+[44]    “Site Technical Audit Report (STAR) Toppan Printing Co., Ltd., Ranzan, Japan”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[45]    “Site Technical Audit Report (STAR) Toppan Printing Company America, Inc., Round
+        Rock, USA”, Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[46]    “Site Technical Audit Report (STAR) TSMC, Hsinchu Fab12A P1 / P2 / P3, Taiwan”,
+        Version 1, 2020-10-12, TÜV Informationstechnik GmbH
+[47]    “Site Technical Audit Report (STAR) UTAC Thai Limited, UTL1 / UTL.3”, Version 1,
+        2020-10-12, TÜV Informationstechnik GmbH
+
+
+
+
+                                                                                      32 / 36
+BSI-DSZ-CC-1107-2020                                                        Certification Report
+
+
+
+
+C.       Excerpts from the Criteria
+For the meaning of the assurance components and levels the following references to the
+Common Criteria can be followed:
+     •   On conformance claim definitions and descriptions refer to CC part 1 chapter 10.5
+     •   On the concept of assurance classes, families and components refer to CC Part 3
+         chapter 7.1
+     •   On the concept and definition of pre-defined assurance packages (EAL) refer to CC
+         Part 3 chapters 7.2 and 8
+     •   On the assurance class ASE for Security Target evaluation refer to CC Part 3
+         chapter 12
+     •   On the detailled definitions of the assurance components for the TOE evaluation
+         refer to CC Part 3 chapters 13 to 17
+     •   The table in CC part 3 , Annex E summarizes the relationship between the
+         evaluation assurance levels (EAL) and the assurance classes, families and
+         components.
+The CC are published at https://www.commoncriteriaportal.org/cc/
+
+
+
+
+                                                                                         33 / 36
+Certification Report                                                   BSI-DSZ-CC-1107-2020
+
+
+
+
+D.      Annexes
+List of annexes of this certification report
+Annex A:        Security Target provided within a separate document.
+Annex B:        Evaluation results regarding development
+                and production environment
+
+
+
+
+                                                                                     34 / 36
+BSI-DSZ-CC-1107-2020                                                          Certification Report
+
+
+
+
+Annex B of Certification Report BSI-DSZ-CC-1107-2020
+
+Evaluation results regarding
+development and production
+environment
+
+
+The     IT    product     IFX_CCI_00002Dh,         IFX_CCI_000039h,    IFX_CCI_00003Ah,
+IFX_CCI_000044h,         IFX_CCI_000045h,         IFX_CCI_000046h,     IFX_CCI_000047h,
+IFX_CCI_000048h,        IFX_CCI_000049h,         IFX_CCI_00004Ah,      IFX_CCI_00004Bh,
+IFX_CCI_00004Ch, IFX_CCI_00004Dh, IFX_CCI_00004Eh design step T11 with firmware
+80.306.16.0, optional NRG™ SW 05.03.4097, optional HSL v3.52.9708, UMSLC lib
+v01.30.0564, optional SCL v2.11.003, optional ACL v3.02.000 and user guidance, (Target
+of Evaluation, TOE) has been evaluated at an approved evaluation facility using the
+Common Methodology for IT Security Evaluation (CEM), Version 3.1 extended by Scheme
+Interpretations, by advice of the Certification Body for components beyond EAL 5 and CC
+Supporting Documents for conformance to the Common Criteria for IT Security Evaluation
+(CC), Version 3.1.
+As a result of the TOE certification, dated 17 November 2020, the following results
+regarding the development and production environment apply. The Common Criteria
+assurance requirements ALC – Life cycle support (i.e. ALC_CMC.5, ALC_CMS.5,
+ALC_DEL.1, ALC_DVS.2, ALC_FLR.1, ALC_LCD.1, ALC_TAT.3) are fulfilled for the
+development and production sites of the TOE.
+The Site Technical Audit Reports (STAR) ([22] – [47]) are thus part of this certification
+procedure.
+Besides the production and development sites, the relevant TOE distribution centers are
+as follows:
+       Distribution Center name          Address
+       DHL Singapore                     DHL Exel Supply Chain
+                                         Singapore Pte Ltd., Advanced Regional Center
+                                         Tampines LogisPark
+                                         1 Greenwich Drive
+                                         Singapore 533865
+       G&D Neustadt                      Giesecke & Devrient Secure Data management
+                                         GmbH
+                                         Austraße 101b
+                                         96465 Neustadt b. Coburg
+                                         Germany
+       IFX Morgan Hill                   Infineon Technologies North America Corp.
+                                         18275 Serene Drive
+                                         Morgan Hill, CA 95037
+                                         USA
+
+
+
+
+                                                                                           35 / 36
+Certification Report                                                               BSI-DSZ-CC-1107-2020
+
+
+
+
+         Distribution Center name               Address
+         KWE Shanghai                           KWE Kintetsu World Express (China) Co., Ltd.
+                                                Shanghai Pudong Airport Pilot Free Trade Zone
+                                                No. 530 Zheng Ding Road
+                                                Shanghai,
+                                                P.R. China
+         K&N Großostheim                        Infineon Technology AG
+                                                Distribution Center Europe (DCE)
+                                                Kühne & Nagel
+                                                Stockstädter Strasse 10 – Building 8A
+                                                63762 Großostheim
+                                                Germany
+
+                                    Table 4: TOE Distribution Centers
+For the sites listed above, the requirements have been specifically applied in accordance
+with the Security Target [6]. The evaluators verified, that the threats, security objectives
+and requirements for the TOE life cycle phases up to delivery (as stated in the Security
+Target [6] and [9]) are fulfilled by the procedures of these sites.
+Note: End of report
+
+
+
+
+                                                                                                 36 / 36
+

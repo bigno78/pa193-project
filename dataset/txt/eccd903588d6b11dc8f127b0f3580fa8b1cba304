@@ -1,0 +1,504 @@
+   NXP Secure Smart Card Controller
+   P60D024/016/012yVB(Y/Z/A)/yVF
+   Security Target Lite
+   Rev. 4.4 — 29 October 2018                            Evaluation documentation
+   BSI-DSZ-CC-0939-V3                                                    PUBLIC
+
+
+
+
+Document information
+Info                 Content
+Keywords            CC, Security Target Lite, P60D024/016/012yVB(Y/Z/A)/yVF
+Abstract            Security Target Lite of the
+                    NXP Secure Smart Card Controller P60D024/016/012yVB(Y/Z/A)/yVF,
+                    which is developed and provided by NXP Semiconductors according to
+                    the Common Criteria for Information Technology Security Evaluation
+                    Version 3.1 at Evaluation Assurance Level 6 augmented.
+NXP Semiconductors                             P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                                                                   Security Target Lite
+
+
+
+Revision history
+Rev         Date                 Description
+Rev. 4.1    23-November-2015     Derived from P60D024/016/012yVB(Y/Z/A)/yVF Security Target
+Rev. 4.2    29-May-2018          Revise wording for access control policy SFRs to be consistent with datasheet MMU
+                                 errata update
+Rev. 4.3    21-June-2018         This ST now claims compliance to CC v3.1 Rev. 5
+                                 Improve consistency in SFR wording
+                                 Clarify read/write access permission
+                                 FCS.COP.1[HW_DES] now claims compliance to NIST SP800-67
+Rev. 4.4    29-October-2018      Update access control SFRs to reflect three access permissions enforeced by MMU
+
+Latest version is: Rev. 4.4 (29 October 2018)
+
+
+
+
+Contact information
+For additional information, please visit: http://www.nxp.com
+For sales office addresses, please send an email to: salesaddresses@nxp.com
+                                      All information provided in this document is subject to legal disclaimers.     © NXP B.V. 2018. All rights reserved.
+
+Evaluation documentation                          Rev. 4.4 — 29 October 2018                                                                  2 of 87
+PUBLIC
+NXP Semiconductors                                           P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                                                                             Security Target Lite
+
+
+
+
+1. ST Introduction
+                       This chapter is divided into the following sections: “ST Reference”, “TOE Reference”, “TOE
+                       Overview” and “TOE Description”.
+
+                 1.1 ST Reference
+                       “NXP Secure Smart Card Controller P60D024/016/012yVB(Y/Z/A)/yVF Security Target Lite,
+                       NXP Semiconductors, Rev. 4.4, 29 October 2018”
+
+
+
+                 1.2 TOE Reference
+                       The TOE is named “NXP Secure Smart Card Controller P60D024/016/012yVB(Y/Z/A)/yVF
+                       with IC Dedicated Software”.
+                       In this name the ‘024’, “016” and ‘012’ specify the accessible EEPROM memory.
+                       Furthermore ‘y’ is a placeholder for either ‘P’, ‘M’ or ‘D’, indicating the IC Dedicated
+                       Software.
+                       In total the TOE comprises nine major configurations on four IC hardware releases. The
+                       resulting configuration names are given in Table 1.
+
+                       Table 1.   Overview TOE configuration names
+                            Major
+                                                              Available IC hardware releases
+                        Configuration
+                           P60D024P           P60D024PVB(Y)                         P60D024PVB(Z)                  P60D024PVB(A)        P60D024PVF
+                           P60D024M           P60D024MVB(Y)                        P60D024MVB(Z)                   P60D024MVB(A)        P60D024MVF
+                           P60D024D                          -                                     -                     -              P60D024DVF
+                           P60D016P           P60D016PVB(Y)                         P60D016PVB(Z)                  P60D016PVB(A)        P60D016PVF
+                           P60D016M           P60D016MVB(Y)                        P60D016MVB(Z)                   P60D016MVB(A)        P60D016MVF
+                           P60D016D                          -                                     -                     -              P60D016DVF
+                           P60D012P           P60D012PVB(Y)                         P60D012PVB(Z)                  P60D012PVB(A)        P60D012PVF
+                           P60D012M           P60D012MVB(Y)                        P60D012MVB(Z)                   P60D012MVB(A)        P60D012MVF
+                           P60D012D                          -                                     -                     -              P60D012DVF
+
+
+
+                       In this document the TOE is abbreviated to P60D024/016/012yVB(Y/Z/A)/yVF for better
+                       readability.
+
+
+
+                 1.3 TOE Overview
+                  1.3.1 Usage and major security functionality of the TOE
+                       The TOE is the IC hardware platform P60D024/016/012yVB(Y/Z/A)/yVF with IC Dedicated
+                       Software and documentation describing the Instruction Set and the usage. The TOE is
+                       delivered as with a customer specific Security IC Embedded Software.
+
+
+
+
+                                      All information provided in this document is subject to legal disclaimers.               © NXP B.V. 2018. All rights reserved.
+
+Evaluation documentation                          Rev. 4.4 — 29 October 2018                                                                            3 of 87
+PUBLIC
+NXP Semiconductors                                              P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                                                                      Security Target Lite
+
+
+
+                       The IC hardware platform P60D024/016/012yVB(Y/Z/A)/yVF is a microcontroller
+                       incorporating a central processing unit, memories accessible via a Memory Management
+                       Unit, cryptographic coprocessors, other security components and two communication
+                       interfaces. The central processing unit supports a 32-/24-/16-/8-bit instruction set optimized
+                       for smart card applications, which is a super set of the 80C51 family instruction set. The first
+                       and in some cases the second byte of an instruction are used for operation encoding. On-
+                       chip memories are ROM, RAM and EEPROM. The non-volatile EEPROM can be used as
+                       data or program memory. It consists of high reliable memory cells, which guarantee data
+                       integrity. The EEPROM is optimized for applications requiring reliable non-volatile data
+                       storage for data and program code. EEPROM double read function is included for correct
+                       memory readout. Dedicated security functionality protects the contents of all memories.
+                       The security functionality of the TOE is designed to act as an integral part of a complete
+                       security system in order to strengthen the design as a whole. Several security mechanisms
+                       are completely implemented in and controlled by the TOE. Other security mechanisms allow
+                       for configuration or even require handling of exceptions by the Security IC Embedded
+                       Software. The different CPU modes and the Memory Management Unit support the
+                       implementation of multi-application projects using the P60D024/016/012yVB(Y/Z/A)/yVF.
+                       A Security IC must provide high security in particular when being used in the banking and
+                       finance market, in electronic commerce or in governmental applications because the TOE
+                       is intended to be used in a potential insecure environment. Hence the TOE shall maintain
+                           • the integrity and the confidentiality of code and data stored in its memories and
+                           • the different CPU modes with the related capabilities for configuration and memory
+                             access and
+                           • the integrity, the correct operation and the confidentiality of security functionality
+                             provided by the TOE.
+                       This is ensured by the construction of the TOE and its security functionality.
+                       P60D024/016/012yVB(Y/Z/A)/yVF basically provides a hardware platform for an
+                       implementation of a smart card application with
+                           • functionality to calculate the Data Encryption Standard (Triple-DES) with up to three
+                             keys,
+                           • functionality to calculate the Advanced Encryption Standard (AES) with different key
+                             lengths,
+                           • support for large integer arithmetic operations like multiplication, addition and logical
+                             operations, which are suitable for public key cryptography and elliptic curve
+                             cryptography,
+                           • a True Random Number Generator,
+                           • memory management control,
+                           • cyclic redundancy check (CRC) calculation,
+                           • ISO/IEC 7816 contact interface with UART,
+                           • ISO/IEC 14443 A contactless interface.
+                       In addition, several security mechanisms are implemented to ensure proper operation as
+                       well as integrity and confidentiality of stored data. For example, this includes security
+                       mechanisms for memory protection and security exceptions as well as sensors, which allow
+
+
+
+
+                                         All information provided in this document is subject to legal disclaimers.     © NXP B.V. 2018. All rights reserved.
+
+Evaluation documentation                             Rev. 4.4 — 29 October 2018                                                                  4 of 87
+PUBLIC
+NXP Semiconductors                                           P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                                                                   Security Target Lite
+
+
+
+                       operation under specified conditions only. Memory encryption is used for memory protection
+                       and chip shielding is added to the chip.
+                       Note:        Large integer arithmetic operations are intended to be used for calculation of
+                                    asymmetric cryptographic algorithms. Any asymmetric cryptographic
+                                    algorithm utilizing the support for large integer arithmetic operations has to be
+                                    implemented in the Security IC Embedded Software. Thus, the support for
+                                    large integer arithmetic operations itself does not provide security functionality
+                                    like cryptographic support. The Security IC Embedded Software implementing
+                                    an asymmetric cryptographic algorithm is not included in this evaluation.
+                                    Nevertheless the support for large integer arithmetic operations is part of the
+                                    Security IC and therefore a security relevant component of the TOE, that must
+                                    resist to the attacks mentioned in this Security Target and that must operate
+                                    correctly as specified in the data sheet. The same scope of evaluation is
+                                    applied to the CRC calculation.
+
+
+                  1.3.2 TOE type
+                       The P60D024/016/012yVB(Y/Z/A)/yVF is provided as IC hardware platform for various
+                       operating systems and applications with high security requirements.
+
+
+                  1.3.3 Required non-TOE hardware/software/firmware
+                       None.
+
+
+
+                 1.4 TOE Description
+                  1.4.1 Physical Scope of TOE
+    imum size of the EEPROM
+                                                                                      in steps of 2KB. Default EEPROM size is given by the
+                                                                                      major configuration.
+                           CXRAM Size            Steps of 128 Byte This value determines the maximum size of the CXRAM
+                                                                   in steps of 128 Bytes. Default CXRAM size is given by the
+                                                                   major configuration.
+                           Fame2                 Enabled or                           This value determines whether the Fame2 coprocessor is
+                           coprocessor           Disabled                             enabled or disabled. Default value is enabled.
+                           AES                   Enabled or                           This value determines whether the AES coprocessor is
+                                                 Disabled                             enabled or disabled. Default value is enabled.
+                           Contactless           Enabled or                           This value determines whether the Contactless interface
+                           Interface             Disabled                             is enabled or not. Default value is enabled.
+
+                          By applying Post Delivery Configuration the Security Rows content is updated for the
+                          changed configuration options and can therefore be used for identification of the TOE after
+                          applying any Post Delivery Configuration. Further details regarding Security Rows content
+                          and identification of the TOE after applying Post Delivery Configuration refer to [9].
+                          The Post Delivery Configuration can be accessed using chip health m       SECURITY TARGET LITE
+ IDEAL PASS v2.3-n JC WITH PRIVACY
+PROTECTION (SAC/EAC/POLYMORPHIC
+      EMRTD CONFIGURATION)
+
+
+         Reference: 2018_2000036361
+                                          Security Target Lite
+                                                                                                                                 Ref.:
+                                   IDeal Pass v2.3-n JC with Privacy
+                                                                                                                           2018_2000036361
+                                   Protection (SAC/EAC/Polymorphic
+                                                                                                                              Page: 2/150
+                                         eMRTD Configuration)
+
+                                                    DOCUMENT EVOLUTION
+
+
+        Date                     Index                 Author                                                  Revision
+
+                                                                             Initial version based on the full security target
+    11/06/2018                      1.0                  IDEMIA
+                                                                             (Reference: 2017_2000032696, Version: 1.5)
+                                                                             Second version based on the full security target
+                                                                             (Reference: 2017_2000032696, Version: 1.6):
+    30/01/2019                      1.1                  IDEMIA                  - JCOP 3 Platform CC certifcate updated to
+                                                                                    CC-18-98209/2.
+                                                                                 - Applet ROM masking added.
+
+
+
+
+© IDEMIA. All rights reserved.
+
+
+
+
+Specifications and information are subject to change without notice.
+
+The products described in this document are subject to continuous development and improvement.
+
+All trademarks and service marks referred to herein, whether registered or not in specific countries, are the properties of their respective owners.
+
+
+
+
+                                                      - Printed versions of this document are uncontrolled -
+                                    Security Target Lite
+                                                                                                                  Ref.:
+                             IDeal Pass v2.3-n JC with Privacy
+                                                                                                            2018_2000036361
+                             Protection (SAC/EAC/Polymorphic
+                                                                                                               Page: 3/150
+                                   eMRTD Configuration)
+
+Table of Contents
+
+ TABLE OF CONTENTS ....................................................................................................... 3
+
+ TABLE OF FIGURES .......................................................................................................... 6
+
+ TABLE OF TABLES ............................................................................................................. 7
+
+ 1            ST INTRODUCTION ............................................................................................... 8
+     1.1    ST IDENTIFICATION .......................................................................................................... 8
+     1.2    TOE REFERENCE .............................................................................................................. 9
+     1.3    TOE OVERVIEW............................................................................................................... 9
+     1.4    TOE DESCRIPTION ..........................................................................................................11
+       1.4.1    TOE Definition ......................................................................................................11
+       1.4.2    TOE usage and security features for operational use ...............................................12
+       1.4.3    TOE life cycle ........................................................................................................17
+ 2            CONFORMANCE CLAIMS ..................................................................................... 24
+     2.1    CC CONFORMANCE CLAIM .................................................................................................24
+     2.2    PP CLAIM ......................................................................................................................24
+     2.3    PACKAGE CLAIM ..............................................................................................................25
+     2.4    PP CONFORMANCE RATIONALE ...........................................................................................25
+       2.4.1    Main aspects .........................................................................................................25
+       2.4.2    Overview of differences between the PP and the ST ................................................25
+ 3            SECURITY PROBLEM DEFINITION ..................................................................... 27
+     3.1    ASSETS .........................................................................................................................27
+       3.1.1    Primary Assets travel document .............................................................................27
+       3.1.2    Secondary Assets travel document .........................................................................28
+       3.1.3    Additionals Assets .................................................................................................29
+       3.1.4    Assets related to Polymorphic eMRTD ....................................................................29
+     3.2    USERS / SUBJECTS...........................................................................................................30
+       3.2.1    Subjects listed in PP PACE .....................................................................................30
+       3.2.2    Additional Subjects ................................................................................................32
+       3.2.3    Subjects related to Polymorphic eMRTD .................................................................33
+     3.3    THREATS .......................................................................................................................36
+       3.3.1    Threats listed in PP PACE .......................................................................................36
+       3.3.2    Additional Threats .................................................................................................38
+       3.3.3    Threats related to Polymorphic eMRTD ...................................................................39
+     3.4    ORGANISATIONAL SECURITY POLICIES ..................................................................................40
+       3.4.1    OSP listed in PP PACE ............................................................................................41
+       3.4.2    Additional OSPs from PP EAC .................................................................................42
+       3.4.3    OSPs related to Polymorphic eMRTD ......................................................................43
+     3.5    ASSUMPTIONS ................................................................................................................45
+       3.5.1    Assumptions listed in PP PACE ...............................................................................45
+       3.5.2    Assumptions listed in PP EAC .................................................................................45
+       3.5.3    Assumptions related to Active Authentication ..........................................................46
+       3.5.4    Assumptions related to Polymorphic eMRTD ...........................................................46
+ 4            SECURITY OBJECTIVES ...................................................................................... 50
+     4.1    SECURITY OBJECTIVES FOR THE TOE ...................................................................................50
+       4.1.1    Security Objectives listed in PP PACE ......................................................................50
+       4.1.2    Additional Security Objectives from PP EAC ............................................................52
+                                   Security Target Lite
+                                                                                                              Ref.:
+                            IDeal Pass v2.3-n JC with Privacy
+                                                                                                        2018_2000036361
+                            Protection (SAC/EAC/Polymorphic
+                                                                                                           Page: 4/150
+                                  eMRTD Configuration)
+
+      4.1.3    Security Objectives related to Polymorphic eMRTD ..................................................53
+    4.2    SECURITY OBJECTIVES FOR THE OPERATIONAL ENVIRONMENT ....................................................55
+      4.2.1    Issuing State or Organisation .................................................................................55
+      4.2.2    Travel document Issuer and CSCA: travel document PKI (issuing) branch ................56
+      4.2.3    Terminal operator: Terminal receiving branch .........................................................57
+      4.2.4    Travel document holder Obligations .......................................................................58
+      4.2.5    Receiving State or Organisation .............................................................................58
+      4.2.6    Oes related to Polymorphic eMRTD ........................................................................60
+    4.3    SECURITY OBJECTIVES RATIONALE ......................................................................................63
+      4.3.1    Threats ................................................................................................................63
+      4.3.2    Organisational Security Policies ..............................................................................67
+      4.3.3    Assumptions .........................................................................................................69
+      4.3.4    SPD and Security Objectives ..................................................................................71
+5           EXTENDED REQUIREMENTS ............................................................................... 76
+    5.1     DEFINITION OF THE FAMILY FAU_SAS .................................................................................76
+    5.2     DEFINITION OF THE FAMILY FCS_RND ................................................................................76
+    5.3     DEFINITION OF THE FAMILY FIA_API ..................................................................................77
+    5.4     DEFINITION OF THE FAMILY FMT_LIM .................................................................................78
+    5.5     DEFINITION OF THE FAMILY FPT_EMS .................................................................................80
+6           SECURITY REQUIREMENTS ................................................................................ 81
+    6.1    SECURITY FUNCTIONAL REQUIREMENTS ................................................................................81
+      6.1.1    Class Cryptographic Support (FCS) .........................................................................83
+      6.1.2    Class FIA Identification and Authentication .............................................................87
+      6.1.3    Class FDP User Data Protection ..............................................................................95
+      6.1.4    Class FTP Trusted Path/Channels ......................................................................... 100
+      6.1.5    Class FAU Security Audit ...................................................................................... 101
+      6.1.6    Class FMT Security Management .......................................................................... 101
+      6.1.7    Class FPT Protection of the Security Functions ...................................................... 107
+      6.1.8    Class FPR ........................................................................................................... 109
+    6.2    SECURITY ASSURANCE REQUIREMENTS................................................................................ 110
+    6.3    SECURITY REQUIREMENTS RATIONALE ................................................................................ 110
+      6.3.1    Security Objectives for the TOE ........................................................................... 110
+      6.3.2    Rationale tables of Security Objectives and SFRs................................................... 115
+      6.3.3    Dependencies ..................................................................................................... 119
+      6.3.4    Rationale for the Security Assurance Requirements ............................................... 122
+      6.3.5    AVA_VAN.5 Advanced methodical vulnerability analysis ......................................... 123
+      6.3.6    ALC_DVS.2 Sufficiency of security measures ......................................................... 123
+7           TOE SUMMARY SPECIFICATION ....................................................................... 124
+    7.1    TOE SUMMARY SPECIFICATION ......................................................................................... 124
+      7.1.1    SF.IA Identification and Authentication ................................................................. 124
+      7.1.2    SF.CF Cryptographic functions support ................................................................. 125
+      7.1.3    SF.ILTB Protection against interference, logical tampering and bypass ................... 125
+      7.1.4    SF.AC Access control / Storage and protection of logical travel document data ....... 126
+      7.1.5    SF.SM Secure Messaging ..................................................................................... 126
+      7.1.6    SF.LCM Security and life cycle management ......................................................... 126
+    7.2    SFRS AND TSS............................................................................................................. 129
+      7.2.1    SFRs and TSS - Rationale .................................................................................... 129
+8           ANNEX .............................................................................................................. 138
+
+GLOSSARY .................................................................................................................... 138
+                               Security Target Lite
+                                                                                                      Ref.:
+                        IDeal Pass v2.3-n JC with Privacy
+                                                                                                2018_2000036361
+                        Protection (SAC/EAC/Polymorphic
+                                                                                                   Page: 5/150
+                              eMRTD Configuration)
+
+ABBREVIATIONS .......................................................................................................... 149
+
+REFERENCES ................................................................................................................ 149
+                                Security Target Lite
+                                                                                                Ref.:
+                         IDeal Pass v2.3-n JC with Privacy
+                                                                                          2018_2000036361
+                         Protection (SAC/EAC/Polymorphic
+                                                                                             Page: 6/150
+                               eMRTD Configuration)
+
+Table of figures
+Figure 1: TOE ......................................................................................................12
+Figure 2: TOE life-cycle .........................................................................................18
+                                Security Target Lite
+                                                                                                Ref.:
+                         IDeal Pass v2.3-n JC with Privacy
+                                                                                          2018_2000036361
+                         Protection (SAC/EAC/Polymorphic
+                                                                                             Page: 7/150
+                               eMRTD Configuration)
+
+
+Table of tables
+Table 1 Threats and Security Objectives - Coverage .................................................71
+Table 2 Security Objectives and Threats - Coverage .................................................72
+Table 3 OSPs and Security Objectives - Coverage ....................................................73
+Table 4 Security Objectives and OSPs - Coverage ....................................................74
+Table 5 Assumptions and Security Objectives for the Operational Environment -
+    Coverage .......................................................................................................75
+Table 6 Security Objectives for the Operational Environment and Assumptions -
+    Coverage .......................................................................................................75
+Table 7 Security Objectives and SFRs - Coverage .................................................. 118
+Table 8 SFRs Dependencies ................................................................................ 121
+Table 9 SARs Dependencies ............................                                                          Page: 15/150
+                       eMRTD Configuration)
+
+document, Active Authentication of the travel document’s chip, Extended Access
+Control and the Data Encryption of sensitive biometrics as optional security
+measure. The Passive Authentication Mechanism is performed completely and
+independently of the TOE by the TOE environment.
+
+The BSI TR-03110 parts 1 and 3 [TR-03110-1] and [TR 03110-3] specify the
+Extended Access Control protocols Chip Authentication version 1 (CAv1) and
+Terminal Authentication (TAv1), which are required to get secured access to the
+biometric data stored in data groups DG3 and DG4 in combination with PACE or
+BAC.
+
+This Security Target addresses the protection of the logical travel document:
+   (i) in integrity by write-only-once access control and by physical means, and
+   (ii) in confidentiality by the Extended Access Control Mechanism.
+
+This Security Target addresses the Chip Authentication Version 1 described in
+[TR-03110-1] and PACE-CAM described in [ICAO-9303] part 11 as an alternative
+to the Active Authentication stated in [ICAO-9303].
+
+For Basic Access Control (BAC) supported by the product, a separate evaluation
+and certification is performed with ST [ST-BAC].
+
+The confidentiality by Password Authenticated Connection Establishment (PACE)
+is a mandatory security feature of the TOE. The travel document shall strictly
+conform to the ‘Common Criteria Protection Profile Machine Readable Travel
+Document using Standard Inspection Procedure with PACE [PACE-PP]. Note that
+[PACE-PP] considers high attack potential.
+
+For the PACE protocol according to [ICAO-9303] part 11, the following steps shall
+be performed:
+ (i) the travel document's chip encrypts a nonce with the shared password,
+       derived from the MRZ resp. CAN data and transmits the encrypted nonce
+       together with the domain parameters to the terminal.
+ (ii) The terminal recovers the nonce using the shared password, by
+       (physically) reading the MRZ or CAN data. This nonce shall be converted to
+       a group generator using one of the following mapping algorithms, which
+       maps a static generator to an ephemeral generator:
+           a. Generic mapping (PACE-GM) or
+           b. Integrated mapping PACE-IM)
+ (iii) The travel document's chip and terminal computer perform a Diffie-
+       Hellmann key agreement together with the ephemeral domain parameters
+       to create a shared secret. Both parties derive the session keys KMAC and
+       KENC from the shared secret.
+ (iv) Each party generates an authentication token, sends it to the other party
+       and verifies the received token.
+
+In case of PACE with Chip Authenticated Mapping (PACE-CAM), in addition to the
+steps above executed for the PACE-GM variant, the MRTD chip computes Chip
+Authentication Data CAIC, encrypts them AIC = E(KSEnc, CAIC) and sends them
+                         Security Target Lite
+                                                                     Ref.:
+                  IDeal Pass v2.3-n JC with Privacy
+                                                               2018_2000036361
+                  Protection (SAC/EAC/Polymorphic
+                                                                 Page: 16/150
+                        eMRTD Configuration)
+
+to the terminal. The terminal decrypts AIC and verifies the authenticity of the
+chip using the recovered Chip Authentication Data CAIC.
+
+After successful key negotiation, the terminal and the travel document's chip
+provide private communication (secure messaging) [TR-03110-1], [ICAO-9303].
+
+This Security Target requires the TOE to implement the Extended Access Control
+as defined in [TR-03110-1]. The Extended Access Control consists of two parts:
+  (i) the Chip Authentication Protocol Version 1 and
+  (ii) the Terminal Authentication Protocol Version 1 (v.1).
+
+The Chip Authentication Protocol v.1
+  (i) authenticates the travel document’s chip to the inspection syode functionality in
+                          combination with the ISO/IEC 7816 contact interface.
+                1.4.2.4         Evaluated package types
+       stem and
+  (ii) establishes secure messaging which is used by Terminal Authentication v.1
+       to protect the confidentiality and integrity of the sensitive biometric
+       reference data during their transmission from the TOE to the inspection
+       system. Therefore Termina                   A number of package types are supported for each major configuration of the TOE. The
+                          commercial types are named according to the following format.
+                            • P60D024ypp(p)/9Brrff(o) for major configuration P60D024PVB(Y/Z/A)/MVB(Y/Z/A)
+                            • P60D016ypp(p)/9Brrff(o) for major configuration P60D016PVB(Y/Z/A)/MVB(Y/Z/A)
+                            • P60D012ypp(p)/9Brrff(o) for major configuration P60D012PVB(Y/Z/A)/MVB(Y/Z/A)
+                            • P60D024ypp(p)/9Frrff(o) for major configuration P60D024yVF
+                            • P60D016ypp(p)/9l Authentication v.1 can only be performed if
+     Frrff(o) for major configuration P60D016yVF
+                            • P60D012ypp(p)/9Frrff(o) for major configuration P60D012yVF
+                          The commercial type name of each major configuration var  Chip Authentication v.1has been succies with esstfheu

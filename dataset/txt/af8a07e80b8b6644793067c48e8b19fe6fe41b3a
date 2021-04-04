@@ -1,0 +1,1218 @@
+  NXP eDoc Suite v3.5 on JCOP4 P71 –
+     cryptovision ePasslet Suite ––
+Java Card applet configuration providing
+ Secure Signature Creation Device with
+           key import (SSCD)
+
+                Security Target Lite
+                      NSCIB-CC-00229287
+
+                Common Criteria / ISO 15408 / EAL 5+
+
+
+
+
+                       Document Version 1.2 • 2020-12-17
+
+
+      cv cryptovision GmbH • Munscheidstr. 14 • 45886 Gelsenkirchen • Germany
+          www.cryptovision.com • info@cryptovision.com • +49-209-167-2450
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+                                                                               Content
+
+1       Introduction ............................................................................................................................................ 4
+    1.1          ST/TOE Identification ..................................................................................................................................... 4
+    1.2          ST overview ................................................................................................................................................... 4
+    1.3          TOE overview ................................................................................................................................................. 5
+    1.4          TOE description ............................................................................................................................................. 5
+
+2       Conformance claims ............................................................................................................................. 15
+    2.1          CC conformance .......................................................................................................................................... 15
+    2.2          Statement of Compatibility concerning Composite Security Target ........................................................... 15
+
+3       Security problem definition .................................................................................................................. 34
+    3.1          Assets, users and threat agents ................................................................................................................... 34
+    3.2          Threats ......................................................................................................................................................... 34
+    3.3          Organisational Security Policies................................................................................................................... 35
+    3.4          Assumptions ................................................................................................................................................ 36
+
+4       Security Objectives ............................................................................................................................... 37
+    4.1          Security Objectives for the TOE ................................................................................................................... 37
+    4.2          Security Objectives for the Operational Environment ................................................................................ 38
+    4.3          Security Objectives Rationale ...................................................................................................................... 39
+
+5       Extended Component Definition .......................................................................................................... 45
+    5.1          Definition of the Family FPT_EMS ............................................................................................................... 45
+    5.2          Definition of the Family FCS_RND ............................................................................................................... 46
+
+6       IT Security Requirements ...................................................................................................................... 47
+    6.1          General ........................................................................................................................................................ 47
+    6.2          TOE Security Functional Requirements ....................................................................................................... 47
+    6.3          TOE Security Assurance Requirements ....................................................................................................... 59
+    6.4          Security Requirements Rationale ................................................................................................................ 60
+
+7       TOE summary specification .................................................................................................................. 66
+    7.1          Security Functionality .................................................................................................................................. 66
+    7.2          TOE summary specification rationale .......................................................................................................... 73
+
+8       References ............................................................................................................................................ 76
+    Common Criteria ........................................................................................................................................................ 76
+    Protection Profiles ..................................................................................................................................................... 76
+    TOE and Platform References .................................................................................................................................... 76
+    EU regulation ............................................................................................................................................................. 77
+    The DIRECTIVE ........................................................................................................................................................... 77
+    Application and Cryptography standards .................................................................................................................. 77
+
+
+
+                                                                                    2 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Glossary ......................................................................................................................................................... 79
+
+
+
+
+Version Control
+ Version          Date                  Author                          Changes to Previous Version
+ 1.0              2020-12-09            Thomas Zeggel                   ST-Lite based on ST version 1.0.
+ 1.1              2020-12-15            Thomas Zeggel                   ST-Lite based on ST version 1.1.
+ 1.2              2020-12-17            Thomas Zeggel                   ST-Lite based on ST version 1.2.
+
+
+
+
+                                                                             3 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+1 Introduction
+
+1.1 ST/TOE Identification
+Title:                            NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card
+                                  applet configuration providing Secure Signature Creation De-vice with key
+                                  import (SSCD) – Security Target Lite
+Document Version:                 v1.2
+Origin:                           cv cryptovision GmbH
+Compliant to:                     Protection profiles for secure signature creation device – Part 3: Device with
+                                  key import; English version EN 419211-3:2013, English translation of DIN EN
+                                  419211-3:2014-03; PP Registration: BSI-CC-PP-0075-2012-MA-01; October
+                                  2013 [PP0075]
+Product identification:           NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+TOE identification:               NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card
+                                  applet configuration providing Secure Signature Creation Device with key
+                                  import (SSCD)
+Javacard OS platform:             NXP JCOP4 P71, NSCIB-CC-180212 [Cert_OS]
+Security controller:              NXP N7121, Certification ID BSI-DSZ-CC-1040, [Cert_IC]
+TOE documentation:                Administration and user guide [Guidance]
+
+
+1.2 ST overview
+This document contains the security target for SSCD compliant configuration of the NXP eDoc Suite v3.5 on
+JCOP4 P71 - cryptovision ePasslet Suite. NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite is a
+set of Javacard applications intended to be used exclusively on the JCOP4 P71 Javacard OS platform, which
+is certified according to CC EAL 6+ [Cert_OS]. NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+as well as the JCOP4 operating system are provided on a smart card chip based on the NXP N7121 security
+controller, which is itself certified according to CC EAL 6+ [Cert_IC].
+This security target is strictly conformant to the Protection Profile Protection profiles for Secure Signature
+Creation Device — Part 3: Device with key import (BSI-CC-PP-0075-2012-MA-01) [PP0075].
+The main objectives of this ST are:
+         to introduce TOE and the SSCD application,
+         to define the scope of the TOE and its security features,
+         to describe the security environment of the TOE, including the assets to be protected and the
+          threats to be countered by the TOE and its environment during the product development, produc-
+          tion and usage.
+         to describe the security objectives of the TOE and its environment supporting in terms of integrity
+          and confidentiality of application data and programs and of protection of the TOE.
+         to specify the security requirements which includes the TOE security functional requirements, the
+          TOE assurance requirements and TOE security functionalities.
+The assurance level for the TOE is CC EAL5 augmented with AVA_VAN.5 and ALC_DVS.2.
+
+
+
+
+                                                     4 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+1.3 TOE overview
+The TOE is a Java Card with a set of applets (NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite)
+configured to provide a secure signature creation device (SSCD) with key import. To allow secure access to
+the signature functionality over the contactless interface, it provides an optional PACE mechanism to build
+up a secure channel for the signature PIN.
+
+
+1.4 TOE description
+
+1.4.1 Overview of NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite contains a set of Java Card applets for e-ID
+document applications built upon an underlying core library. The following Table 1 provides an overview of
+the individual applications included in NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite:
+
+
+ Product / Application                            Specification                     Configuration
+ ICAO MRTD application with Basic Access Con-     ICAO Doc 9303                     ePasslet3.5/MRTD-BAC
+ tro (BAC) and Supplemental Access Control
+ (SAC)
+ ISO File System application                      ISO 7816                          ePasslet3.5/ISO-FS
+ ISO Driving License application with Basic Ac-   ISO 18013                         ePasslet3.5/IDL-Basic
+ cess Protection (BAP) or Supplemental Access
+ Control (SAC)
+ ISO Driving License application with Extended    ISO 18013                         ePasslet3.5/IDL-Extended
+ Access Protection (EAP) or Extended Access
+ Control (EACv1)
+ ICAO MRTD application with Extended Access       ICAO Doc 9303, TR03110v1.11       ePasslet3.5/MRTD-EAC
+ Control (EACv1)
+ Secure Signature Creation Device application     ISO 7816, PKCS#15                 ePasslet3.5/SSCD
+ supporting PKI utilization – Device with key
+ generation
+ Secure Signature Creation Device application     ISO 7816, PKCS#15                 ePasslet3.5/SSCD-IMP
+ supporting PKI utilization – Device with key
+ import
+ EU Electronic Vehicle Registration application   EU Council Directive 1999/37/EC   ePasslet3.5/eVR
+ EU Electronic Health Insurance application       CWA 15974                         ePasslet3.5/eHIC
+ German eID Document application                  ICAO Doc 9303, TR03110v2.11,      ePasslet3.5/GeID
+                                                  TR03127 v1.15
+ Customizable eID Document application            ICAO Doc 09303 and                ePasslet3.5/GenID
+                                                  TR03110v2.11
+ EU Electronic Residence Permit application       TR03127 v1.15                     ePasslet3.5/eRP
+
+
+Table 1: Configurations of the NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite. Please note
+that not all configurations are certified according to Common Criteria. The TOE of this ST is marked in yel-
+low.
+
+
+
+
+                                                      5 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+These configurations are based on one or more predefined applets; different configurations might use the
+same underlying applet.
+The whole applet code resides in the Flash memory; the applets providing these different configurations
+are instantiated into Flash memory. Multiple configurations (and hence support for different applications)
+can be present at the same time by instantiating multiple applets with their distinct configurations with
+some restrictions detailed below. A common combination could be an ICAO MRTD applet and an SSCD ap-
+plet providing a travel application with LDS data and EAC authentication together with a signature applica-
+tion.
+Via configuration the instanciated applets can be tied to the contactless and/or the contact interface, re-
+spectively.
+
+1.4.2 TOE definition
+The TOE is a combination of hardware and software configured to securely create, use and manage signa-
+ture-creation data (SCD). The TOE consists of
+       the circuitry of the chip (the integrated circuit, IC) including the contact-based interface with hard-
+        ware for the contactless interface including contacts for the antenna, providing basic cryptographic
+        functionalities,
+       the platform with the Java Card operation system JCOP4 together with the JCOP4 P71 documenta-
+        tion according to [ST_OS],
+       NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card applet configuration
+        providing a secure signature creation device (SSCD) with key import1
+       the associated Administrator and User Guidance [Guidance] in PDF format and the platform docu-
+        mentation.
+
+
+                              TOE boundary
+
+
+
+
+              Instantiated             Other instantiated ap-                      3rd party
+             Applet of the              plet using ePasslet                         applet
+             ePasslet Suite            Suite code (bytecode                       (bytecode
+              according to             verified according to                      verified ac-
+             User Guidance                User Guidance)                          cording to
+                                                                                  User Guid-
+                                                                                     ance)
+             NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision
+               ePasslet Suite code in non-volatile memory
+                               (Flash image)
+
+                                          Javacard OS: NXP JCOP4
+
+
+                                           Hardware: NXP N7121
+
+
+
+1Please note that there are two different options: a configuration for the contact-based interface, or a
+configuration for the contactless interface with additional PACE mechanism.
+
+                                                     6 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+
+Figure 1: Schematic view on the Target of Evaluation (TOE) and its boundaries. The TOE is based on the
+certified hardware and Javacard OS. Besides the NXP eDoc Suite v3.5 on JCOP4 - cryptovision ePasslet Suite
+code in non-volatile memory and the applet instantiated from it which forms the TOE of this security target,
+it may also contain additional applets which are not part of the TOE.
+
+
+The TOE’s functionality claimed by this security target is realized by the NXP eDoc Suite v3.5 on JCOP4 P71
+- cryptovision ePasslet Suite in SSCD with key import configuration. The SSCD configuration with key import
+provides a PKCS#15 compliant file structure and a separate DF for the SSCD functionality (D.Sig). While D.Sig
+provides the TOE’s functionality claimed by this security target, the PKCS#15 part is out of scope of the
+certification.
+
+1.4.3 TOE delivery and identification
+The delivery comprises the following items:
+ Type                                 Name                                     Form of delivery
+ Hardware                             NXP Secure Smart Card Control- Micro Controller including on-
+                                      ler N7121 with IC Dedicated Soft- chip software: Firmware and
+                                      ware and Crypto Library           Crypto Lib. The TOE is delivered
+                                                                        as wafer or module. The TOE can
+                                                                        be collected at NXP site or is be-
+                                                                        ing shipped to the customer. See
+                                                                        [AGD_PRE] for details.
+ JCOP4 P71 OS                         ROM Code (Platform ID)                   On-chip software: JCOP4 P71 OS
+                                      FLASH content (FLASH ID)                 included in the Micro Controller
+                                      Patch Code (Patch ID)
+ NXP eDoc Suite v3.5 on JCOP4 Javacard Package                                 On-chip software: NXP eDoc
+ P71 - cryptovision ePasslet Suite                                             Suite included in the Micro Con-
+                                                                               troller
+ Document                             JCOP4 P71 User Guidance and Electronic document via NXP
+                                      Administration Manual (cf. DocStore
+                                      [ST_OS])
+ Document                             HW Objective Data Sheet Electronic document via NXP
+                                      (Conﬁguration Banking & Secure DocStore
+                                      ID), cf. [ST_OS]
+ Document                             Guidance documentation of the Electronic documents via NXP
+                                      certified eDoc Suite configura- DocStore
+                                      tion [Guidance]; it consists of
+                                      three documents:
+                                      (1) NXP eDoc Suite v3.5 on JCOP4
+                                      - cryptovision ePasslet Suite –
+                                      Java Card Applet Suite providing
+                                      Electronic ID Documents applica-
+                                      tions. Guidance Manual.
+                                      (2)   Preparation         Guidance
+                                      (AGD_PRE).
+
+
+
+                                                     7 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+                                      (3)  Operational          Guidance
+                                      (AGD_OPE).
+                                            Table 2: Delivery items
+
+Identification of the platform is performed by the procedure according to [AGD_PRE].
+Once the platform is identified correctly, the correct version of the Java card layer of the TOE (NXP eDoc
+Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite, version 3.5) can be verified as descibed in [Guidance].
+
+1.4.4 TOE functions
+The TOE comprises all IT security functionality necessary to ensure the secrecy of the SCD and the security
+of the digital signature. The TOE provides the following functions:
+
+       to import signature creation data (SCD) and, optionally, the correspondent signature verification
+        data (SVD),
+       to, optionally, receive and store certificate info,
+       to switch the TOE from a non-operational state to an operational state, and
+       if in an operational state, to create electronic signatures for data with the following steps:
+        a) select an SCD if multiple are present in the SSCD,
+        b) authenticate the signatory and determine its intent to sign,
+        c) receive data to be signed or a unique representation thereof (DTBS/R)
+        d) apply an appropriate cryptographic signature-creation function using the selected SCD to the
+           DTBS/R.
+The TOE may implement its function for digital signature creation to conform to the specifications in ETSI
+TS 101 733 (CAdES) [CADES], ETSI TS 101 903 (XAdES) [XADES] and ETSI TS 101 903 (PADES) [PADES].
+The TOE is prepared for the signatory's use by
+       import at least one set of SCD, and
+       personalising for the signatory by storing in the TOE:
+        a) the signatory’s reference authentication data (RAD)
+        b) optionally, certificate info for at least one SCD in the TOE.
+After preparation the SCD shall be in a non-operational state. Upon receiving a TOE the signatory shall verify
+its non-operational state and change the SCD state to operational.
+
+After import the SCD is in a non-operational state. Upon receiving a TOE the signatory shall verify its non-
+operational state and change the SCD state to operational.
+
+After preparation the intended legitimate user should be informed of the signatory’s verification authenti-
+cation data (VAD) required for use of the TOE in signing. If the VAD is a password or PIN, the means of
+providing this information is expected to protect the confidentiality and the integrity of the corresponding
+RAD.
+
+If the use of an SCD is no longer required, then it should be destroyed (e.g. by erasing it from memory) as
+well as the associated certificate info, if any exists.
+
+1.4.5 Operation of the TOE
+This paragraph presents a functional overview of the TOE in its distinct operational environments:
+
+
+                                                     8 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+       The preparation environment, where the TOE interacts with a certification service provider (CSP)
+        through a SCD/SVD generation application to import the signature creation data (SCD) and a certif-
+        icate generation application (CGA) to obtain a certificate for the signature validation data (SVD)
+        corresponding to the SCD the certification service provider has generated. The SCD/SVD generation
+        application transmits the SVD to the CGA. The initialisation environment interacts further with the
+        TOE to personalise it with the initial value of the reference authentication data (RAD).
+       The signing environment where the TOE interacts with a signer through a signature creation appli-
+        cation (SCA) to sign data after authenticating the signer as its signatory. The signature creation ap-
+        plication provides the data to be signed (DTBS), or a unique representation thereof (DTBS/R) as
+        input to the TOE signature creation function and obtains the resulting digital signature2.
+       The management environments where the TOE interacts with the user or an SSCD-provisioning ser-
+        vice provider to perform management operations, e.g. for the signatory to reset a blocked RAD. A
+        single device, e.g. a smart card terminal, may provide the required secure environment for man-
+        agement and signing.
+The preparation environment, the signing environment and the management environment are secure and
+protect data exchanged with the TOE. Figure 3 in prEN 14169-1:2011 illustrates the operational environ-
+ment.
+The TOE stores signature creation data (SCD) and reference authentication data (RAD). The TOE may store
+multiple instances of SCD. In this case the TOE provides a function to identify each SCD and the SCA can
+provide an interface to the signer to select an SCD for use in the signature creation function of the SSCD.
+The TOE protects the confidentiality and integrity of the SCD and restricts its use in signature creation to its
+signatory. The digital signature created by the TOE may be used to create an advanced electronic signature
+as defined in Article 5.1 of the [Directive]3. Determining the state of the certificate as qualified is beyond
+the scope of this standard.
+The signature creation application is assumed to protect the integrity of the input it provides to the TOE
+signature creation function as being consistent with the user data authorised for signing by the signatory.
+Unless implicitly known to the TOE, the SCA indicates the kind of the signing input (as DTBS/R) it provides
+and computes any hash value required. The TOE may augment the DTBS/R with signature parameters it
+stores and then computes a hash value over the input as needed by the kind of input and the used crypto-
+graphic algorithm.
+The TOE stores signatory reference authentication data (RAD) to authenticate a user as its signatory. The
+RAD is a password (e.g. PIN), a biometric template or a combination of these. The TOE protects the confi-
+dentiality and integrity of the RAD. The TOE may provide a user interface to directly receive verification
+authentication data (VAD) from the user, alternatively, the TOE receive the VAD from the signature creation
+application (SCA). If the signature creation application handles, is requesting or obtaining a VAD from the
+user, it is assumed to protect the confidentiality and integrity of this data.
+A certification service provider and a SSCD-provisioning service provider interact with the TOE in the secure
+preparation environment to perform any preparation function of the TOE required before control of the
+TOE is given to the legitimate user. These functions may include:
+       initialising the RAD,
+       generating a key pair,
+
+2 At a pure functional level the SSCD creates a digital signature; for an implementation of the SSCD, in that
+meeting the requirements of this PP and with the key certificate created as specified in the Directive, Annex
+I, the result of the signing process can be used as to create a qualified electronic signature.
+3Please note that while this security target - following the according protection profile BSI-CC-PP-0075-
+2012-MA-01 - references the [Directive], it also incorporates the requirements of the eIDAS regulation [Re-
+gulation] and the according commission implementing regulation [Implementing].
+
+                                                     9 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+         storing personal information of the legitimate user.
+In the case at hand the TOE is a smart card or electronic ID document. In this case a smart-card terminal
+may be deployed that provides the required secure environment to handle a request for signatory authori-
+zation. A signature can be obtained on a document prepared by a signature-creation application component
+running on personal computer connected to the card terminal. The signature creation application, after
+presenting the document to the user and after obtaining the authorization PIN initiates the electronic sig-
+nature creation function of the smart card through the terminal.
+The RAD verification is typically performed by direct PIN verification (VERIFY PIN command); to further pro-
+tect the RAD (password or PIN) – especially in a contactless application scenario – the Password Authenti-
+cated Connection Establishmanet (PACE) protocol according to [TR03110] can be used.
+
+1.4.6 Major security features of the TOE
+The TOE provides the following TOE security functionalities:
+         TSF_Access manages the access to objects (files, directories, data and secrets) stored in the applet’s
+          file system. It also controls write access of initialization, pre-personalization and personalization
+          data4.
+         TSF_Admin manages the storage of manufacturing data, pre-personalization data and personaliza-
+          tion data.
+         TSF_Secret ensures secure management of secrets such as cryptographic keys. This covers secure
+          key storage, access to keys as well as secure key deletion. These mechanisms are mainly provided
+          by TSF_OS.
+         TSF_Crypto performs high level cryptographic operations. The implementation is mainly based on
+          the Security Functionalities provided by TSF_OS.
+         TSF_SecureMessaging realizes a secure communication channel.
+         TSF_Auth realizes two authentication mechanisms: PIN verification and alternatively authentication
+          with the PACE protocol.
+         TSF_Integrity protects the integrity of internal applet data like the Access control lists.
+         TSF_OS contains all security functionalities provided by the certified platform (IC, Javacard opera-
+          tion system). The cryptographic operations needed for this TOE are provided by the platform:
+              o   Electronic signature-generation with RSA and key sizes of 2000 up to 4096 bit in steps of 1
+                  bit, or ECDSA with key sizes of key sizes of 160 bit to 521 bit in steps of one bit.
+              o   Secure messaging with AES (128, 192 or 256 bit key length).
+              o   PACE authentication with key lengths of 160 bit to 521 bit in steps of one bit (ECC).
+
+1.4.7 TOE life cycle
+This paragraph is based on the protection profile [PP0075].
+
+1.4.7.1    General
+
+
+
+4 In the context of this security target the three categories are defined as follows: initialization comprises
+the preparation of the TOE based on proprietary operations of the platform with the Java Card operation
+system; pre-personalization comprises the configuration of the card manager and security domains as well
+as the generation of applet instances using Global Platform commands. Personalization is carried out after-
+wards using commands of the applet layer of the TOE.
+
+                                                     10 of 82
+ NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+The TOE life cycle distinguishes stages for development, production, preparation and operational use. The
+development and production of the TOE (cf. CC part 1 [CC_1], para.139) together constitute the develop-
+ment phase of the TOE.
+
+
+   Hardware
+   development
+   and certifica-
+                                                                                            NXP      eDoc
+   tion
+                                                 Javacard OS                                Suite v3.5 on
+                           Guidance                                                         JCOP4 - cryp-
+                                                 development
+                           manuals,                                                         tovision
+                                                 and certifica-
+                           samples                                                          ePasslet
+                                                 tion
+                                                                          Guidance          Suite devel-
+                                                                          manuals,          opment and
+                                                                          samples           certification
+                           Secure de-
+                           livery     of
+   Hardware                chips as cer-         Secure pro-
+   production              tified in CC          duction     of
+                           hardware              chips with Ja-           Secure de-
+                           certification         vacard OS and            livery of ap-
+                                                 NXP      eDoc            plet code as
+                                                 Suite v3.5 on            certified in
+                                                 JCOP4 - cryp-            CC applet
+                                                 tovision                 certification
+                                                 ePasslet Suite
+                                                 in       Flash
+                                                 memory
+
+
+Figure 2: Overview of the development phase of the TOE, which contains development and production
+of the TOE. After the secure production following the process certified for the Javacard OS, the chips are
+delivered to the SSCD provisioning service using the delivery process already established for the OS. Gray
+boxes indicate the steps which are subject to evaluation according to the assurance life cycle (ALC) class.
+
+
+
+The development phase is subject of CC evaluation according to the assurance life cycle (ALC) class.
+
+
+The development phase ends with the delivery of the TOE to an SSCD-provisioning service provider or a
+card manufacturer. This is also the end of the scope of the certification according to Common Criteria.
+
+
+
+
+                                                     11 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+
+
+          CSP                                Development phase (see fig. 2)
+      SCD/SVD GA
+  SCD/SVD generation                                                    Delivery to SSCD provisioning service
+  SCD export
+  SVD export                      SSCD preparation
+                                  Installation of SSCD             Personalisation for the
+                                  SCD/SVD import                   signatory
+
+                                  SVD import*                      RAD installation
+
+                                  import of certificate info       VAD definition
+
+          CSP
+           CGA                                                         Delivery to Signatory
+ Certificate generation
+ Directory service                SSCD operational use
+
+                                              Operational usage of SCD
+                                              Signature creation
+
+                                              Destruction of SCD
+                                              destruction of SCD
+                                              deletion of certificate info
+
+
+                                                        Usage phase
+
+
+Figure 3: Example of TOE lifecycle following figure 1 of [PP0075]. Note that import of certificate info during
+TOE preparation and deletion of certificate info when SCD is destroyed are optional. The delivery to the
+SSCD provisioning service after the development phase is also the end of the scope of the certification ac-
+cording to Common Criteria.
+
+The operational usage of the TOE comprises the preparation stage and the operational use stage. The TOE
+operational use stage begins when the signatory has obtained both the VAD and the TOE. Enabling the TOE
+for signing requires at least one set of SCD stored in its memory.
+Figure 3 shows an example of the lifecycle where an SCD or SCD/SVD pair is imported from SSCD-
+provisioning service before delivery to the signatory. The lifecycle may allow import of SCD or SCD/SVD key
+pairs after delivery to the signatory as well.
+The TOE life cycle ends when all keys stored in it have been rendered permanently unusable. Rendering a
+key in the SSCD unusable may include deletion of any stored corresponding certificate info. The lifecycle
+may allow generation of SCD or SCD/SVD key pairs after delivery to the signatory as well.
+
+1.4.7.2   Preparation stage
+The preparation phase of the TOE lifecycle is processing the TOE from the customer's acceptance of the
+delivered TOE to a state ready for operation by the signatory. The customer receiving the TOE from the
+
+
+                                                    12 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+manufacturer is the SSCD-provisioning service that prepares and provides the SSCD to subscribers. The
+preparation includes
+         Create and configure the signature application according to AGD_PRE; this step involves applet
+          instanciation as well as creation of the file system (card profile).5
+         The personalisation of the TOE for use by the signatory, i.e. the installation of the RAD in the TOE
+          and handover of VAD to the signatory.
+         The initialisation of the TOE, i.e. the CSP generates the SCD/SVD pair by means of a SCD/SVD gen-
+          eration device, loads the SCD to the TOE, and sends the SVD to the CGA. The TOE may import and
+          store the SCD/SVD pair.
+         The generation of the (qualified) certificate containing among others (cf. [1], Annex II)
+              a) the SVD which correspond to SCD under the control of the signatory;
+              b) the name of the signatory or a pseudonym, which is to be identified as such,
+              c) an indication of the beginning and end of the period of validity of the certificate.
+
+         The preparation may include optional loading of the certificate info into the SSCD for signatory con-
+          venience.
+The CSP generates a SCD/SVD pair and imports SCD, and optionally also SVD, into the SSCD. The CSP ensures
+          a) the correspondence between SCD and SVD,
+          b) that algorithm and key size for the SVD are appropriate.
+
+Please take note that verifying whether the claimed identity of the signer originates from that given SSCD
+has to be done by the CSP operating the CGA.
+If the TOE is used for creation of advanced electronic signatures, the certificate links the signature verifica-
+tion data to the person (i.e. the signatory) and confirms the identity of that person (cf. [Directive], article 2,
+Clause 9).
+This security target requires the TOE to provide mechanisms for import of SCD, implementation of the SCD
+and personalisation. The environment is assumed to protect all other processes for TOE preparation like
+SCD transfer between the SCD/SVD generation device and the TOE, and SVD transfer between the SCD/SVD
+generation device and the CGA. The CSP may export the SVD to the TOE for internal use by the TOE (e.g.,
+self-test).
+Before generating a (qualified) certificate, the CSP is expected to first store the SCD in a SSCD. A secure
+channel with the TOE may be used to support this, by ensuring integrity of the SCD during transmission to
+the TOE.
+
+1.4.7.3    Operational use stage
+In this lifecycle stage the signatory can use the TOE to create advanced electronic signatures.
+The operational phase of the TOE starts when at least one SCD/SVD pair is generated by the CSP and the
+SCD is imported into the SSCD and when the signatory takes control over the TOE and makes the SCD oper-
+ational. The signatory uses the TOE with a trustworthy SCA in a secured environment only. The SCA is as-
+sumed to protect the DTBS/R during the transmission to the TOE.
+
+
+
+
+5 This preparation step has been added to the life cycle definition of the underlying Protection Profile and
+is necessary to provide the basic functionality (i.e. application and file system) for the following steps. It
+may be performed by the SSCD-provisioning service provider directly or by a separate entity (card manu-
+facturer).
+
+                                                    13 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+The signatory can also interact with the SSCD to perform management tasks, e.g. reset a RAD value or use
+counter if the password/PIN in the reference data has been lost or blocked. Such management tasks require
+a secure environment.
+The signatory can render an SCD in the TOE permanently unusable. Rendering the last SCD in the TOE per-
+manently unusable ends the life of the TOE as SSCD.
+The TOE may support functions to generate additional signing keys. If the TOE supports these functions it
+will support further functions to securely obtain certificates for the new keys. For an additional key the
+signatory may be allowed to choose the kind of certificate (qualified, or not) to obtain for the SVD of the
+new key. The signatory may also be allowed to choose some of the data in the certificate request for in-
+stance to use a pseudonym instead of the legal name in the certificate5. If the conditions to obtain a quali-
+fied certificate are met, the new key can also be used to create advanced electronic signatures. The optional
+TOE functions for additional key generation and certification may require additional security functions in
+the TOE and an interaction with the SSCD-provisioning service provider in an environment that is secure.
+The TOE life cycle as SSCD ends when all SCD stored in the TOE are destructed. This may include deletion of
+the corresponding certificates.
+
+
+
+
+                                                    14 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+2 Conformance claims
+
+2.1 CC conformance
+This security target claims conformance6 to:
+     Common Criteria for Information Technology Security Evaluation, Part 1: Introduction and General
+        Model; Version 3.1, Revision 5, April 2017; CCMB-2017-04-001, [CC_1],
+     Common Criteria for Information Technology Security Evaluation, Part 2: Security Functional Re-
+        quirements; Version 3.1, Revision 5, April 2017; CCMB-2017-04-002, [CC_2],
+     Common Criteria for Information Technology Security Evaluation, Part 3: Security Assurance Re-
+        quirements; Version 3.1, Revision 5, April 2017; CCMB-2017-04-003, [CC_3],
+as follows:
+     Part 2 extended,
+     Part 3 conformant,
+     Package conformant to EAL5 augmented with AVA_VAN.5 and ALC_DVS.2 defined in CC part 3
+        [CC_3].
+The
+          Common Methodology for Information Technology Security Evaluation, Evaluation Methodology;
+           Version 3.1, Revision 5, April 2017; CCMB-2017-04-004, [CC_4]
+
+has to be taken into account.
+
+
+This security target is strictly conformant to the protection profile [PP0075]. To cover the additional PACE
+functionality the following SFR have been added:
+          FCS_COP.1/PACE
+          FCS_RND.1
+
+
+The evaluation of the TOE uses the result of the CC evaluation of the NXP N7871 chip claiming conformance
+to the PP [PP0084]. The hardware part of the composite evaluation is covered by the certification report
+[Cert_IC]. In addition, the evaluation of the TOE uses the result of the CC evaluation of the NXP JCOP4 P71
+Javacard OS. The Javacard OS as part of the composite evaluation is covered by the certification report
+[Cert_OS].
+
+
+2.2 Statement of Compatibility concerning Composite Security Target
+
+2.2.1 Assessment of the Platform TSFs
+The following table lists all Security Functionalities of the underlying Platform ST and shows, which Security
+Functionalities of the Platform ST are relevant for this Composite ST and which are irrelevant. The first col-
+umn addresses specific Security Functionality of the underlying platform, which is assigned to Security Func-
+tionalities of the Composite ST in the second column. The last column provides additional information on
+the correspondence if necessary.
+
+6   The referenced version of the Common Criteria has been updated to version 5.
+
+                                                    15 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform TSF-group                   Correspondence in this ST          References/Remarks
+SF.JCVM                              -                                  Java Card Virtual Machine
+SF.CONFIG                            -                                  Configuration Management
+SF.OPEN                              -                                  Card Content Management
+SF.CRYPTO                            TSF_Crypto                         Cryptographic Functionality
+SF.RNG                               TSF_Crypto                         Random Number Generator
+                                                                        Part of TSF.Crypto
+SF.DATA_STORAGE                      TSF_Secret                         Secure Data Storage
+SF.PUF                               -                                  User Data Protection using PUF
+                                                                        PUF functionality is not used in the
+                                                                        TOE
+SF.EXT_MEM                           -                                  External Memory
+                                                                        Not used in the TOE.
+SF.OM                                -                                  Java Object Management
+SF.MM                                TSF_Secret                         Memory Management
+SF.PIN                               TSF_Auth                           PIN Management
+                                                                        This platform TSF focuses on PIN au-
+                                                                        thentication.
+SF.PERS_MEM                          -                                  Persistent Memory Management
+SF.EDC                               TSF_Integrity                      Error Detection Code API
+SF.HW_EXC                            TSF_Integrity                      Hardware Exception Handling
+SF.RM                                -                                  Restricted Mode
+SF.PID                               TSF_Admin                          Platform Identification
+                                                                        SF.PID provides a platform identifier.
+                                                                        This platform identifier is generated
+                                                                        during the card image generation.
+                                                                        The platform identifier contains IDs
+                                                                        for:
+                                                                        • NVM content (stored during romiz-
+                                                                        ing)
+                                                                        • Patch Level (stored during romiz-
+                                                                        ing, can be changed during personal-
+                                                                        ization if patch is loaded)
+                                                                        • ROM code (stored during romizing)
+                                                                        • ROM code checksum (stored dur-
+                                                                        ing romizing or during first TOE
+                                                                        boot).
+                                                                        It identifies unambiguously the NVM
+                                                                        and ROM part of the TOE.
+SF.SMG_NSC                           TSF_Crypto, TSF_Secret             No Side-Channel
+
+
+
+
+                                                     16 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+ SF.ACC_SBX                          -                                  Secure Box
+                                                                        The functionality is not used for the
+                                                                        TOE.
+ SF.MOD_INVOC                        -                                  Module Invocation
+ SF.RENS_RES                         -                                  Sensitive Result
+
+
+                      Table 3: Relevant platform TSF-groups and their correspondence
+
+2.2.2 Assessment of the Platform SFRs
+The following table provides an assessment of all Platform SFRs. The Platform SFRs are listed in the order
+used within the security target of the platform [ST_OS].
+
+
+ Platform SFR                                 Correspondence in this References/Remarks
+                                              ST
+ COREG_LC Security Functional Requirements (chapter 7.2.1 in platform ST)
+ Firewall Policy (chapter 7.2.1.1 in platform ST)
+ FDP_ACC.2[FIREWALL]                          No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall). The resulting requirements for
+                                                                           applets are reflected in the User
+                                                                           Guidance of the TOE.
+                                                                           No contradiction to this ST.
+ FDP_ACF.1[FIREWALL]                          No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall). The resulting requirements for
+                                                                           applets are reflected in the User
+                                                                           Guidance of the TOE.
+                                                                           No contradiction to this ST.
+ FDP_IFC.1[JCVM]                              No correspondence            Out of scope (internal Java Virtual
+                                                                           Machine).
+                                                                           No contradiction to this ST.
+ FDP_IFF.1[JCVM]                              No correspondence            Out of scope (internal Java Virtaual
+                                                                           Machine). No contradiction to this
+                                                                           ST.
+ FDP_RIP.1[OBJECTS]                           No correspondence.           Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+ FMT_MSA.1[JCRE]                              No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+ FMT_MSA.1[JCVM]                              No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+ FMT_MSA.2[FIREWALL-JCVM]                     No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall). The resulting requirements for
+
+
+                                                    17 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform SFR                                  Correspondence in this References/Remarks
+                                              ST
+                                                                           applets are reflected in the User
+                                                                           Guidance of the TOE.
+                                                                           No contradiction to this ST.
+FMT_MSA.3[FIREWALL]                           No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall). The resulting requirements for
+                                                                           applets are reflected in the User
+                                                                           Guidance of the TOE.
+                                                                           No contradiction to this ST.
+FMT_MSA.3[JCVM]                               No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+FMT_SMF.1                                     No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+FMT_SMR.1                                     No correspondence            Out of scope (internal Java Card Fire-
+                                                                           wall).
+                                                                           No contradiction to this ST.
+Application Programming Interface (chapter 7.2.1.2 in platform ST)
+FCS_CKM.1                                     No correspondence            Out of scope of the TOE. No contra-
+(FCS_CKM.1.1, FCS_CKM.1.1[PUF])                                            diction to this ST.
+FCS_CKM.2                                     No correspondence.           Out of scope. No contradiction to this
+                                                                           ST.
+FCS_CKM.3                                     No correspondence.           Out of scope. No contradiction to this
+                                                                           ST.
+FCS_CKM.4                                     FCS_CKM.4                    The Java Card platform fulfills the re-
+(FCS_CKM.4.1, FCS_CKM.4.1[PUF])                                            quirement that all keys are physically
+                                                                           overwritten in a randomized man-
+                                                                           ner].
+                                                                           No contradiction to this ST.
+FCS_COP.1                                     FCS_COP.1/SIG                The requirement FCS_COP.1/SIG of
+(FCS_COP.1.1[PUF_AES]                         FCS_COP.1/PACE               this ST targets electronic signature
+                                                                           generation and is fulfilled by the plat-
+FCS_COP.1.1[PUF_MAC]                                                       form SFR targeting signature genera-
+FCS_COP.1.1[TripleDES]                                                     tion
+FCS_COP.1.1[AES]                                                           FCS_COP.1.1[RSASignaturePKCS1]
+                                                                           and FCS_COP.1.1[ECSignature].
+FCS_COP.1.1[RSACipher]
+                                                                           FCS_COP.1/PACE uses the platform
+FCS_COP.1.1[ECDHPACEKeyAgreement]
+                                                                           functionality    required     by
+FCS_COP.1.1[PIV]                                                           FCS_COP.1.1[AES]             and
+FCS_COP.1.1[ECDH_P1363]
+FCS_COP.1.1[DESMAC]
+FCS_COP.1.1[AESMAC]
+
+
+
+                                                    18 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform SFR                                  Correspondence in this References/Remarks
+                                              ST
+FCS_COP.1.1[RSASignaturePKCS1]                                             FCS_COP.1.1[ECDHPACEKeyAgreeme
+FCS_COP.1.1[ECSignature]                                                   nt]
+FCS_COP.1.1[ECAdd]                                                         The according hash functions of
+                                                                           FCS_COP.1/SIG of this ST are pro-
+FCS_COP.1.1[SHA]                                                           vided by FCS_COP.1.1[SHA].
+FCS_COP.1.1[AES_CMAC]                                                      No contradictions to this ST.
+FCS_COP.1.1[DAP])
+FDP_RIP.1[ABORT]                              No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_RIP.1[APDU]                               No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_RIP.1[GlobalArray_Refined]                No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_RIP.1[bArray]                             No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_RIP.1[KEYS]                               No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_RIP.1[TRANSIENT]                          No correspondence.           Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_ROL.1[FIREWALL]                           No correspondence.           Out of scope (internal Java Card Fire-
+                                                                           wall). The resulting requirements for
+                                                                           applets are reflected in the User
+                                                                           Guidance of the TOE.
+                                                                           No contradiction to this ST.
+Card Security Management (chapter 7.2.1.3 in internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_ACF.1[SecureBox]                          No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_MSA.1[SecureBox]                          No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+
+
+
+                                                    24 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform SFR                                  Correspondence in this References/Remarks
+                                              ST
+FMT_MSA.3[SecureBox]                          No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_SMF.1[SecureBox]                          No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+ModDesG Security Functional Requirements (chapter 7.2.10 in platform ST)
+FDP_IFC.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FDP_IFF.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FIA_ATD.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FIA_USB.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_MSA.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_MSA.3[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_SMF.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_SMR.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FPT_FLS.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FIA_UID.1[MODULAR-DESIGN]                     No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+RMG Security Functional Requirements (chapter 7.2.11 in platform ST)
+FDP_ACC.2[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+
+
+
+                                                    25 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform SFR                                  Correspondence in this References/Remarks
+                                              ST
+                                                                           No contradiction to this ST.
+FDP_ACF.1[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_MSA.3[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_MSA.1[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FMT_SMF.1[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FIA_UID.1[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FIA_UAU.1[RM]                                 No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+Further Security Functional Requirements (chapter 7.1.12 in platform ST)
+FAU_SAS.1[SCP]                                No correspondence            Out of scope (internal Java Card func-
+                                                                           tionality).
+                                                                           No contradiction to this ST.
+FCS_RNG.1                                     In this ST, random num- FCS_RND.1
+                                              bers according to AIS20
+                                              class PTG.3 are required.
+                                              The platform generates
+                                              random numbers with a
+                                              defined quality metric
+                                              that can be used di-
+                                              rectly.
+FCS_RNG.1[HDT]                                No correspondence            Hybrid deterministic random num-
+                                                                           ber generator.
+                                                                           No contradiction to this ST.
+FIA_AFL.1[PIN]                                FIA_AFL.1                    Authentication Failure Handling
+                                                                           (PIN). The fulfillment of the require-
+                                                                           ment is based on the platform re-
+                                                                           quirement.
+                                                                           No contradiction to this ST.
+
+
+
+
+                                                    26 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+ Platform SFR                                 Correspondence in this References/Remarks
+                                              ST
+ FPT_EMSEC.1                                  No correspondence            TOE emanation. No direct corre-
+                                                                           spondence, but platform require-
+                                                                           ment leads to protection of crypto-
+                                                                           graphic keys, PINs and user data.
+                                                                           No contradiction to this ST.
+ FPT_PHP.3                                    FPT_PHP.3                    The fulfillment of the SFR in this ST is
+                                              FPT_EMS.1                    based on the platform SFR (together
+                                                                           with additional countermeasures).
+                                  Table 4: Assessment of the platform SFRs.
+
+2.2.3 Assessment of the Platform Objectives
+The following table provides an assessment of all relevant Platform objectives.
+
+
+ Platform Objective                Correspondence in this ST             References/Remarks
+ OT.SID                            No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.SID_MODULE                     No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+ OT.FIREWALL                       No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.GLOBAL_ARRAYS_CONFID           OT.SCD_Secrecy                        No contradiction to this ST.
+ OT.GLOBAL_ARRAYS_INTEG            OT.DTBS_Integrity_TOE                 No contradiction to this ST.
+ OT.NATIVE                         No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.OPERATE                        No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.REALLOCATION                   No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.RESOURCES                      No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+ OT.SENSITIVE_RESULTS_INTEG No correspondence                            Indirectly relevant for the correct
+                                                                         function of the TOE of this ST, but no
+                                                                         corresponding objectives for the
+                                                                         TOE of this ST.
+                                                                         No contradiction to this ST.
+ OT.ALARM                          OT.Tamper_ID                          Relevant for the protection against
+                                   OT.Tamper_Resistance                  physical tampering. No contradic-
+                                                                         tion to this ST.
+ OT.CIPHER                         No correspondence                     Indirectly relevant for the correct
+                                                                         function of the TOE of this ST, but no
+                                                                         corresponding objectives for the
+                                                                         TOE of this ST. No contradictions.
+
+
+                                                    27 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Platform Objective                 Correspondence in this ST             References/Remarks
+OT.RNG                             O.RBGS                                The objective regarding random
+                                                                         number generation is related.
+                                                                         No contradiction to this ST.
+OT.KEY-MNGT                        OT.SCD_Secrecy                        Secure key management of the plat-
+                                                                         form leads to secrecy of SCD. No
+                                                                         contradiction to this ST.
+OT.PIN-MNGT                        No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+OT.TRANSACTION                     No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+OT.OBJ-DELETION                    No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+OT.APPLI-AUTH                      No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.DOMAIN-RIGHTS                   No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.COMM_AUTH                       No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.COMM_INTEGRITY                  No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.COMM_CONFIDENTIALITY            No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.EXT-MEM                         No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.CARD-MANAGEMENT                 No correspondence                     Out of scope. No contradiction to
+                                                                         this ST.
+OT.SCP.IC                          No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.SCP.RECOVERY                    No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.SCP.SUPPORT                     No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.IDENTIFICATION                  No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.SEC_BOX_FW                      No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.RND                             No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+OT.CARD-CONFIGURATION              No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+
+
+                                                    28 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+ Platform Objective                Correspondence in this ST             References/Remarks
+ OT.ATTACK-COUNTER                 No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+ OT.RESTRICTED-MODE                No correspondence                     Out of scope.
+                                                                         No contradiction to this ST.
+                               Table 5: Assessment of the platform objectives.
+
+
+
+2.2.4 Assessment of Platform Threats
+The following table provides an assessment of all relevant Platform threats.
+
+
+ Platform Threat                           Correspondence in this ST           References/Remarks
+ T.CONFID-APPLI-DATA                       T.SCD_Divulg, T.SCD_Derive          No contradiction to this ST.
+ T.CONFID-JCS-CODE                         No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.CONFID-JCS-DATA                         No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.INTEG-APPLI-CODE                        No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.INTEG-APPLI-CODE.LOAD                   No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.INTEG-APPLI-DATA[REFINED]               T.DTBS_Forgery, T.Sig_Forgery       No contradiction to this ST.
+ T.INTEG-APPLI-DATA.LOAD                   No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.INTEG-JCS-CODE                          No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.INTEG-JCS-DATA                          No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.SID.1                                   No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.SID.2                                   No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.EXE-CODE.1                              No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.EXE-CODE.2                              No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.NATIVE                                  No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.RESOURCES                               No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.UNAUTHORIZED_CARD_MNGT                  No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+
+
+                                                    29 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+ Platform Threat                           Correspondence in this ST           References/Remarks
+ T.COM_EXPLOIT                             No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ T.LIFE_CYCLE                              No correspondence                   Out of scope. No contradiction
+                                                   Security Target Lite
+Common Criteria EAL6 augment ed / EAL6+
+
+
+
+
+M7892 Design Step P11
+
+
+
+
+Document version 2.2 as of 2020-04-23
+
+
+Author: Infineon Technologies
+
+
+
+
+CC Developer Document                     2020-04-23
+                                                                                                                M7892 P11
+                                                                                                        Security Target Lite
+Public
+
+
+
+
+Edition 2020-04-23
+
+Published by Infineon Technologies AG,
+
+81726 Munich, Germany.
+
+© 2020 Infineon Technologies AG
+
+All Rights Reserved.
+
+
+
+
+Legal Disclaimer
+
+The information given in this document shall in no event be regarded as a guarantee of conditions or characteristics. With
+respect to any examples or hints given herein, any typical values stated herein and/or any information regarding the
+application of the device, Infineon Technologies AG hereby disclaims any and all warranties and liabilities of any kind,
+including without limitation, warranties of non-infringement of intellectual property rights of any third party.
+
+Information
+
+For further information on technology, delivery terms and conditions and prices, please contact the nearest Infineon
+Technologies AG Office (www.infineon.com).
+
+Warnings
+
+Due to technical requirements, components may contain dangerous substances. For information on the types in question,
+please contact the nearest Infineon Technologies AG Office.
+
+Infineon Technologies AG components may be used in life-support devices or systems only with the express written approval
+of Infineon Technologies AG, if a failure of such components can reasonably be expected to cause the failure of that life-
+support device or system or to affect the safety or effectiveness of that device or system. Life support devices or systems are
+intended to be implanted in the human body or to support and/or main                            to this ST.
+ T.OBJ-DELETION                            No correspondence                   Out of scope. No contradiction
+                                                                               to this ST.
+ Ttain and sustain and/or protect human life. If they
+fail, it is reasonable to assume that the health of the user or other persons may be endangered.
+
+
+
+
+CC Developer Document                                           2                                                  2020-04-23
+                           .PHYSICAL                                T.Hack_Phys                         N                                                                                   M7892 P11
+                                                                 o                                      Security Target Lite
+Public
+
+Trademarks of Infineon Technologies AG
+AURIX™, C166™, CanPAK™, CIPOS™, C

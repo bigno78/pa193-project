@@ -1,0 +1,1003 @@
+  NXP eDoc Suite v3.5 on JCOP4 P71 –
+     cryptovision ePasslet Suite ––
+Java Card applet configuration providing
+ Secure Signature Creation Device with
+           key import (SSCD)
+
+                Security Target Lite
+                      NSCIB-CC-00229287
+
+                Common Criteria / ISO 15408 / EAL 5+
+
+
+
+
+                       Document Version 1.2 • 2020-12-17
+
+
+      cv cryptovision GmbH • Munscheidstr. 14 • 45886 Gelsenkirchen • Germany
+          www.cryptovision.com • info@cryptovision.com • +49-209-167-2450
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+                                                                               Content
+
+1       Introduction ............................................................................................................................................ 4
+    1.1          ST/TOE Identification ..................................................................................................................................... 4
+    1.2          ST overview ................................................................................................................................................... 4
+    1.3          TOE overview ................................................................................................................................................. 5
+    1.4          TOE description ............................................................................................................................................. 5
+
+2       Conformance claims ............................................................................................................................. 15
+    2.1          CC conformance .......................................................................................................................................... 15
+    2.2          Statement of Compatibility concerning Composite Security Target ........................................................... 15
+
+3       Security problem definition .................................................................................................................. 34
+    3.1          Assets, users and threat agents ................................................................................................................... 34
+    3.2          Threats ......................................................................................................................................................... 34
+    3.3          Organisational Security Policies................................................................................................................... 35
+    3.4          Assumptions ................................................................................................................................................ 36
+
+4       Security Objectives ............................................................................................................................... 37
+    4.1          Security Objectives for the TOE ................................................................................................................... 37
+    4.2          Security Objectives for the Operational Environment ................................................................................ 38
+    4.3          Security Objectives Rationale ...................................................................................................................... 39
+
+5       Extended Component Definition .......................................................................................................... 45
+    5.1          Definition of the Family FPT_EMS ............................................................................................................... 45
+    5.2          Definition of the Family FCS_RND ............................................................................................................... 46
+
+6       IT Security Requirements ...................................................................................................................... 47
+    6.1          General ........................................................................................................................................................ 47
+    6.2          TOE Security Functional Requirements ....................................................................................................... 47
+    6.3          TOE Security Assurance Requirements ....................................................................................................... 59
+    6.4          Security Requirements Rationale ................................................................................................................ 60
+
+7       TOE summary specification .................................................................................................................. 66
+    7.1          Security Functionality .................................................................................................................................. 66
+    7.2          TOE summary specification rationale .......................................................................................................... 73
+
+8       References ............................................................................................................................................ 76
+    Common Criteria ........................................................................................................................................................ 76
+    Protection Profiles ..................................................................................................................................................... 76
+    TOE and Platform References .................................................................................................................................... 76
+    EU regulation ............................................................................................................................................................. 77
+    The DIRECTIVE ........................................................................................................................................................... 77
+    Application and Cryptography standards .................................................................................................................. 77
+
+
+
+                                                                                    2 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+Glossary ......................................................................................................................................................... 79
+
+
+
+
+Version Control
+ Version          Date                  Author                          Changes to Previous Version
+ 1.0              2020-12-09            Thomas Zeggel                   ST-Lite based on ST version 1.0.
+ 1.1              2020-12-15            Thomas Zeggel                   ST-Lite based on ST version 1.1.
+ 1.2              2020-12-17            Thomas Zeggel                   ST-Lite based on ST version 1.2.
+
+
+
+
+                                                                             3 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+1 Introduction
+
+1.1 ST/TOE Identification
+Title:                            NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card
+                                  applet configuration providing Secure Signature Creation De-vice with key
+                                  import (SSCD) – Security Target Lite
+Document Version:                 v1.2
+Origin:                           cv cryptovision GmbH
+Compliant to:                     Protection profiles for secure signature creation device – Part 3: Device with
+                                  key import; English version EN 419211-3:2013, English translation of DIN EN
+                                  419211-3:2014-03; PP Registration: BSI-CC-PP-0075-2012-MA-01; October
+                                  2013 [PP0075]
+Product identification:           NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+TOE identification:               NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card
+                                  applet configuration providing Secure Signature Creation Device with key
+                                  import (SSCD)
+Javacard OS platform:             NXP JCOP4 P71, NSCIB-CC-180212 [Cert_OS]
+Security controller:              NXP N7121, Certification ID BSI-DSZ-CC-1040, [Cert_IC]
+TOE documentation:                Administration and user guide [Guidance]
+
+
+1.2 ST overview
+This document contains the security target for SSCD compliant configuration of the NXP eDoc Suite v3.5 on
+JCOP4 P71 - cryptovision ePasslet Suite. NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite is a
+set of Javacard applications intended to be used exclusively on the JCOP4 P71 Javacard OS platform, which
+is certified according to CC EAL 6+ [Cert_OS]. NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+as well as the JCOP4 operating system are provided on a smart card chip based on the NXP N7121 security
+controller, which is itself certified according to CC EAL 6+ [Cert_IC].
+This security target is strictly conformant to the Protection Profile Protection profiles for Secure Signature
+Creation Device — Part 3: Device with key import (BSI-CC-PP-0075-2012-MA-01) [PP0075].
+The main objectives of this ST are:
+         to introduce TOE and the SSCD application,
+         to define the scope of the TOE and its security features,
+         to describe the security environment of the TOE, including the assets to be protected and the
+          threats to be countered by the TOE and its environment during the product development, produc-
+          tion and usage.
+         to describe the security objectives of the TOE and its environment supporting in terms of integrity
+          and confidentiality of application data and programs and of protection of the TOE.
+         to specify the security requirements which includes the TOE security functional requirements, the
+          TOE assurance requirements and TOE security functionalities.
+The assurance level for the TOE is CC EAL5 augmented with AVA_VAN.5 and ALC_DVS.2.
+
+
+
+
+                                                     4 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+1.3 TOE overview
+The TOE is a Java Card with a set of applets (NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite)
+configured to provide a secure signature creation device (SSCD) with key import. To allow secure access to
+the signature functionality over the contactless interface, it provides an optional PACE mechanism to build
+up a secure channel for the signature PIN.
+
+
+1.4 TOE description
+
+1.4.1 Overview of NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite
+NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite contains a set of Java Card applets for e-ID
+document applications built upon an underlying core library. The following Table 1 provides an overview of
+the individual applications included in NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite:
+
+
+ Product / Application                            Specification                     Configuration
+ ICAO MRTD application with Basic Access Con-     ICAO Doc 9303                     ePasslet3.5/MRTD-BAC
+ tro (BAC) and Supplemental Access Control
+ (SAC)
+ ISO File System application                      ISO 7816                          ePasslet3.5/ISO-FS
+ ISO Driving License application with Basic Ac-   ISO 18013                         ePasslet3.5/IDL-Basic
+ cess Protection (BAP) or Supplemental Access
+ Control (SAC)
+ ISO Driving License application with Extended    ISO 18013                         ePasslet3.5/IDL-Extended
+ Access Protection (EAP) or Extended Access
+ Control (EACv1)
+ ICAO MRTD application with Extended Access       ICAO Doc 9303, TR03110v1.11       ePasslet3.5/MRTD-EAC
+ Control (EACv1)
+ Secure Signature Creation Device application     ISO 7816, PKCS#15                 ePasslet3.5/SSCD
+ supporting PKI utilization – Device with key
+ generation
+ Secure Signature Creation Device application     ISO 7816, PKCS#15                 ePasslet3.5/SSCD-IMP
+ supporting PKI utilization – Device with key
+ import
+ EU Electronic Vehicle Registration application   EU Council Directive 1999/37/EC   ePasslet3.5/eVR
+ EU Electronic Health Insurance application       CWA 15974                         ePasslet3.5/eHIC
+ German eID Document application                  ICAO Doc 9303, TR03110v2.11,      ePasslet3.5/GeID
+                                                  TR03127 v1.15
+ Customizable eID Document application            ICAO Doc 09303 and                ePasslet3.5/GenID
+                                                  TR03110v2.11
+ EU Electronic Residence Permit application       TR03127 v1.15                     ePasslet3.5/eRP
+
+
+Table 1: Configurations of the NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite. Please note
+that not all configurations are certified according to Common Criteria. The TOE of this ST is marked in yel-
+low.
+
+
+
+
+                                                      5 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+These configurations are based on one or more predefined applets; different configurations might use the
+same underlying applet.
+The whole applet code resides in the Flash memory; the applets providing these different configurations
+are instantiated into Flash memory. Multiple configurations (and hence support for different applications)
+can be present at the same time by instantiating multiple applets with their distinct configurations with
+some restrictions detailed below. A common combination could be an ICAO MRTD applet and an SSCD ap-
+plet providing a travel application with LDS data and EAC authentication together with a signature applica-
+tion.
+Via configuration the instanciated applets can be tied to the contactless and/or the contact interface, re-
+spectively.
+
+1.4.2 TOE definition
+The TOE is a combination of hardware and software configured to securely create, use and manage signa-
+ture-creation data (SCD). The TOE consists of
+       the circuitry of the chip (the integrated circuit, IC) including the contact-based interface with hard-
+        ware for the contactless interface including contacts for the antenna, providing basic cryptographic
+        functionalities,
+       the platform with the Java Card operation system JCOP4 together with the JCOP4 P71 documenta-
+        tion according to [ST_OS],
+       NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite – Java Card applet configuration
+        providing a secure signature creation device (SSCD) with key import1
+       the associated Administrator and User Guidance [Guidance] in PDF format and the platform docu-
+        mentation.
+
+
+                              TOE boundary
+
+
+
+
+              Instantiated             Other instantiated ap-                      3rd party
+             Applet of the              plet using ePasslet                         applet
+             ePasslet Suite            Suite code (bytecode                       (bytecode
+              according to             verified according to                      verified ac-
+             User Guidance                User Guidance)                          cording to
+                                                                                  User Guid-
+                                                                                     ance)
+             NXP eDoc Suite v3.5 on JCOP4 P71 - cryptovision
+               ePasslet Suite code in non-volatile memory
+                               (Flash image)
+
+                                          Javacard OS: NXP JCOP4
+
+
+                                           Hardware: NXP N7121
+
+
+
+1Please note that there are two different options: a configuration for the contact-based interface, or a
+configuration for the contactless interface with additional PACE mechanism.
+
+                                                     6 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+
+Figure 1: Schematic view on the Target of Evaluation (TOE) and its boundaries. The TOE is based on the
+certified hardware and Javacard OS. Besides the NXP eDoc Suite v3.5 on JCOP4 - cryptovision ePasslet Suite
+code in non-volatile memory and the applet instantiated from it which forms the TOE of this security target,
+it may also contain additional applets which are not part of the TOE.
+
+
+The TOE’s functionality claimed by this security target is realized by the NXP eDoc Suite v3.5 on JCOP4 P71
+- cryptovision ePasslet Suite in SSCD with key import configuration. The SSCD configuration with key import
+provides a PKCS#15 compliant file structure and a separate DF for the SSCD functionality (D.Sig). While D.Sig
+provides the TOE’s functionality claimed by this security target, the PKCS#15 part is out of scope of the
+certification.
+
+1.4.3 TOE delivery and identification
+The delivery comprises the following items:
+ Type                                 Name                                     Form of delivery
+ Hardware                             NXP Secure Smart Card Control- Micro Controller including on-
+                                      ler N7121 with IC Dedicated Soft- chip software: Firmware and
+                                      ware and Crypto Library           Crypto Lib. The TOE is delivered
+                                                                        as wafer or module. The TOE can
+                                                                        be collected at NXP site or is be-
+                                                                        ing shipped to the customer. See
+                                                                        [AGD_PRE] for details.
+ JCOP4 P71 OS                         ROM Code (Platform ID)                   On-chip software: JCOP4 P71 OS
+                                      FLASH content (FLASH ID)                 included in the Micro Controller
+                                      Patch Code (Patch ID)
+ NXP eDoc Suite v3.5 on JCOP4 Javacard Package                                 On-chip software: NXP eDoc
+ P71 - cryptovision ePasslet Suite                                             Suite included in the Micro Con-
+                                                                               troller
+ Document                             JCOP4 P71 User Guidance and Electronic document via NXP
+                                      Administration Manual (cf. DocStore
+                                      [ST_OS])
+ Document                             HW Objective Data Sheet Electronic document via NXP
+                                      (Conﬁguration Banking & Secure DocStore
+                                      ID), cf. [ST_OS]
+ Document                             Guidance documentation of the Electronic documents via NXP
+                                      certified eDoc Suite configura- DocStore
+                                      tion [Guidance]; it consists of
+                                      three documents:
+                                      (1) NXP eDoc Suite v3.5 on JCOP4
+                                      - cryptovision ePasslet Suite –
+                                      Java Card Applet Suite providing
+                                      Electronic ID Documents applica-
+                                      tions. Guidance Manual.
+                                      (2)   Preparation         Guidance
+                                      (AGD_PRE).
+
+
+
+                                                     7 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+                                      (3)  Operational          Guidance
+                                      (AGD_OPE).
+                                            Table 2: Delivery items
+
+Identification of the platform is performed by the procedure according to [AGD_PRE].
+Once the platform is identified correctly, the correct version of the Java card layer of the TOE (NXP eDoc
+Suite v3.5 on JCOP4 P71 - cryptovision ePasslet Suite, version 3.5) can be verified as descibed in [Guidance].
+
+1.4.4 TOE functions
+The TOE comprises all IT security functionality necessary to ensure the secrecy of the SCD and the security
+of the digital signature. The TOE provides the following functions:
+
+       to import signature creation data (SCD) and, optionally, the correspondent signature verification
+        data (SVD),
+       to, optionally, receive and store certificate info,
+       to switch the TOE from a non-operational state to an operational state, and
+       if in an operational state, to create electronic signatures for data with the following steps:
+        a) select an SCD if multiple are present in the SSCD,
+        b) authenticate the signatory and determine its intent to sign,
+        c) receive data to be signed or a unique representation thereof (DTBS/R)
+        d) apply an appropriate cryptographic signature-creation function using the selected SCD to the
+           DTBS/R.
+The TOE may implement its function for digital signature creation to conform to the specifications in ETSI
+TS 101 733 (CAdES) [CADES], ETSI TS 101 903 (XAdES) [XADES] and ETSI TS 101 903 (PADES) [PADES].
+The TOE is prepared for the signatory's use by
+       import at least one set of SCD, and
+       personalising for the signatory by storing in the TOE:
+        a) the signatory’s reference authentication data (RAD)
+        b) optionally, certificate info for at least one SCD in the TOE.
+After preparation the SCD shall be in a non-operational state. Upon receiving a TOE the signatory shall verify
+its non-operational state and change the SCD state to operational.
+
+After import the SCD is in a non-operational state. Upon receiving a TOE the signatory shall verify its non-
+operational state and change the SCD state to operational.
+
+After preparation the intended legitimate user should be informed of the signatory’s verification authenti-
+cation data (VAD) required for use of the TOE in signing. If the VAD is a password or PIN, the means of
+providing this information is expected to protect the confidentiality and the integrity of the corresponding
+RAD.
+
+If the use of an SCD is no longer required, then it should be destroyed (e.g. by erasing it from memory) as
+well as the associated certificate info, if any exists.
+
+1.4.5 Operation of the TOE
+This paragraph presents a functional overview of the TOE in its distinct operational environments:
+
+
+                                                     8 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+       The preparation environment, where the TOE interacts with a certification service provider (CSP)
+        through a SCD/SVD generation application to import the signature creation data (SCD) and a certif-
+        icate generation application (CGA) to obtain a certificate for the signature validation data (SVD)
+        corresponding to the SCD the certification service provider has generated. The SCD/SVD generation
+        application transmits the SVD to the CGA. The initialisation environment interacts further with the
+        TOE to personalise it with the initial value of the reference authentication data (RAD).
+       The signing environment where the TOE interacts with a signer through a signature creation appli-
+        cation (SCA) to sign data after authenticating the signer as its signatory. The signature creation ap-
+        plication provides the data to be signed (DTBS), or a unique representation thereof (DTBS/R) as
+        input to the TOE signature creation function and obtains the resulting digital signature2.
+       The management environments where the TOE interacts with the user or an SSCD-provisioning ser-
+        vice provider to perform management operations, e.g. for the signatory to reset a blocked RAD. A
+        single device, e.g. a smart card terminal, may provide the required secure environment for man-
+        agement and signing.
+The preparation environment, the signing environment and the management environment are secure and
+protect data exchanged with the TOE. Figure 3 in prEN 14169-1:2011 illustrates the operational environ-
+ment.
+The TOE stores signature creation data (SCD) and reference authentication data (RAD). The TOE may store
+multiple instances of SCD. In this case the TOE provides a function to identify each SCD and the SCA can
+provide an interface to the signer to select an SCD for use in the signature creation function of the SSCD.
+The TOE protects the confidentiality and integrity of the SCD and restricts its use in signature creation to its
+signatory. The digital signature created by the TOE may be used to create an advanced electronic signature
+as defined in Article 5.1 of the [Directive]3. Determining the state of the certificate as qualified is beyond
+the scope of this standard.
+The signature creation application is assumed to protect the integrity of the input it provides to the TOE
+signature creation function as being consistent with the user data authorised for signing by the signatory.
+Unless implicitly known to the TOE, the SCA indicates the kind of the signing input (as DTBS/R) it provides
+and computes any hash value required. The TOE may augment the DTBS/R with signature parameters it
+stores and then computes a hash value over the input as needed by the kind of input and the used crypto-
+graphic algorithm.
+The TOE stores signatory reference authentication data (RAD) to authenticate a user as its signatory. The
+RAD is a password (e.g. PIN), a biometric template or a combination of these. The TOE protects the confi-
+dentiality and integrity of the RAD. The TOE may provide a user interface to directly receive verification
+authentication data (VAD) from the user, alternatively, the TOE receive the VAD from the signature creation
+application (SCA). If the signature creation application handles, is requesting or obtaining a VAD from the
+user, it is assumed to protect the confidentiality and integrity of this data.
+A certification service provider and a SSCD-provisioning service provider interact with the TOE in the secure
+preparation environment to perform any preparation function of the TOE required before control of the
+TOE is given to the legitimate user. These functions may include:
+       initialising the RAD,
+       generating a key pair,
+
+2 At a pure functional level the SSCD creates a digital signature; for an implementation of the SSCD, in that
+meeting the requirements of this PP and with the key certificate created as specified in the Directive, Annex
+I, the result of the signing process can be used as to create a qualified electronic signature.
+3Please note that while this security target - following the according protection profile BSI-CC-PP-0075-
+2012-MA-01 - references the [Directive], it also incorporates the requirements of the eIDAS regulation [Re-
+gulation] and the according commission implementing regulation [Implementing].
+
+                                                     9 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+         storing personal information of the legitimate user.
+In the case at hand the TOE is a smart card or electronic ID document. In this case a smart-card terminal
+may be deployed that provides the required secure environment to handle a request for signatory authori-
+zation. A signature can be obtained on a document prepared by a signature-creation application component
+running on personal computer connected to the card terminal. The signature creation application, after
+presenting the document to the user and after obtaining the authorization PIN initiates the electronic sig-
+nature creation function of the smart card through the terminal.
+The RAD verification is typically performed by direct PIN verification (VERIFY PIN command); to further pro-
+tect the RAD (password or PIN) – especially in a contactless application scenario – the Password Authenti-
+cated Connection Establishmanet (PACE) protocol according to [TR03110] can be used.
+
+1.4.6 Major security features of the TOE
+The TOE provides the following TOE security functionalities:
+         TSF_Access manages the access to objects (files, directories, data and secrets) stored in the applet’s
+          file system. It also controls write access of initialization, pre-personalization and personalization
+          data4.
+         TSF_Admin manages the storage of manufacturing data, pre-personalization data and personaliza-
+          tion data.
+         TSF_Secret ensures secure management of secrets such as cryptographic keys. This covers secure
+          key storage, access to keys as well as secure key deletion. These mechanisms are mainly provided
+          by TSF_OS.
+         TSF_Crypto performs high level cryptographic operations. The implementation is mainly based on
+          the Security Functionalities provided by TSF_OS.
+         TSF_SecureMessaging realizes a secure communication channel.
+         TSF_Auth realizes two authentication mechanisms: PIN verification and alternatively authentication
+          with the PACE protocol.
+         TSF_Integrity protects the integrity of internal applet data like the Access control lists.
+         TSF_OS contains all security functionalities provided by the certified platform (IC, Javacard opera-
+          tion system). The cryptographic operations needed for this TOE are provided by the platform:
+              o   Electronic signature-generation with RSA and key sizes of 2000 up to 4096 bit in steps of 1
+                  bit, or ECDSA with key sizes of key sizes of 160 bit to 521 bit in steps of one bit.
+              o   Secure messaging with AES (128, 192 or 256 bit key length).
+              o   PACE authentication with key lengths of 160 bit to 521 bit in steps o Recognition Arrangement
+evidence adduced.                                                                                       recognition for components
+                                                                                                        up to EAL 2 and ALC_FLR
+This certificate is not an endorsement of the IT Product by the Federal Office for                                  only
+Information Security or any other organisation that recognises or gives effect to this
+certificate, and no warranty of the IT Product by the Federal Office for Information
+Security or any other organisation that recognises or gives effect to this certificate, is
+either expressed or implied.
+Bonn, 12 February 2020
+For the Federal Office for Information Security
+
+
+
+
+Bernd Kowalski                              L.S.
+Head of Division
+
+                                   Bundesamt für Sicherheit in der Informationstechnik
+                       Godesberger Allee 185-189 - D-53175 Bonn -    Postfach 20 03 63 - D-53133 Bonn
+                   Phone +49 (0)228 99 9582-0 - Fax +49 (0)228 9582-5477 - Infoline +49 (0)228 99 9582-111
+Certification Report                                            BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+                       This page is intentionally left blank.
+
+
+
+
+                                                                                  4 / 33
+BSI-DSZ-CC-0879-V4-2020                                                                                        Certification Report
+
+
+
+
+Contents
+A. Certification......................................................................................................................6
+   1.   Preliminary Remarks....................................................................................................6
+   2.   Specifications of the Certification Procedure...............................................................6
+   3.   Recognition Agreements..............................................................................................7
+   4.   Performance of Evaluation and Certification................................................................8
+   5.   Validity of the Certification Result.................................................................................8
+   6.   Publication....................................................................................................................9
+B. Certification Results.......................................................................................................10
+   1. Executive Summary....................................................................................................11
+   2. Identification of the TOE.............................................................................................12
+   3. Security Policy............................................................................................................15
+   4. Assumptions and Clarification of Scope.....................................................................15
+   5. Architectural Information.............................................................................................16
+   6. Documentation...........................................................................................................16
+   7. IT Product Testing.......................................................................................................16
+   8. Evaluated Configuration.............................................................................................17
+   9. Results of the Evaluation............................................................................................18
+   10. Obligations and Notes for the Usage of the TOE.....................................................19
+   11. Security Target..........................................................................................................20
+   12. Regulation specific aspects (eIDAS, QES)..............................................................20
+   13. Definitions.................................................................................................................20
+   14. Bibliography..............................................................................................................23
+C. Excerpts from the Criteria..............................................................................................26
+
+D. Annexes.........................................................................................................................27
+
+
+
+
+                                                                                                                                 5 / 33
+Certification Report                                                               BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+A.      Certification
+
+1.      Preliminary Remarks
+Under the BSIG1 Act, the Federal Office for Information Security (BSI) has the task of
+issuing certificates for information technology products.
+Certification of a product is carriedf one bit (ECC).
+
+1.4.7 TOE life cycle
+This paragraph is based on the protection profile [PP0075].
+
+1.4.7.1    General
+
+
+
+4 In the context of this security target the three categories are defined as follows: initialization comprises
+the preparation of the TOE based on proprietary operations of the platform with the Java Card operation
+system; pre-personalization comprises the configuration of the card manager and security domains as well
+as the generation of applet instances using Global Platform commands. Personalization is carried out after-
+wards using commands of the applet layer of the TOE.
+
+                                                     10 of 82
+ NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+The TOE life cycle distinguishes stages for development, production, preparation and operational use. The
+development and production of the TOE (cf. CC part 1 [CC_1], para.139) together constitute the develop-
+ment phase of the TOE.
+
+
+   Hardware
+   development
+   and certifica-
+                                                                                            NXP      eDoc
+   tion
+                                                 Javacard OS                                Suite v3.5 on
+                           Guidance                                                         JCOP4 - cryp-
+                                                 development
+                           manuals,                                                         tovision
+                                                 and certifica-
+                           samples                                                          ePasslet
+                                                 tion
+                                                                          Guidance          Suite devel-
+                                                                          manuals,          opment and
+                                                                          samples           certification
+                           Secure de-
+                           livery     of
+   Hardware                chips as cer-         Secure pro-
+   production              tified in CC          duction     of
+                           hardware              chips with Ja-           Secure de-
+                           certification         vacard OS and            livery of ap-
+                                                 NXP      eDoc            plet code as
+                                                 Suite v3.5 on            certified in
+                                                 JCOP4 - cryp-            CC applet
+                                                 tovision                 certification
+                                                 ePasslet Suite
+                                                 in       Flash
+                                                 memory
+
+
+Figure 2: Overview of the development phase of the TOE, which contains development and production
+of the TOE. After the secure production following the process certified for the Javacard OS, the chips are
+delivered to the SSCD provisioning service using the delivery process already established for the OS. Gray
+boxes indicate the steps which are subject to evaluation according to the assurance life cycle (ALC) class.
+
+
+
+The development phase is subject of CC evaluation according to the assurance life cycle (ALC) class.
+
+
+The development phase ends with the delivery of the TOE to an SSCD-provisioning service provider or a
+card manufacturer. This is also the end of the scope of the certification according to Common Criteria.
+
+
+
+
+                                                     11 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+
+
+          CSP                                Development phase (see fig. 2)
+      SCD/SVD GA
+  SCD/SVD generation                                                    Delivery to SSCD provisioning service
+  SCD export
+  SVD export                      SSCD preparation
+                                  Installation of SSCD             Personalisation for the
+                                  SCD/SVD import                   signatory
+
+                                  SVD import*                      RAD installation
+
+                                  import of certificate info       VAD definition
+
+          CSP
+           CGA                                                         Delivery to Signatory
+ Certificate generation
+ Directory service                SSCD operational use
+
+                                              Operational usage of SCD
+                                              Signature creation
+
+                                              Destruction of SCD
+                                              destruction of SCD
+                                              deletion of certificate info
+
+
+                                                        Usage phase
+
+
+Figure 3: Example of TOE lifecycle following figure 1 of [PP0075]. Note that import of certificate info during
+TOE preparation and deletion of certificate info when SCD is destroyed are optional. The delivery to the
+SSCD provisioning service after the development phase is also the end of the scope of the certification ac-
+cording to Common Criteria.
+
+The operational usage of the TOE comprises the preparation stage and the operational use stage. The TOE
+operational use stage begins when the signatory has obtained both the VAD and the TOE. Enabling the TOE
+for signing requires at least one set of SCD stored in its memory.
+Figure 3 shows an example of the lifecycle where an SCD or SCD/SVD pair is imported from SSCD-
+provisioning service before delivery to the signatory. The lifecycle may allow import of SCD or SCD/SVD key
+pairs after delivery to the signatory as well.
+The TOE life cycle ends when all keys stored in it have been rendered permanently unusable. Rendering a
+key in the SSCD unusable may include deletion of any stored corresponding certificate info. The lifecycle
+may allow generation of SCD or SCD/SVD key pairs after delivery to the signatory as well.
+
+1.4.7.2   Preparation stage
+The preparation phase of the TOE lifecycle is processing the TOE from the customer's acceptance of the
+delivered TOE to a state ready for operation by the signatory. The customer receiving the TOE from the
+
+
+                                                    12 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+manufacturer is the SSCD-provisioning service that prepares and provides the SSCD to subscribers. The
+preparation includes
+         Create and configure the signature application according to AGD_PRE; this step involves applet
+          instanciation as well as creation of the file system (card profile).5
+         The personalisation of the TOE for use by the signatory, i.e. the installation of the RAD in the TOE
+          and handover of VAD to the signatory.
+         The initialisation of the TOE, i.e. the CSP generates the SCD/SVD pair by means of a SCD/SVD gen-
+          eration device, loads the SCD to the TOE, and sends the SVD to the CGA. The TOE may import and
+          store the SCD/SVD pair.
+         The generation of the (qualified) certificate containing among others (cf. [1], Annex II)
+              a) the SVD which correspond to SCD under the control of the signatory;
+              b) the name of the signatory or a pseudonym, which is to be identified as such,
+              c) an indication of the beginning and end of the period of validity of the certificate.
+
+         The preparation may include optional loading of the certificate info into the SSCD for signatory con-
+          venience.
+The CSP generates a SCD/SVD pair and imports SCD, and optionally also SVD, into the SSCD. The CSP ensures
+          a) the correspondence between SCD and SVD,
+          b) that algorithm and key size for the SVD are appropriate.
+
+Please take note that verifying whether the claimed identity of the signer originates from that given SSCD
+has to be done by the CSP operating the CGA.
+If the TOE is used for creation of advanced electronic signatures, the certificate links the signature verifica-
+tion data to the person (i.e. the signatory) and confirms the identity of that person (cf. [Directive], article 2,
+Clause 9).
+This security target requires the TOE to provide mechanisms for import of SCD, implementation of the SCD
+and personalisation. The environment is assumed to protect all other processes for TOE preparation like
+SCD transfer between the SCD/SVD generation device and the TOE, and SVD transfer between the SCD/SVD
+generation device and the CGA. The CSP may export the SVD to the TOE for internal use by the TOE (e.g.,
+self-test).
+Before generating a (qualified) certificate, the CSP is expected to first store the SCD in a SSCD. A secure
+channel with the TOE may be used to support this, by ensuring integrity of the SCD during transmission to
+the TOE.
+
+1.4.7.3    Operational use stage
+In this lifecycle stage the signatory can use the TOE to create advanced electronic signatures.
+The operational phase of the TOE starts when at least one SCD/SVD pair is generated by the CSP and the
+SCD is imported into the SSCD and when the signatory takes control over the TOE and makes the SCD oper-
+ational. The signatory uses the TOE with a trustworthy SCA in a secured environment only. The SCA is as-
+sumed to protect the DTBS/R during the transmission to the TOE.
+
+
+
+
+5 This preparation step has been added to the life cycle definition of the underlying Protection Profile and
+is necessary to provide the basic functionality (i.e. application and file system) for the following steps. It
+may be performed by the SSCD-provisioning service provider directly or by a separate entity (card manu-
+facturer).
+
+                                                    13 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+The signatory can also interact with the SSCD to perform management tasks, e.g. reset a RAD value or use
+counter if the password/PIN in the reference data has been lost or blocked. Such management tasks require
+a secure environment.
+The signatory can render an SCD in the TOE permanently un out on the instigation of the vendor or a distributor,
+hereinafter called the sponsor.
+A part of the procedure is the technical examination (evaluation) of the product according
+to the security criteria published by the BSI or generally recognised security criteria.
+The evaluation is normally carried out by an evaluation facility recognised by the BSI or by
+BSI itself.
+The result of the certification procedure is the present Certification Report. This report
+contains among others the certificate (summarised assessment) and the detailed
+Certification Results.
+The Certification Results contain the technical description of the security functionality of
+the certified product, the details of the evaluation (strength and weaknesses) and
+instructions for the user.
+
+2.      Specifications of the Certification Procedure
+The certification body conducts the procedure according to the criteria laid down in the
+following:
+●   Act on the Federal Office for Information Security 1
+●   BSI Certification and Approval Ordinance2
+●   BSI Schedule of Costs 3
+●   Special decrees issued by the Bundesministerium des Innern (Federal Ministry of the
+    Interior)
+●   DIN EN ISO/IEC 17065 standard
+●   BSI certification: Scheme documentation describing the certification process (CC-
+    Produkte) [3]
+●   BSI certification: Scheme documentation on requirements for the Evaluation Facility, its
+    approval and licencing process (CC-Stellen) [3]
+●   Common Criteria for IT Security Evaluation (CC), Version 3.1 4 [1] also published as
+    ISO/IEC 15408.
+
+1
+     Act on the Federal Office for Information Security (BSI-Gesetz - BSIG) of 14 August 2009,
+     Bundesgesetzblatt I p. 2821
+2
+     Ordinance on the Procedure for Issuance of Security Certificates and approval by the Federal Office for
+     Information Security (BSI-Zertifizierungs- und -Anerkennungsverordnung - BSIZertV) of 17 December
+     2014, Bundesgesetzblatt 2014, part I, no. 61, p. 2231
+3
+     Schedule of Cost for Official Procedures of the Bundesamt für Sicherheit in der Informationstechnik
+     (BSI-Kostenverordnung, BSI-KostV) of 3 March 2005, Bundesgesetzblatt I, p. 519
+
+
+
+                                                                                                           6 / 33
+BSI-DSZ-CC-0879-V4-2020                                                              Certification Report
+
+
+
+
+●   Common Methodology for IT Security Evaluation (CEM), Version 3.1 [2] also published
+    as ISO/IEC 18045
+●   BSI certification: Application Notes and Interpretation of the Scheme (AIS) [4]
+
+3.      Recognition Agreements
+In order to avoid multiple certification of the same product in different countries a mutual
+recognition of IT security certificates - as far as such certificates are based on ITSEC or
+CC - under certain conditions was agreed.
+
+3.1.    European Recognition of CC – Certificates (SOGIS-MRA)
+The SOGIS-Mutual Recognition Agreement (SOGIS-MRA) Version 3 became effective in
+April 2010. It defines the recognition of certificates for IT-Products at a basic recognition
+level and, in addition, at higher recognition levels for IT-Products related to certain SOGIS
+Technical Domains only.
+The basic recognition level includes Common Criteria (CC) Evaluation Assurance Levels
+EAL 1 to EAL 4. For "Smartcards and similar devices" a SOGIS Technical Domain is in
+place. For "HW Devices with Security Boxes" a SOGIS Technical Domains is in place, too.
+In addition, certificates issued for Protection Profiles based on Common Criteria are part of
+the recognition agreement.
+The current list of signatory nations and approved certification schemes, details on
+recognition, and the history of the agreement can be seen on the website at
+https://www.sogis.eu.
+The SOGIS-MRA logo printed on the certificate indicates that it is recognised under the
+terms of this agreement by the related bodies of the signatory nations. A disclaimer
+beneath the logo indicates the specific scope of recognition.
+This certificate is recognized under SOGIS-MRA for all assurance components selected.
+
+3.2.    International Recognition of CC – Certificates (CCRA)
+The international arrangement on the mutual recognition of certificates based on the CC
+(Common Criteria Recognition Arrangement, CCRA-2014) has been ratified on 08
+September 2014. It covers CC certificates based on collaborative Protection Profiles (cPP)
+(exact use), CC certificates based on assurance components up to and including EAL 2 or
+the assurance family Flaw Remediation (ALC_FLR) and CC certificates for Protection
+Profiles and for collaborative Protection Profiles (cPP).
+The current list of signatory nations and approved certification schemes can be seen on
+the website: https://www.commoncriteriaportal.org.
+The Common Criteria Recognition Arrangement logo printed on the certificate indicates
+that this certification is recognised under the terms of this agreement by the related bodies
+of the signatory nations. A disclaimer beneath the logo indicates the specific scope of
+recognition.
+This certificate is recognized according to the rules of CCRA-2014, i. e. up to and including
+CC part 3 EAL 2+ ALC_FLR components.
+
+4
+     Proclamation of the Bundesministerium des Innern of 12 February 2007 in the Bundesanzeiger dated
+     23 February 2007, p. 3730
+
+
+
+                                                                                                    7 / 33
+Certification Report                                                       BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+4.      Performance of Evaluation and Certification
+The certification body monitors each individual evaluation to ensure a uniform procedure, a
+uniform interpretation of the criteria and uniform ratings.
+The product Infineon Security Controller M7893 B11 with optional RSA2048/4096
+v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and Toolbox v2.03.008
+and with specific IC dedicated software (firmware), has undergone the certification
+procedure at BSI. This is a re-certification based on BSI-DSZ-CC-0879-V3-2018. Specific
+results from the evaluation process BSI-DSZ-CC-0879-V3-2018 were re-used.
+The evaluation of the product Infineon Security Controller M7893 B11 with optional
+RSA2048/4096 v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and
+Toolbox v2.03.008 and with specific IC dedicated software (firmware), was conducted by
+TÜV Informationstechnik GmbH. The evaluation was completed on 11 February 2020.
+TÜV Informationstechnik GmbH is an evaluation facility (ITSEF) 5 recognised by the
+certification body of BSI.
+For this certification procedure the sponsor and applicant is: Infineon Technologies AG.
+The product was developed by: Infineon Technologies AG.
+The certification is concluded with the comparability check and the production of this
+Certification Report. This work was completed by the BSI.
+
+5.      Validity of the Certification Result
+This Certification Report applies only to the version of the product as indicated. The
+confirmed assurance package is valid on the condition that
+●   all stipulations regarding generation, configuration and operation, as given in the
+    following report, are observed,
+●   the product is operated in the environment described, as specified in the following report
+    and in the Security Target.
+For the meaning of the assurance components and assurance levels please refer to CC
+itself. Detailed references are listed in part C of this report.
+The Certificate issued confirms the assurance of the product claimed in the Security Target
+at the date of certification. As attack methods evolve over time, the resistance of the
+certified version of the product against new attack methods needs to be re-assessed.
+Therefore, the sponsor should apply for the certified product being monitored within the
+assurance continuity program of the BSI Certification Scheme (e.g. by a re-assessment or
+re-certification). Specifically, if results of the certification are used in subsequent evaluation
+and certification procedures, in a system integration process or if a user's risk
+management needs regularly updated results, it is recommended to perform a re-
+assessment on a regular e.g. annual basis.
+In order to avoid an indefinite usage of the certificate when evolved attack methods would
+require a re-assessment of the products resistance to state of the art attack methods, the
+maximum validity of the certificate has been limited. The certificate issued on 12 February
+2020 is valid until 11 February 2025. Validity can be re-newed by re-certification.
+The owner of the certificate is obliged:
+
+5
+     Information Technology Security Evaluation Facility
+
+
+
+                                                                                             8 / 33
+BSI-DSZ-CC-0879-V4-2020                                                        Certification Report
+
+
+
+
+     1. when advertising the certificate or the fact of the product's certification, to refer to
+        the Certification Report as well as to provide the Certification Report, the Security
+        Target and user guidance documentation mentioned herein to any customer of the
+        product for the application and usage of the certified product,
+     2. to inform the Certification Body at BSI immediately about vulnerabilities of the
+        product that have been identified by the developer or any third party after issuance
+        of the certificate,
+     3. to inform the Certification Body at BSI immediately in the case that security relevant
+        changes in the evaluated life cycle, e.g. related to development and production sites
+        or processes, occur, or the confidentiality of documentation and information related
+        to the Target of Evaluation (TOE) or resulting from the evaluation and certification
+        procedure where the certification of the product has assumed this confidentiality
+        being maintained, is not given any longer. In particular, prior to the dissemination of
+        confidential documentation and information related to the TOE or resulting from the
+        evaluation and certification procedure that do not belong to the deliverables
+        according to the Certification Report part B, or for those where no dissemination
+        rules have been agreed on, to third parties, the Certification Body at BSI has to be
+        informed.
+In case of changes to the certified version of the product, the validity can be extended to
+the new versions and releases, provided the sponsor applies for assurance continuity (i.e.
+re-certification or maintenance) of the modified product, in accordance with the procedural
+requirements, and the evaluation does not reveal any security deficiencies.
+
+6.      Publication
+The product Infineon Security Controller M7893 B11 with optional RSA2048/4096
+v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and Toolbox v2.03.008
+and with specific IC dedicated software (firmware), has been included in the BSI list of
+certified products, which is published regularly (see also Internet: https://www.bsi.bund.de
+and [5]). Further information can be obtained from BSI-Infoline +49 228 9582-111.
+Further copies of this Certification Report can be requested from the developer 6 of the
+product. The Certification Report may also be obtained in electronic form at the internet
+address stated above.
+
+
+
+
+6
+     Infineon Technologies AG
+     Am Campeon 1-12
+     85579 Neubiberg
+
+
+
+                                                                                              9 / 33
+Certification Report                                                    BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+B.      Certification Results
+The following results represent a summary of
+●   the Security Target of the sponsor for the Target of Evaluation,
+●   the relevant evaluation results from the evaluation facility, and
+●   complementary notes and stipulations of the certification body.
+
+
+
+
+                                                                                         10 / 33
+usable. Rendering the last SCD in the TOE per-
+manently unusable ends the life of the TOE as SSCD.
+The TOE may support functions to generate additional signing keys. If the TOE supports these functions it
+will support further functions to securely obtain certificates for the new keys. For an additional key the
+signatory may be allowed to choose the kind of certificate (qualified, or not) to obtain for the SVD of the
+new key. The signatory may also be allowed to choose some of the data in the certificate request for in-
+stance to use a pseudonym instead of the legal name in the certificate5. If the conditions to obtain a quali-
+fied certificate are met, the new key can also be used to create advanced electronic signatures. The optional
+TOE functions for additional key generation and certification may require additional security functions in
+the TOE and an interaction with the SSCD-provisioning service provider in an environment that is secure.
+The TOE life cycle as SSCD ends when all SCD stored in the TOE are destructed. This may include deletion of
+the corresponding certificates.
+
+
+
+
+                                                    14 of 82
+NXP eDoc Suite v3.5 on JCOP4 P71 / SSCD with Key Import Security Target Lite
+
+
+2 Conformance claims
+
+2.1 CC conformance
+This security target claims conformance6 to:
+     Common Criteria for Information Technology Security Evaluation, Part 1: Introduction and General
+        Model; Version 3.1, Revision 5, April 2017; CCMB-2017-04-001, [CC_1],
+    �   NXP Secure Smart Card Controller
+   P60D024/016/012yVB(Y/Z/A)/yVF
+   Security Target Lite
+   Rev. 4.4 — 29 October 2018                            Evaluation documentation
+   BSI-DSZ-CC-0939-V3                                                    PUBLIC
+
+
+
+
+Document information
+Info                 Content
+Keywords            CC, Security Target Lite, P60D024/016/012yVB(Y/Z/A)/yVF
+Abstract            Security Target Lite of the
+                    NXP Secure Smart Card Controller P60D024/016/012yVB(Y/Z/A)/yVF,
+                    which is developed and provided by NXP Semiconductors according to
+                    the Common Criteria for Information Technology Security Evaluation
+                    Version 3.1 at Evaluation Assurance Level 6 augmented.
+NXP Semiconductors                             P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                                                                   Security Target Lite
+
+
+
+Revision history
+Rev         Date                 Description
+Rev. 4.1    23-November-2015     Derived from P60D024/016/012yVB(Y/Z/A)/yVF Security Target
+Rev. 4.2    29-May-2018          Revise wording for access control policy SFRs to be consistent with datasheet MMU
+                                 errata update
+Rev. 4.3    21-June-2018         This ST now claims compliance to CC v3.1 Rev. 5
+                                 Improve consistency in SFR wording
+                                 Clarify read/write access permission
+                             BSI-DSZ-CC-0879-V4-2020                                                           Certification Report
+
+
+
+
+1.     Executive Summary
+The Target of Evaluation (TOE) is an Infineon Security Controller M7893 B11 with optional
+Software Library RSA2048/4096 v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010
+libraries, and Toolbox v2.03.008, as well as with speci    FCS.COP.1[HW_DES] now claims compliance to NIST SP800-67
+Rev. 4.4    29-October-2018      Update access control SFRs to reflect three access permissions enforeced by MMU
+
+Latest version is: Rev. 4.4 (29 October 2018)
+
+
+
+
+Contact information
+For additional information, please visit: http://www.nxp.com
+For sales office addresses, please send an email to: salesaddresses@nxp.com
+                                      All information provided in this document is subject to legal disclaimers.     © NXP B.V. 2018. All rights reserved.
+
+Evaluation documentation                          Rev. 4.4 — 29 October 2018                                                                  2 of 87
+PUBLIC
+NXP Semiconductors                                           P60D024/016/012yVB(Y/Z/A)/yVF
+                                                                fic IC dedicated software (firmware).
+The TO                                                             Security Target Lite
+
+
+
+
+1. ST Introduction
+             E p

@@ -1,0 +1,376 @@
+{
+   "title":"IFX_CCI_000003h IFX_CCI_000005h IFX_CCI_000008h IFX_CCI_00000Ch IFX_CCI_000013h IFX_CCI_000014h IFX_CCI_000015h IFX_CCI_00001Ch IFX_CCI_00001Dh IFX_CCI_000021h IFX_CCI_000022h",
+   "versions":{
+      "eal":[
+         "EAL6+",
+         "EAL 6"
+      ],
+      "des":[
+         "Triple-DES",
+         "Triple DES",
+         "TDES",
+         "3DES"
+      ],
+      "ecc":[
+         "ECC"
+      ],
+      "rsa":[
+         "RSA2048",
+         "RSA4096"
+      ],
+      "sha":[
+         "SHA-1",
+         "SHA-256"
+      ]
+   },
+   "table_of_contents":[
+      [
+         "2.2.1",
+         "Hardware of the TOE",
+         26
+      ],
+      [
+         "2.2.2",
+         "Firmware and software of the TOE",
+         27
+      ],
+      [
+         "2.2.3",
+         "Interfaces of the TOE",
+         32
+      ],
+      [
+         "2.2.4",
+         "Guidance documentation",
+         33
+      ],
+      [
+         "2.2.5",
+         "Forms of delivery",
+         35
+      ],
+      [
+         "2.2.6",
+         "Production sites",
+         37
+      ],
+      [
+         "3.1.1",
+         "Adding Objectives",
+         39
+      ],
+      [
+         "3.1.2",
+         "AES and TDES",
+         40
+      ],
+      [
+         "3.1.3",
+         "Loader",
+         40
+      ],
+      [
+         "3.1.4",
+         "CIPURSE Cryptographi Library (CCL)",
+         41
+      ],
+      [
+         "3.1.5",
+         "Summary",
+         42
+      ],
+      [
+         "4.1.1",
+         "Additional Threat due to TOE specific Functionality",
+         43
+      ],
+      [
+         "4.1.2",
+         "Assets regarding the Threats",
+         44
+      ],
+      [
+         "4.2.1",
+         "Augmented Organizational Security Policy",
+         46
+      ],
+      [
+         "4.3.1",
+         "Augmented Assumptions",
+         47
+      ],
+      [
+         "4.3.2",
+         "Note regarding CIPURSE™ CL",
+         48
+      ],
+      [
+         "5.3.1",
+         "Clarification of “Treatment of User Data (OE.Resp-Appl)”",
+         54
+      ],
+      [
+         "5.3.2",
+         "Clarification of “Protection during Composite product Manufacturing (OE.Process-Sec-IC)”",
+         54
+      ],
+      [
+         "6.1.1",
+         "Definition of FPT_TST.2",
+         60
+      ],
+      [
+         "6.1.2",
+         "TSF self-test (FPT_TST)",
+         61
+      ],
+      [
+         "7.1.1",
+         "Extended Components FCS_RNG.1 and FAU_SAS.1",
+         65
+      ],
+      [
+         "7.1.2",
+         "Subset of TOE testing",
+         70
+      ],
+      [
+         "7.1.3",
+         "Memory access control",
+         71
+      ],
+      [
+         "7.1.4",
+         "Support of Cipher Schemes",
+         74
+      ],
+      [
+         "7.1.5",
+         "Data Integrity FDP_SDI.2 and FDP_SDC.1",
+         103
+      ],
+      [
+         "7.1.6",
+         "Application Note to FPT_FLS.1 Failure with preservation of secure state",
+         104
+      ],
+      [
+         "7.3.1",
+         "Refinements",
+         109
+      ],
+      [
+         "7.4.1",
+         "Rationale for the Security Functional Requirements",
+         113
+      ],
+      [
+         "7.4.2",
+         "Rationale of the Assurance Requirements",
+         124
+      ],
+      [
+         "8.1.1",
+         "Listing of SFRs implemented by SF_DPM Device Phase Management",
+         126
+      ],
+      [
+         "8.2.1",
+         "Listing of SFRs implemented by SF_PS Protection against Snooping",
+         129
+      ],
+      [
+         "8.3.1",
+         "Listing of SFRs implemented by SF_PMA Protection against Modifying Attacks",
+         131
+      ],
+      [
+         "8.4.1",
+         "Listing of SFRs implemented by SF_PLA Protection against Logical Attacks",
+         132
+      ],
+      [
+         "8.5.1",
+         "Implementation of AES and TDES by the Symmetric Cryptographic Coprocessor SCP",
+         133
+      ],
+      [
+         "8.5.2",
+         "Implementation of TDES, AES and CMAC by the Symmetric Cryptographic Library SCL",
+         135
+      ],
+      [
+         "8.5.3",
+         "RSA Cryptographic Library for all versions",
+         137
+      ],
+      [
+         "8.5.4",
+         "Elliptic Curves Cryptographic Library for all versions",
+         139
+      ],
+      [
+         "8.5.5",
+         "Toolbox Library for all versions",
+         140
+      ],
+      [
+         "8.5.6",
+         "CIPURSE™ Cryptographic Library",
+         141
+      ],
+      [
+         "8.5.7",
+         "Hybrid PTRNG",
+         141
+      ],
+      [
+         "8.5.8",
+         "Listing of SFRs implemented by SF_CS “Cryptographic Support”",
+         142
+      ]
+   ],
+   "revisions":[
+      {
+         "version":"0.1",
+         "date":"",
+         "description":"Initial Version"
+      },
+      {
+         "version":"0.2",
+         "date":"",
+         "description":"Inclusion of comments on GBIC requirements issued to vendors end of September 2016"
+      },
+      {
+         "version":"0.3",
+         "date":"",
+         "description":"Update of asymmetric cryptographic library, update of ANSI X9.63 standard reference, removal of unused standards"
+      },
+      {
+         "version":"0.4",
+         "date":"",
+         "description":"Update of the NRG version"
+      },
+      {
+         "version":"0.5",
+         "date":"",
+         "description":"Update of the ACL user guidance document"
+      },
+      {
+         "version":"0.6",
+         "date":"",
+         "description":"Assurance Continuity Maintenance to include second firmware identifier as alternative, correction in table 7.1.4.1"
+      },
+      {
+         "version":"0.7",
+         "date":"",
+         "description":"Inclusion of further optional and alternative software packages HSL, SCL, ACL and CIPURSE™ Cryptographic Library, update of standard reference [38], update of lower border RSA key length, update wording in chapter 10 (GBIC annex); update of user guidance reference (CCL), update of cryptographic table and declaration with footnotes in chapter 7.1.4."
+      },
+      {
+         "version":"0.8",
+         "date":"",
+         "description":"Inclusion of further library alternatives, additional CMAC functionality of the SCL, user guidance documents and standard reference update, removal of summarizing cryptographic table from chapter 7.1.4.1 as this is now part of the certification report by BSI, typo correction; update of ACL user guidance in chapter 9, literature and references"
+      },
+      {
+         "version":"0.9",
+         "date":"",
+         "description":"Updated reference [6]"
+      },
+      {
+         "version":"1.0",
+         "date":"",
+         "description":"Corrected FW ID, new HSL version"
+      },
+      {
+         "version":"1.1",
+         "date":"",
+         "description":"Hash value correction, update of user guidance chapter 9, editorial changes, additional wording at FCS_CKM.1/RSA on BSI request, wording changed, update of HSL user guidance reference, added additional Flash Loader information at chapters 5.8, 7.2 and 7.4.1.3"
+      },
+      {
+         "version":"1.2",
+         "date":"",
+         "description":"Inclusion of second production lines, corrections/updates on standard references in chapter 7.1.4"
+      },
+      {
+         "version":"1.3",
+         "date":"",
+         "description":"On BSI request: Inclusion of many redundant text information in chapter 1 and 2 regarding TSF contribution of SW libraries."
+      },
+      {
+         "version":"1.4",
+         "date":"",
+         "description":"Following the business decision to remove the oldest NRG version from the certification process as it is no longer required, update of ACL user guidance and security guideline document, inclusion of fourth optional and alternative HSL, completion of standard references"
+      },
+      {
+         "version":"1.5",
+         "date":"",
+         "description":"Inclusion of the new Hash Cryptographic Library HCL, considering ORs 2019-02-13, 2019-03-15, completion with SFR for HSL, editorial regarding one CCL, typo corrections"
+      },
+      {
+         "version":"1.6",
+         "date":"",
+         "description":"Inclusion of additional FW Identifier and updated User Guidance, move of a table to confidential Security Target [8]"
+      },
+      {
+         "version":"1.7",
+         "date":"",
+         "description":"NRG Terminology introduction. Removal of the optional HCL library. Addition of another hardware configuration option (Power Configuration 0 and Power Configuration 1). Actualization of the user guidance."
+      },
+      {
+         "version":"1.8",
+         "date":"",
+         "description":"Editorial clean-up"
+      }
+   ],
+   "bibliography":{
+      "[1]":"16-bit Security Controller Family –V01, Hardware Reference Manual (HRM) ",
+      "[2]":"Production and Personalization, 16-bit Security Controller ",
+      "[3]":"16-bit Security Controller, 65-nm Technology, Programmer’s Reference Manual (PRM)",
+      "[4-1]":"CL52 Asymmetric Crypto Library for Crypto@2304T, RSA/ECC/Toolbox, 16-bit Security Controller, User Interface ",
+      "[4-2]":"CL52 Asymmetric Crypto Library for Crypto@2304T, RSA/ECC/Toolbox, 16-bit Security Controller, User Interface",
+      "[4-3]":"CL52 Asymmetric Crypto Library for Crypto@2304T, RSA/ECC/Toolbox, 16-bit Security Controller, User Interface",
+      "[5]":"16-bit Security Controller, Crypto@2304T V3, User Manual (CUM) ",
+      "[6]":"16-bit Security Controller – V01, Security Guidelines (SG) ",
+      "[7]":"16-bit Security Controller – V01, Errata Sheet ",
+      "[8]":"The Confidential respectively Public Security Target of this TOE ",
+      "[9]":"Security IC Protection Profile PP-0084 “Security IC Platform Protection Profile with Augmentation Packages”, BSI-CC-PP-0084-2014, available at https://www.bund.bsi.de ",
+      "[9.1]":"Secrétariat general de la defense et de la sécurité nationale, Agence nationale de la sécurité des systemes d’information, PP0084: Interpretations (ANSSI-CC-CER/F/06.002) ",
+      "[10]":"Common Criteria for Information Technology Security Evaluation Part 1: Introduction and General Model; Version 3.1 Revision 5, April 2017, CCMB-2017-04-001 ",
+      "[11]":"Common Criteria for Information Technology Security Evaluation Part 2: Security Functional Requirements; Version 3.1 Revision 5, April 2017, CCMB-2017-04-002 ",
+      "[12]":"Common Criteria for Information Technology Security Evaluation Part 3: Security Assurance Requirements; Version 3.1 Revision 5, April 2017, CCMB-2017-04-003 ",
+      "[13]":"Functionality classes and evaluation methodology for physical random number generators AIS31, Version 3.0, 2013-05-15, Bundesamt für Sicherheit in der Informationstechnik and belonging “A proposal for: Functionality classes for random number generators”, Version 2.0, 2011-09-18, Wolfgang Killmann, T-Systems GEI GmbH, Werner Schindler, Bundesamt für Sicherheit in der Informationstechnik ",
+      "[14]":"Application of Attack Potential to Smartcard, mandatory technical document, CCDB-2013-05-002, http://www.commoncriteriaportal.org ",
+      "[15-1]":"Hardware Support Library for SLCx2 (HSL), User Guidance ",
+      "[15-2]":"Hardware Support Library for SLCx2 (HSL), User Guidance ",
+      "[15-3]":"Hardware Support Library for SLCx2 (HSL), User Guidance ",
+      "[15-4]":"Hardware Support Library for SLCx2 (HSL), User Guidance ",
+      "[16-1]":" SCL52-SCP-v4-C65 Symmetric Crypto Library for SCP-v4 DES / AES, 16-bit Security Controller, User Interface ",
+      "[16-2]":"SCL52 Symmetric Cryptographic Library for DES / AES, 16-bit Security Controller User Interface ",
+      "[17]":"CIPURSE™ Crypto Library, CCLX2xCIP v02.00.0004, CIPURSE™ V2, Compliant to OSPT™ Alliance CIPURSE™ V2 Cryptographic Protocol, User Interface ",
+      "[18]":"The CIPURSE™ V2 Revision 2.0 standard issued by the OSPT™ alliance. The standard consists of a set of documents as given in the CIPURSE™V2 Revision 2.0 Documentation Overview. Http://www.osptalliance.org/resources/documentation ",
+      "[19]":"RFC 5639, Elliptic Curve Cryptography (ECC) Brainpool Standard Curves and Curve Generation, IETF Trust and the persons identified as the document authors,  March 2010, http://www.ietf.org/rfc/rfc5639.txt ",
+      "[20]":"National Institute of Standards and Technology (NIST), Special Publication 800-67, Recommendation for the Triple Data Encryption Algorithm (TDEA) Block Cipher, Technology Administration, U.S. Department of Commerce ",
+      "[21]":"National Institute of Standards and Technology(NIST), Technology Administration, US Department of Commerce, NIST Special Publication SP 800-38A (for AES and DES) ",
+      "[22]":"PKCS #1 v2.2: RSA Cryptography Standard, RSA Laboratories ",
+      "[23]":"American National Standard for Financial Services ANSI X9.62-2005, Public Key Cryptography for the Financial Services Industry, The Elliptic Curve Digital Signature Algorithm (ECDSA), American National Standards Institute",
+      "[24]":"American National Standard for Financial Services X9.63-2011, Public Key Cryptography for the Financial Services Industry: Key Agreement and Key Transport Using Elliptic Curve Cryptography, American National Standards Institute",
+      "[25]":"Act on the Federal Office for Information Security (BSI-Gesetz – BSIG), Bundesgesetzblatt I p. 2821; BSIG Section 9, Para.4, Clause 2 ",
+      "[26]":"Federal Information Processing Standards Publication, FIPS PUB 1864, Digital Signature Standard (DSS), U.S. Department of Commerce, National Institute of Standards and Technology (NIST)",
+      "[27]":"INTERNATIONAL STANDARD ISO/IEC 14888-3:2006, TECHNICAL CORRIGENDUM 2, Published 2009-02-15, Information technology Security techniques — Digital signatures with appendix — Part 3: Discrete logarithm based mechanisms",
+      "[28]":"INTERNATIONAL STANDARD ISO/IEC 11770-3:2008, TECHNICAL CORRIGENDUM 1, Published 2009-09-15, Information technology Security techniques —Key management — Part 3: Mechanisms using asymmetric techniques",
+      "[29]":"IEEE Standard Specification for Public key Cryptography, IEEE Standards Board. The standard covers specification for public key cryptography including mathematical primitives for secret value deviation, public key encryption and digital signatures and cryptographic schemes based on those primitives. ",
+      "[30]":"ISO/IEC 18033-3: 2010, Information technology – Security techniques Encryption algorithms – Part 3: Block ciphers [18033]",
+      "[31]":"Federal Information Processing Standards Publication 197, ADVANCED ENCRYPTION STANDARD (AES), U.S. DEPARTMENT OF COMMERCE / National Institute of Standards and Technology, November 26, 2001",
+      "[32]":"ISO/IEC 9797-1: 2011, Information technology – Security techniques Message Authentication Codes (MACs) Part 1 Mechanisms using a block cipher",
+      "[33]":"Nachweis der Einhaltung der Sicherheitsanforderungen für Chipkarten im Zulassungsverfahren der Deutschen Kreditwirtschaft (DK) (in German language only)",
+      "[34]":"Information Technologies – Security Techniques – Entity Authentication, part 2: Mechanisms using symmetric encipherment algorithms, 3rd edition 2008-12-15 ",
+      "[35-1]":"CIPURSE™ V2 Cryptographic Protocol issued by the OSPT™ Alliance",
+      "[35-2]":"CIPURSE™ V2 Cryptographic Protocol issued by the OSPT™ Alliance with Errata and Precision List ",
+      "[36]":"Bruce SCHNEIER, Applied Cryptography, Second Edition, John Wiley & Sons,1996",
+      "[37]":"National Institute of Standards and Technology(NIST), Technology Administration, US Department of Commerce, NIST Special Publication SP 800-38B (the CMAC Mode for Authentication)",
+      "[38]":"Technical Guideline BSI TR-03111, Elliptic Curve Cryptography, Federal Office for Information Security – Bundesamt für Sicherheit in der Informationstechnik",
+      "[39]":"Information Technology Laboratory, National Institute of Standards and Technology(NIST), Federal Information Processing Standards Publication Secure Hash Standard (SHS) ",
+      "[40]":"",
+      "[41]":"National Institute of Standards and Technology(NIST), Technology Administration, US Department of Commerce, Special Publication, A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications"
+   }
+}

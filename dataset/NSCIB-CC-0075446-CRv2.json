@@ -1,0 +1,57 @@
+{
+  "title": "NXP JCOP 4 SE050M",
+    "versions": {
+      "eal": ["EAL6", "EAL6+", "EAL4", "EAL2+", "EAL 6"],
+      "java_card": ["Java Card 3"],
+      "sha": ["SHA-1", "SHA-224", "SHA-256", "SHA-384", "SHA-512"],
+      "des": ["3DES"]
+    },
+    "table_of_contents": [
+      ["", "Foreword", 3],
+      ["", "Recognition of the certificate", 4],
+      ["", "International recognition", 4],
+      ["", "European recognition", 4],
+      ["1", "Executive Summary", 5],
+      ["2", "Certification Results", 6],
+      ["2.1", "Identification of Target of Evaluation", 6],
+      ["2.2", "Security Policy", 7],
+      ["2.3", "Assumptions and Clarification of Scope", 7],
+      ["2.4", "Architectural Information", 7],
+      ["2.5", "Documentation", 8],
+      ["2.6", "IT Product Testing", 8],
+      ["2.7", "Re-used evaluation results", 10],
+      ["2.8", "Evaluated Configuration", 10],
+      ["2.9", "Results of the Evaluation", 10],
+      ["2.10", "Comments/Recommendations", 10],
+      ["3", "Security Target", 12],
+      ["4", "Definitions", 12],
+      ["5", "Bibliography", 13]
+    ],
+    "revisions": [],
+    "bibliography": {
+      "[CC]": "Common Criteria for Information Technology Security Evaluation, Parts I, II and III, Version 3.1 Revision 5, April 2017.",
+      "[CEM]": "Common Methodology for Information Technology Security Evaluation, Version 3.1 Revision 5, April 2017.",
+      "[DS]": "SE050M Embedded Secure Element, Preliminary Data Sheet, Rev. 2.0, 07 February 2020.",
+      "[ETR]": "Evaluation Technical Report JCOP 4 SE050M, 20-RPT-108, Version 3.0, 03 March 2020.",
+      "[ETRfC]": "ETR for Composite Evaluation JCOP 4 SE050M, 20-RPT-163, Version 3.0, 03 March 2020.",
+      "[HW-CERT]": "BSI-DSZ-CC-1040-2019, NXP Smart Card Controller N7121 with IC Dedicated Software and Crypto Library from NXP Semiconductors Germany GmbH, v1.0, 14 June 2019, BSI.",
+      "[HW-ETRfC]": "ETR for Composition, NXP Secure Smart Card Controller P7121 with IC Dedicated Software and Crypto Library (N7121) according to AIS36, 18-RPT-788 v8.0, 31 May 2019, Brightsight.",
+      "[HW-ST]": "NXP Secure Smart Card Controller N7121 with IC Dedicated Software and Crypto Library Security Target Lite, Rev. 1.1, 31 May 2019.",
+      "[GP]": "GlobalPlatform Card Specification, v2.3.1, GPC_SPE_034, GlobalPlatform Inc., March 2018.",
+      "[JCAPI]": "Java Card 3 Platform, Application Programming Interface, Classic Edition, Version 3.0.5, May 2015, Published by Oracle.",
+      "[JCRE]": "Java Card 3 Platform, Runtime Environment Specification, Classic Edition, Version 3.0.5, May 2015, Published by Oracle.",
+      "[JCVM]": "Java Card 3 Platform, Virtual Machine Specification, Classic Edition, Version 3.0.5, May 2015, Published by Oracle.",
+      "[JIL-AAPS]": "JIL, (Mandatory) Application of Attack Potential to Smartcards, Version 3.0, April 2019.",
+      "[JIL-AM]": "JIL, Attack Methods for Smartcards and Similar Devices (controlled distribution), Version 2.3, April 2019.",
+      "[NSCIB]": "Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28 March 2019.",
+      "[PP]": "Java Card System - Open Configuration Protection Profile, December 2017, Version 3.0.5, certified by Bundesamt für Sicherheit in der Informationstechnik (BSI, BSI-CC-PP-0099-2017).",
+      "[ST]": "JCOP 4 SE050M, Security Target for JCOP 4 SE050M, Rev. 1.2, 03 March 2020.",
+      "[ST-lite]": "JCOP 4 SE050M, Security Target Lite for JCOP 4 SE050M, Rev. 1.2, 03 March 2020.",
+      "[ST-SAN]": "ST sanitising for publication, CC Supporting Document CCDB-2006-04-004, April 2006.",
+      "[TPM]": "TPM Rev. 2.0: Trusted Platform Module Library Specification, Family \"2.0\", Level 00, Revision 01.07- March 2014.",
+      "[UG]": "JCOP 4 SE050M, User Manual for JCOP 4 SE050M, Rev.1.2, 02 March 2020."
+    },
+    "other": {
+      "certid": "NSCIB-CC-0075446-CR"
+    }
+}

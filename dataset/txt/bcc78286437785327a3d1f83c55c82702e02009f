@@ -1,0 +1,2877 @@
+  JCOP 4.7 SE051
+  Security Target Lite
+  Rev. 1.3 — 30 June 2020                                         Evaluation document
+  NSCIB-CC-0095534                                                             PUBLIC
+
+
+
+
+Document information
+Information     Content
+Keywords        ASE, JCOP, Common Criteria, EAL6 augmented
+Abstract        This document contains information to fulfill the requirements of the Common
+                Criteria component ASE (Security Target) for the Evaluation of the JCOP
+                4.7 SE051 developed and provided by NXP Semiconductors, Business Unit
+                Security & Connectivity, according to the Common Criteria for Information
+                Technology Security Evaluation Version 3.1 at EAL6 augmented
+NXP Semiconductors
+                                                                                                                   JCOP 4.7 SE051
+                                                                                                                        Security Target Lite
+
+
+Revision history
+Rev          Date           Description
+1.3          30 June 2020   Initial version.
+
+
+
+
+JCOP 4.7 SE051                        All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                  Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                              2 / 120
+NXP Semiconductors
+                                                                                                                  JCOP 4.7 SE051
+                                                                                                                       Security Target Lite
+
+
+1       ST Introduction (ASE_INT)
+
+                 1.1 ST Reference and TOE Reference
+                      Table 1. ST Reference and TOE reference
+                      Title          JCOP 4.7 SE051 Security Target Lite
+                      Version        Revision 1.3
+                      Date           30 June 2020
+                      Product Type   Java Card
+                      TOE name       JCOP 4.7 SE051
+                      Certification ID NSCIB-CC-0095534
+                      CC version     Common Criteria for Information Technology Security Evaluation Version 3.1,
+                                     Revision 5, April 2017 (Part 1 [1], Part 2 [2] and Part 3 [3])
+
+
+                 1.2 TOE Overview
+                      The TOE consists of the Micro Controller and a software stack which is stored on the
+                      Micro Controller and which can be executed by the Micro Controller. The software stack
+                      can be further split into the following components:
+                      • Firmware for booting and low level functionality of the Micro Controller (MC FW)
+                        like writing to flash memory. This includes software for implementing cryptographic
+                        operations, called Crypto Library.
+                      • Software for implementing a Java Card Virtual Machine [15], a Java Card Runtime
+                        Environment [16] and a Java Card Application Programming Interface [14], called
+                        JCVM, JCRE and JCAPI.
+                      • Software for implementing content management according to GlobalPlatform [17],
+                        called GlobalPlatform (GP) Framework.
+                      • Software for executing native libraries, called Secure Box.
+                      The TOE is referred to as JCOP 4.7 SE051. The JCOP 4 Operating System (JCOP 4
+                      OS) consists of the software stack without the Crypto Library (Crypto Lib) and without
+                      the Micro Controller Firmware (MC FW). The TOE uses one or more communication
+                      interfaces to communicate with its environment.
+                      The complete TOE is depicted in Figure 1. The elements are described in more detail in
+                      Section 1.3 "TOE Description".
+
+
+
+
+JCOP 4.7 SE051                       All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                 Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                             3 / 120
+NXP Semiconductors
+                                                                                                                               JCOP 4.7 SE051
+                                                                                                                                           Security Target Lite
+
+
+
+
+                                                                                Communication Interface(s)
+                                                                                    to Environment
+
+
+
+         Java Card Applets                                                                                      Secure
+                                                                                                                 Secure
+                                                                                                                 Box
+                                                                                                                  Box
+                  User
+                    User
+                 Applet
+                                            GP Framework                                                        Native
+                                                                                                                 Native
+                   Applet
+                                                                                                                  Lib
+                                                                                                                   Lib
+
+                                                                                                                                              Optional
+                                                                                                                                            Functionality
+
+                            JCVM, JCRE and JCAPI
+
+                                                                                                                               SecureBox
+                                                      MC FW and
+                                                     Crypto Library
+
+
+                                                                       Micro Controller
+
+
+
+                                  TOE Border                                                                    Optional interaction
+                                                                                                                 CC Certified Hardware,
+                                  JCOP 4 OS                                                                      Firmware and Crypto Lib
+                                  Not certified
+
+
+ Figure 1. Components of the TOE
+
+                               Figure 1 shows the components of the TOE. The TOE is a composite product on top
+                               of CC certified Hardware, Firmware and Crypto Library. Part of the TOE are the JCVM,
+                               JCRE, JCAPI and the GP Framework. Also included is optional functionality and the
+                               Secure Box mechanism. The Secure Box Native Librarys provide native functions for
+                               untrusted third parties and are not part of the TOE.
+                               The figure shows Java Card applets which are small programs in Java language that can
+                               be executed by the TOE, but are not part of the TOE.
+
+                     1.2.1 Usage and Major Security Features of the TOE
+                               The usage of the TOE is focused on security critical applications in small form factors.
+                               One main usage scenario is the use of so called smart cards. Examples of such cards
+                               are banking cards or electronic drivers’ licenses. The TOE can also be used in an
+                               electronic passport. Another usage scenario is device authentication, where the TOE can
+                               be used to prove the authenticity or originality of a device like an accessory for a gaming
+                               console.
+                               The TOE provides a variety of security features. The hardware of the Micro Controller
+                               already protects against logical and physical attacks by applying various sensors to
+                               detect manipulations and by processing data in ways which protect against leakage
+                               of data by side channel analysis. With the software stack the TOE provides many
+
+JCOP 4.7 SE051                                    All information provided in this document is subject to legal disclaimers.                 © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                              Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                                 4 / 120
+NXP Semiconductors
+                                                                                                                     JCOP 4.7 SE051
+                                                                                                                          Security Target Lite
+
+
+                      cryptographic primitives for encryption and decryption of data but also for signing and
+                      signature verification. Also the software stack contains security features to protect
+                      against attacks.
+                      The following list contains the features of this TOE:
+                      • Supported communication protocols:
+                        1. ISO 7816 T=1.
+                        2. ISO 7816 T=0.
+                        3. ISO 14443 T=CL.
+                        4. I2C Slave.
+                      • Cryptographic algorithms and functionality:
+                        1. Data Encryption Standard with 3 keys (3DES) for en-/decryption (CBC and ECB)
+                           and MAC generation and verification (Retail-MAC, CMAC and CBC-MAC).
+                        2. Advanced Encryption Standard (AES) for en-/decryption (CBC, ECB and counter
+                           mode) and MAC generation and verification (CMAC, CBC-MAC).
+                        3. Rivest Shamir Adleman asymmetric algorithm (RSA) and RSA CRT for en-/
+                           decryption and signature generation and verification.
+                                                                                              1
+                        4. RSA and RSA Chinese Remainder Theorem (CRT) key generation .
+                        5. Elliptic Curve Cryptography (ECC) over GF(p) for signature generation and
+                                                 1
+                           verification (ECDSA) .
+                                                           1
+                        6. ECC over GF(p) key generation .
+                        7. Random number generation according to class DRG.3 or DRG.4 of AIS 20 [21].
+                                                                                   1
+                        8. Diffie-Hellman with ECDH and modular exponentiation .
+                        9. SHA-1, SHA-224, SHA-256, SHA-384, SHA-512 hash algorithm.
+                        10.Following cryptographic algorithms are part of the TOE but without claims for
+                           security functional requirements:
+                                                                                 1
+                           a. AES in Counter with CBC-MAC mode (AES CCM) .
+                                                                                    1
+                           b. Keyed-Hash Message Authentication Code (HMAC) .
+                                                                                  1
+                           c. HMAC based Key Derivation Function (HKDF) [28] .
+                                                                                        1
+                           d. Elliptic Curve Direct Anonymous Attestation (ECDAA) [30] .
+                                                                                                     1
+                           e. Elliptic curve cryptography based on Edwards and Montgomery curves .
+                      • Java Card functionality:
+                        1. Executing the Java byte codes which are generated from the Java compiler when
+                           Java source code is compiled.
+                        2. Managing memory allocation of code and data of applets.
+                        3. Enforcing access rules between applets and the JCRE.
+                        4. Mapping of Java method calls to ntion Protocol Version 1 (v.1) and (ii) the
+         Terminal Authentication Protocol Version 1 (v.1) as defined in [TR-03110_1].
+
+
+ 3.3           Package Claim
+The assurance level for the TOE is EAL5 augmented with the components ALC_DVS.2 and AVA_VAN.5 in case
+PACE is used and EAC is not used and conform to [PP_SAC].
+The assurance level for the TOE is EAL5 augmented with the components ALC_DVS.2 and AVA_VAN.5 in case
+PACE and EAC are used and conform to [PP_EAC].
+The assurance level for the TOE is EAL4 augmented with the components ALC_DVS.2 in case BAC is chosen as
+authentication method whereby conformancy to [PP_BAC] is claimed.
+
+
+
+
+CC Document                                              10
+                                                                                                   ative implementations of e.g. cryptographic
+                           operation.
+                        5. Support for Extended Length APDUs.
+                        6. Garbage Collection with memory reclamation and compaction.
+                        7. Persistent Memory Management and Transaction Mechanism.
+                      • GlobalPlatform functionality:
+                        1. Loading of Java packages.
+                        2. Instantiating applet instances.
+                        3. Removing of Java packages.
+                        4. Removing of applet instances.
+                        5. Issuer Security Domain (ISD), Supplementary Security Domain (SSD).
+
+                         1 Optional functionality
+JCOP 4.7 SE051                          All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                    Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                5 / 120
+NXP Semiconductors
+                                                                                                                     JCOP 4.7 SE051
+                                                                                                                          Security Target Lite
+
+
+                        6. Creating SSDs.
+                        7. Associating applets to Security Domains.
+                        8. Installation of keys.
+                        9. Verification of signatures of signed applets.
+                        10.Verification of signatures for commands.
+                        11.CVM Management (Global PIN).
+                        12.Secure Channel Protocol (SCP01, SCP02 and SCP03).
+                        13.Delegated Management, Data Authentication Pattern (DAP).
+                        14.Post-issuance installation and deletion of applets and packages.
+                        15.Compliance to several GP configurations.
+                        16.Executable Load File Upgrade.
+                        17.Secure Element Management Service.
+                      • NXP Proprietary Functionality
+                                        2
+                        1. Secure Box .
+                        2. Java Card APIs for:
+                           – Data encryption via PUF [12].
+                           – Data integrity protection with an EDC.
+                           – Asserting results of sensitive functions.
+                                                                         2
+                        3. Time representation and counter functionality .
+
+                 1.2.2 TOE Type
+                      The TOE is a Java Card with a GP Framework. It can be used to load and execute off-
+                      card verified Java Card applets.
+
+                 1.2.3 Required non-TOE Hardware/Software/Firmware
+                      Three groups of users shall be distinguished here.
+                      The first group is the end-users group, which uses the TOE with one or more loaded
+                      applets in the final form factor like a banking card or an electronic passport. These users
+                      only require a communication device to be able to communicate with the TOE. The
+                      communication protocol of the TOE is standardized in either ISO7816 [31] (T=1, T=0),
+                      ISO14443 [32] (T=CL), or UM10204 [33] (I2C Slave).
+                      The second group of users are administrators of cards. They want to configure the
+                      card by using the Configuration Module, to install additional applets and to configure and
+                      personalise these applets. These users require the same equipment as end-users.
+                      The third group of users wants to develop Java Card applets and execute them on
+                      the TOE. These applet developers need in addition to the communication device a
+                      set of tools for the development of applets. This set of tools can be obtained from the
+                      TOE vendor and comprises elements such as PC development environment, byte code
+                      verifier, compiler, linker and debugger.
+
+
+
+
+                         2 Optional functionality
+JCOP 4.7 SE051                          All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                    Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                6 / 120
+NXP Semiconductors
+                                                                                                                              JCOP 4.7 SE051
+                                                                                                                                   Security Target Lite
+
+
+                     1.3 TOE Description
+
+                    1.3.1 TOE Components and Composite Certification
+                           The certification of this TOE is a composite certification. The following sections provide
+                           a more detailed description of the components of Figure 1. It is also made clear whether
+                           a component is covered by a previous certification or whether it is covered in the
+                           certification of this TOE.
+
+                  1.3.1.1 Micro Controller
+
+                           The Micro Controller is a secure smart card controller from NXP’s SmartMX3 family.
+                           The Micro Controller contains a co-processor for symmetric cryptographic operations,
+                           supporting DES and AES, as well as an accelerator for asymmetric cryptographic
+                           algorithms. The Micro Controller further contains a physical random number generator.
+                           The supported memory technologies are volatile (Random Access Memory (RAM)) and
+                           non-volatile (Read Only Memory (ROM) and FLASH) memory.
+                           Access to all memory types is controlled by a Memory Management Unit (MMU) which
+                           allows to separate and restrict access to parts of the memory.
+                           The Micro Controller has been certified in a previous certification and the results are re-
+                           used for this certification. The exact reference to the previous certification is given in the
+                           following Table 2 "Reference to Certified Micro Controller":
+
+                           Table 2. Reference to Certified Micro Controller
+                           Name                            NXP Secure Smart Card Controller N7121 with IC Dedicated Software and
+                                                                          [1]
+                                                           Crypto Library
+                           Certification ID                BSI-DSZ-CC-1040
+                           Reference                       [10]
+
+                           [1]   The SE051 hardware is an instantiation of the N7121 hard macro with I2C side-car.
+
+
+                  1.3.1.2 Security IC Dedicated Software
+
+                 1.3.1.2.1 MC FW (Micro Controller Firmware)
+
+                           The Micro Controller Firmware is used for testing of the Micro Controller at production,
+                           for booting of the Micro Controller after power-up or after reset, for configuration of
+                           communication devices and for writing data to volatile and non-volatile memory.
+                           The MC FW has been certified together with the Micro Controller and the same reference
+                           [10] as given for the Micro Controller also apply for the MC FW.
+
+                 1.3.1.2.2 Crypto Library
+
+                           The Crypto Library provides implementations for symmetric and asymmetric
+                           cryptographic operations, hashing, the generation of hybrid deterministic and hybrid
+                           physical random numbers and further functions like secure copy and compare.
+                           Some of the cryptographic algorithms offered by the Crypto Lib are not certified, see
+                           Section 1.3.1.4 "Excluded functionality".
+                           The symmetric cryptographic operations comprise the algorithms 3DES and AES. These
+                           algorithms use the symmetric co-processor of the Micro Controller.
+
+
+
+JCOP 4.7 SE051                                   All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                             Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                         7 / 120
+NXP Semiconductors
+                                                                                                                      JCOP 4.7 SE051
+                                                                                                                           Security Target Lite
+
+
+                          The supported asymmetric cryptographic operations are ECC and RSA. These
+                          algorithms use the Public Key Crypto Coprocessor (PKCC) of the Micro Controller for the
+                          cryptographic operations.
+                          The Crypto Library has been certified together with the Micro Controller and the same
+                          reference [10] as given for the Micro Controller also applies.
+
+                  1.3.1.3 Security IC Embedded Software
+
+                 1.3.1.3.1 JCOP 4.7 SE051
+
+                          The OS of the TOE consists of JCVM, JCRE, JCAPI and GP framework. It is
+                          implemented according to the Java Card Specification and GlobalPlatform. Additionally it
+                          consists of a proprietary API, which is described in the UGM [9].
+                          The TOE can be identified by using the IDENTIFY APDU command (see UGM [9]). This
+                          command returns the card identification data, which includes a Platform ID, a Patch ID
+                          and other information that allows to identify the content in ROM, FLASH and loaded
+                          patches (if any).
+                          The TOE also includes a Configuration Module (see Section 1.3.2 "Optional TOE
+                          Functionality") which is used for personalisation and configuration of the TOE. It must be
+                          deleted after the personalisation is finished (end of Phase 6 ”Personalisation”) by using
+                          the DELETE APDU command. Once the Configuration Module is deleted, it is no longer
+                          possible to configure the TOE.
+                          The TOE contains further functionality for integrity protection of user data via an
+                          EDC, encryption of user data via PUF [12] and optional functionality as described in
+                          Section 1.3.2 "Optional TOE Functionality".
+
+                  1.3.1.4 Excluded functionality
+
+                          All Secure Box Native Libraries are not part of the TOE. No security functional
+                          requirements are claimed on AES CCM, HMAC, HKDF, ECDAA, elliptic curve
+                          cryptography based on Edwards and Montgomery curves and FIPS self-tests, they are
+                          TSF non-interfering.
+
+                   1.3.2 Optional TOE Functionality
+                          Some dedicated functionality of the TOE as listed below can be removed:
+                          • RSA key generation,
+                          • Elliptic curve cryptographic functionality,
+                          • eGov accelerators,
+                          • TOE self-tests according to FIPS 140-2 [22],
+                          • SecureBox,
+                          • TOE Configuration Module (the TOE Configuration Module has to be deleted at the end
+                            of life cycle phase 6) [9],
+                          • AES CCM as defined in the Java Card AEADCipher API [14], HMAC and HKDF
+                            cryptographic functionality as defined in the Java Card API [14] and the UGM [9]. Timer
+                            functionality as defined in the UGM [9].
+                          • ECDAA [30] and elliptic curve cryptography based on Edwards and Montgomery
+                            curves.
+                          • I2C slave protocol and T = 1 over I2C.
+
+
+JCOP 4.7 SE051                           All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                     Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                 8 / 120
+NXP Semiconductors
+                                                                                                                      JCOP 4.7 SE051
+                                                                                                                           Security Target Lite
+
+
+                  1.3.3 TOE Reduced Feature Set
+                        The TOE is also available to customers with a reduced feature set. This variant of the
+                        TOE contains a different base mask configuraton and has some features removed from
+                        the TOE. The removed features are:
+                        •   No support for SecureBox
+                        •   No RSA support in GP
+                        •   No DES support in GP
+                        •   SCP01 not supported
+                        •   SCP02 not supported
+                        •   GP CVM service not supported
+                        •   GP command chaining is not supported
+                        •   ISO 7816 T=1, T=0 (UART) interface not supported
+                        The base mask with the reduced feature set is known as IOT Reduced, while the base
+                        mask with full functionality is known as IOT Full. For more information on the difference
+                        in feature set, please refer to Table 3.1 in the User Guidance and Administration Manual
+                        [9].
+
+                 1.3.3.1 Reduced Security Functional Requirements
+
+                        Some security functionality claimed in this Security Target is no longer available in the
+                        IOT Reduced base mask or has limited functionality and the corresponding Security
+                        Functional Requirements are not (completely) applicable for this variant of the TOE. The
+                        table below lists which SFRs are affected in the IOT Reduced variant of the TOE.
+
+                        Table 3. SFRs affected in the IOT Reduced variant of the TOE
+                         Functionality                             SFRs
+                         Secure Box                                FDP_ACC.2[SecureBox] is no longer available.
+                                                                   FDP_ACF.1[SecureBox] is no longer available.
+                                                                   FMT_MSA.1[SecureBox] is no longer available.
+                                                                   FMT_MSA.3[SecureBox] is no longer available.
+                                                                   FMT_SMF.1[SecureBox] is no longer available.
+                         RSA support in GP                         FCS_COP.1.1[DAP] no longer supports algorithm ALG_RSA_
+                                                                   SHA_PKCS1.
+
+
+                  1.3.4 TOE Life Cycle
+                        The life cycle for this Java Card is based on the general smart card life cycle defined in
+                        the Java Card Protection Profile - Open Configuration [6], see Figure 2.
+
+
+
+
+JCOP 4.7 SE051                           All information provided in this document is subject to leSome SFRs contain additional application notes to ease the understanding of the specificities of this TOE.
+These application notes do not come from the PPs and are prefixed with [IFX specific].
+
+
+
+7.1.2                Common SFRs from [PP_BAC] and [PP_SAC]
+
+7.1.2.1              Class FCS: Cryptographic Support
+
+
+
+
+  FCS_CKM.4                Cryptographic key destruction – Session keys
+
+  Hierarchical to:         No other components.
+
+  Dependencies:            [FDP_ITC.1 Import of user data without security attributes, or FDP_ITC.2 Import of
+                           user data with security attributes, or FCS_CKM.1 Cryptographic key generation]:
+                           fulfilled by FCS_CKM.1 in case of BAC;
+                           fulfilled by FCS_CKM.1/DH_PACE in case of PACE
+
+  FCS_CKM.4.1              The TSF shall destroy cryptographic keys in accordance with a specified
+                           cryptographic key destruction method overwriting the key values with random
+                           values that meets the following: none
+
+                           Application note 19 of [PP_BAC] and application note 28 of [PP_SAC] are both
+ [IFX specific]            applicable for this SFR. There is no contradiction between the two application
+ Application Note:         notes. While the application note from [PP_BAC] simply requests the encryption
+                           and message authentication keys to be destroyed, the application note from
+                           [PP_SAC] provides more detailed requests, when the session keys have to be
+                           destroyed. Therefore FCS_CKM.4 from [PP_SAC] and [PP_BAC] can be combined.
+
+
+
+
+CC Document                                            17
+                                                                                                       1.2
+                                                                                                       2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FCS_RND.1                Quality metric for random numbers
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencgal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                     Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                 9 / 120
+NXP Semiconductors
+                                                                                                                  JCOP 4.7 SE051
+                                                                                                                       Security Target Lite
+
+
+
+
+                      Figure 2. TOE Life Cycle within Product Life Cycle
+
+                      Table 4. TOE Life Cycle phases
+                      Phase Name                                               Description
+                      1      Security IC Embedded                              The Security IC Embedded Software Developer is in
+                             Software Development                              charge of
+                                                                               • SmartCard embedded software development including
+                                                                                 the development of Java Card applets and
+                                                                               • specification of IC pre-personalization requirements,
+                                                                                 though the actual data for IC pre-personalization come
+                                                                                 from phase 4, 5, or 6.
+
+
+JCOP 4.7 SE051                       All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                 Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                           10 / 120
+NXP Semiconductors
+                                                                                                                   JCOP 4.7 SE051
+                                                                                                                        Security Target Lite
+
+
+                      Phase Name                                                Description
+                      2       Security IC Development                           The IC Developer
+                                                                                • designs the IC,
+                                                                                • develops Security IC Dedicated Software,
+                                                                                • provides information, software or tools to the Security IC
+                                                                                  Embedded Software Developer, and
+                                                                                • receives the embedded software from the developer,
+                                                                                  through trusted delivery and verification procedures.
+                                                                                From the IC design, Security IC Dedicated Software and
+                                                                                Smart-Card Embedded Software, the IC Developer
+                                                                                • constructs the SmartCard IC database, necessary for
+                                                                                  the IC photomask fabrication.
+                      3       Security IC Manufacturing                         The IC Manufacturer is responsible for
+                                                                                • producing the IC through three main steps: IC
+                                                                                  manufacturing, IC testing, and IC pre-personalization.
+                                                                                The IC Mask Manufacturer
+                                                                                • generates the masks for the IC manufacturing based
+                                                                                  upon an output from the SmartCard IC database.
+                                                                                  Configuration items may be changed.
+                      4       Security IC Packaging                             The IC Packaging Manufacturer is responsible for
+                                                                                • IC packaging and testing.
+                      5       Composite Product                                 The Composite Product Manufacturer is responsible for
+                              Integration                                       • SmartCard product finishing process including applet
+                                                                                  loading and testing. Configuration items may be
+                                                                                  changed by using the Configuration Module.
+                      6       Personalization                                   The Personalizer is responsible for
+                                                                                • SmartCard (including applet) personalization and final
+                                                                                  tests. User Applets may be loaded onto the chip at the
+                                                                                  personalization process and configuration items may be
+                                                                                  changed by using the Configuration Module, which must
+                                                                                  be deleted at the end of this cycle by using the DELETE
+                                                                                  APDU command.
+                      7       Operational Usage                                 The Consumer of Composite Product is responsible for
+                                                                                • SmartCard product delivery to the SmartCard end-user,
+                                                                                  and the end of life process.
+                                                                                • applets may be loaded onto the chip.
+
+                      The evaluation process is limited to phases 1 to 5. User Applet development is outside
+                      the scope of this evaluation. Applets can be loaded into FLASH in phases 3, 4, 5, and 6.
+                      Applet loading in phase 7 is also allowed. This means post-issuance loading of applets
+                      can be done for a certified TOE.
+                      The Configuration Module is loaded into FLASH and has special privileges to personalize
+                      and configure the TOE. Before life cycle Phase 7 "Operational Use" the Configuration
+                      Module is deleted and hence it is ensured that its functionality cannot be used
+                      afterwards. It is possible to load patch code into FLASH in phases 3, 4, 5, and 6. The
+                      certification is only valid for the ROM code having the Platform Identifiers and the Patch
+                      IDs (if applicable) as stated in Table 5 "Delivery Items".
+                      The delivery process from NXP to their customers (to phase 4 or phase 5 of the life
+                      cycle) guarantees that the customer is aware of the exact versions of the different parts
+                      of the TOE as outlined above.
+
+JCOP 4.7 SE051                        All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                  Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                            11 / 120
+NXP Semiconductors
+                                                                                                                           JCOP 4.7 SE051
+                                                                                                                                          Security Target Lite
+
+
+                         TOE documentation is delivered in electronic form (encrypted according to defined
+                         mailing procedures).
+                         Note: Phases 1 to 3 are under the TOE developer scope of control. Therefore, the
+                         objectives for the environment related to phase 1 to 3 are covered by Assurance
+                         measures, which are materialized by documents and procedures evaluated through the
+                         TOE evaluation process.
+                         During phases 4 to 7 the TOE is no more under the developer control. In this
+                         environment, the TOE protects itself with its own Security functions. But some additional
+                         usage procedures must also be followed in order to ensure that the TOE is correctly
+                         and securely handled, and not damaged or comprised. This ST assumes (A.USE_
+                         DIAG, A.USE_KEYS) that users handle securely the TOE and related Objectives for the
+                         environment are defined (OE.USE_DIAG, OE.USE_KEYS).
+
+                  1.3.5 TOE Identification
+
+                 1.3.5.1 TOE Delivery
+
+                         The delivery comprises the following items:
+
+                         Table 5. Delivery Items
+                         Type             Name                                                                             Version   Form of Delivery
+                         Hardware         NXP Secure Smart Card Controller N7121                                           B1        Micro Controller including
+                                          with IC Dedicated Software and Crypto                                                      on-chip software:
+                                          Library                                                                                                             [1]
+                                                                                                                                     Firmware and Crypto Lib
+                                                                                                                                                             [2]
+                         JCOP 4 OS ROM Code (Platform ID)                                                                  see UGM On-chip software :
+                                   FLASH content (FLASH ID)                                                                [9]     JCOP 4 OS
+                                   Patch Code (Patch ID)
+                                                                                                                                                                   [3]
+                         Document         User Guidance and Administration Manual                                          1.2       Electronic document
+                                          [9]
+                                                                                                                                                                   [3]
+                         Document         HW Objective Data Sheet [11]                                                     1.0       Electronic document
+
+                         [1]   The TOE is delivered as wafer or module. The TOE can be collected at NXP site or is being shipped to the customer. See
+                               UGM [9] for details.
+                         [2]   Included in the Micro Controller.
+                         [3]   Via the NXP Docstore [13].
+
+
+                 1.3.5.2 TOE Identification
+
+                         The TOE can be identified by using the Platform ID, the FLASH ID and the Patch ID. The
+                         IDENTIFY command and the identification output for this TOE are described in detail
+                         in Chapter 2 of the UGM [9]. The IDENTIFY command also returns information about
+                         presence of optional functionality and allows to identify the IOT Full and IOT Reduced
+                         base mask configuration.
+
+                  1.3.6 Evaluated Package Types
+                         A number of package types are supported for this TOE. All package types, which are
+                         covered by the certification of the used hardware (see [10]), are also allowed to be used
+                         in combination with each product of this TOE.
+                         The package types do not influence the security functionality of the TOE. They only
+                         define which pads are connected in the package and for what purpose and in which
+                         environment the chip can be used. Note that the security of the TOE is not dependent on
+JCOP 4.7 SE051                                All information provided in this document is subject to legal disclaimers.                    © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                          Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                                              12 / 120
+NXP Semiconductors
+                                                                                                                  JCOP 4.7 SE051
+                                                                                                                       Security Target Lite
+
+
+                      which pad is connected or not - the connections just define how the product can be used.
+                      If the TOE is delivered as wafer the customer can choose the connection on his own.
+
+
+
+
+JCOP 4.7 SE051                       All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                 Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                           13 / 120
+NXP Semiconductors
+                                                                                                                  JCOP 4.7 SE051
+                                                                                                                       Security Target Lite
+
+
+2       Conformance Claims (ASE_CCL)
+                      This Chapter is divided into the following sections: "CC Conformance Claim", "Package
+                      Claim", "PP Claim", and "Conformance Claim Rationale".
+
+                  2.1 CC Conformance Claim
+                      This Security Target claims to be conformant to version 3.1 of Common Criteria for
+                      Information Technology Security Evaluation according to
+                      • "Common Criteria for Information Technology Security Evaluation, Part 1, Version 3.1,
+                        Revision 5, April 2017" [1]
+                      • "Common Criteria for Information Technology Security Evaluation, Part 2, Version 3.1,
+                        Revision 5, April 2017" [2]
+                      • "Common Criteria for Information Technology Security Evaluation, Part 3, Version 3.1,
+                        Revision 5, April 2017" [3]
+                      The following methodology will be used for the evaluation:
+                      • Common Methodology for Information Technology Security Evaluation, Evaluation
+                        Methodology, Version 3.1, Revision 5, April 2017" [4]
+                      This Security Target claims to be CC Part 2 extended and CC Part 3 conformant.
+                      The extended Security Functional Requirements are defined in Section 6 "Extended
+                      Components Definition (ASE_ECD)".
+
+                  2.2 Package Claim
+                      This Security Target claims conformance to the assurance package EAL6. The
+                      augmentation to EAL6 is ASE_TSS.2 “TOE summary specification with architectural
+                      design summary” and ALC_FLR.1 “Basic flaw remediation”.
+
+                  2.3 PP Claim
+                      The Security Target claims demonstrable conformance to the Java Card System -
+                      Open Configuration Protection Profile, December 2017, Version 3.0.5 [6], certified by
+                      Bundesamt für Sicherheit in der Informationstechnik (BSI, BSI-CC-PP-0099-2017). The
+                      Java Card Protection Profile makes the use of Java Card RMI optional. The TOE does
+                      not support Java Card RMI. This ST is more restrictive than the PP [6] which Section 2.4
+                      "Conformance Claim Rationale" provides a rational for.
+
+                  2.4 Conformance Claim Rationale
+
+                 2.4.1 TOE Type
+                      The TOE type as stated in Section Section 1.2 "TOE Overview" of this ST corresponds
+                      to the TOE type of the PP as stated in Section 2.1 of [6] namely a Java Card platform,
+                      implementing the Java Card Specification Version 3.0.5 [15], [16], [14].
+
+
+
+
+JCOP 4.7 SE051                       All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                 Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                           14 / 120
+NXP Semiconductors
+                                                                                                                      JCOP 4.7 SE051
+                                                                                                                           Security Target Lite
+
+
+                  2.4.2 SPD Statement
+
+                 2.4.2.1 Threats
+
+                         The Security Problem Definition (SPD) statement that is presented in Section 4 "Security
+                         Problem Definition (ASE_SPD)" includes the threats as presented in the PP [6], but also
+                         includes additional threats. These threats are:
+                         •   T.OS_OPERATE
+                         •   T.RND
+                         •   T.COM_EXPLOIT
+                         •   T.LIFE_CYCLE
+                         •   T.UNAUTHORIZED_CARD_MNGT
+                         •   T.INTEG-APPLI-DATA[REFINED]
+                         •   T.CONFIG
+                         •   T.SEC_BOX_BORDER
+                         •   T.MODULE_EXEC
+                         •   T.MODULE_REPLACEMENT
+                         The threat T.OS_OPERATE is an additional threat added to cover incorrect operating
+                         system behavior, it is an addition to the threats in the PP [6].
+                         The threat T.RND is taken from the Security IC PP [5].
+                         The threat T.COM_EXPLOIT is included to cover communication channels attacks and it
+                         is an addition to the threats in the PP [6].
+                         The threat T.LIFE_CYCLE is included to cover content management attacks and it is an
+                         addition to the threats in the PP [6].
+                         The threat T.UNAUTHORIZED_CARD_MNGT refines the threats T.INSTALL and
+                         T.DELETION from the Security IC PP [5].
+                         The threat T.INTEG-APPLI-DATA[REFINED] refines the threat T.INTEG-APPLI-DATA in
+                         the Security IC PP [5].
+                         The threat T.CONFIG is an additional threat to cover unauthorized modifications and
+                         read access of the configuration area in the TOE. It is an addition to the threats defined in
+                         the PP [6].
+                         The threat T.SEC_BOX_BORDER is included for the Secure Box which is additional
+                         functionality the PP [6] allows.
+                         The threats T.MODULE_EXEC and T.MODULE_REPLACEMENT are included for the
+                         Modular Design which is additional functionality the PP [6] allows. Furthermore some
+                         threats from the PP [6] are refined to cover additional assets from the Modular Design.
+                         This comprises threats T.CONFID-JCS-CODE, T.CONFID-JCS-DATA, T.INTEG-APPLI-
+                         CODE, T.INTEG-JCS-CODE, T.INTEG-JCS-DATA, and T.SID.1.
+                         Note that the threat T.EXE-CODE-REMOTE is not included, since the TOE does not
+                         support Java Card RMI. The Java Card Protection Profile [6] makes the use of Java Card
+                         RMI optional.
+
+                 2.4.2.2 Organizational Security Policies
+
+                         The SPD statement presented in Section 4 "Security Problem Definition (ASE_SPD)",
+                         copies the OSP from the PP [6], and adds following additional OSPs:
+                         • OSP.PROCESS-TOE
+JCOP 4.7 SE051                           All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                     Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                               15 / 120
+NXP Semiconductors
+                                                                                                                     JCOP 4.7 SE051
+                                                                                                                          Security Target Lite
+
+
+                        • OSP.KEY-CHANGE
+                        • OSP.SECURITY-DOMAINS
+                        • OSP.SECURE-BOX
+                        The Organizational Security Policy (OSP) OSP.PROCESS-TOE is introduced for the pre-
+                        personalisation feature of the TOE and is an addition to the OSPs in PP [6]. This OSP is
+                        copied from the Security IC PP [5].
+                        The OSP OSP.KEY-CHANGE is introduced for the Security Dom                                                                 18 / 120
+NXP Semiconductors
+                                                                                                                   JCOP 4.7 SE051
+                                                                                                                        Security Target Lite
+
+
+                      The set of SFRs that define the card content management mechanism CarG are partly
+                      replaced or refined and are considered to be equivalent or more restrictive because of
+                      the newly introduced SFPs:
+                      1. Security Domain access control policy,
+                      2. Secure Channel Protocol information flow policy
+                      provide a concrete and more restrictive implementation of the PACKAGE LOADING
+                      information flow control SFP from PP [6].
+                      The table below lists the SFRs from CarG of PP [6] and their corresponding refinements
+                      in this ST.
+
+                      Table 6. CarG SFRs refinements
+                      SFR from PP [6]                                                               Refinement
+                      FCO_NRO.2/CM                                                                  FCO_NRO.2[SC]
+                      FDP_IFC.2/CM                                                                  FDP_IFC.2[SC]
+                      FDP_IFF.1/CM                                                                  FDP_IFF.1[SC]
+                      FDP_UIT.1/CM                                                                  FDP_UIT.1[CCM]
+                      FIA_UID.1/CM                                                                  FIA_UID.1[SC]
+                      FMT_MSA.1/CM                                                                  FMT_MSA.1[SC]
+                      FMT_MSA.3/CM                                                                  FMT_MSA.3[SC]
+                      FMT_SMF.1/CM                                                                  FMT_SMF.1[SC]
+                      FMT_SMR.1/CM                                                                  FMT_SMR.1[SD]
+                      FTP_ITC.1/CM                                                                  FTP_ITC.1[SC]
+
+                      The following SFRs realize refinements of SFRs from PP [6] and add functionality to the
+                      TOE making the statement of security requirements more restrictive than the PP [6]:
+                      FDP_ROL.1[CCM] and FPT_FLS.1[CCM] realize additional security functionality for the
+                      card manager which is allowed by the PP [6].
+                      The set of SFRs that define the security domains mechanism as specified by
+                      GlobalPlatform realize refinements of SFRs from PP [6] (see above Table 6 "CarG
+                      SFRs refinements") and additional security functionality which is allowed by the PP
+                      [6]. This set of SFRs comprise FDP_ACC.1[SD], FDP_ACF.1[SD], FMT_MSA.1[SD],
+                      FMT_MSA.3[SD], FMT_SMF.1[SD], and FMT_SMR.1[SD].
+                      The set of SFRs that define the secure channel mechanism as specified by
+                      GlobalPlatform realize refinements of SFRs from PP [6] (see above Table 6 "CarG SFRs
+                      refinements"), add additional security functionality and include a JCOPX API which is
+                      allowed by the PP [6]. This set of SFRs comprise FCO_NRO.2[SC], FDP_IFC.2[SC],
+                      FDP_IFF.1[SC], FMT_MSA.1[SC], FMT_MSA.3[SC], FMT_SMF.1[SC], FIA_UID.1[SC],
+                      FIA_UAU.1[SC], FIA_UAU.4[SC], and FTP_ITC.1[SC].
+                      The set of SFRs that define the Configuration Module realize additional
+                      security functionality, which is allowed by the PP [6]. This set of SFRs comprise
+                      FDP_IFC.2[CFG], FDP_IFF.1[CFG], FIA_UID.1[CFG], FMT_MSA.1[CFG],
+                      FMT_MSA.3[CFG], FMT_SMF.1[CFG] and FMT_SMR.1[CFG].
+                      The set of SFRs that define the Secure Box, realize additional security functionality
+                      which is allowed by the Protection Profile (PP) [6]. This set of SFRs comprise
+
+
+JCOP 4.7 SE051                        All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                  Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                            19 / 120
+NXP Semiconductors
+                                                                                                                  JCOP 4.7 SE051
+                                                                                                                       Security Target Lite
+
+
+                      FDP_ACC.2[SecureBox], FDP_ACF.1[SecureBox], FMT_MSA.1[SecureBox],
+                      FMT_MSA.3[SecureBox], and FMT_SMF.1[SecureBox].
+                      The set of SFRs that define the Modular Design realize additional security functionality,
+                      which is allowed by the PP [6]. This set of SFRs comprise FDP_IFC.1[MODULAR-
+                      DESIGN], FDP_IFF.1[MODULAR-DESIGN], FIA_ATD.1[MODULAR-DESIGN],
+                      FIA_USB.1[MODULAR-DESIGN], FMT_MSA.1[MODULAR-DESIGN],
+                      FMT_MSA.3[MODULAR_DESIGN, FMT_SMF.1[MODULAR-DESIGN],
+                      FMT_SMR.1[MODULAR-DESIGN], and FPT_FLS.1[MODULAR-DESIGN].
+                      Some SFRs from the PP [6] are refined to cover deletion of Modules. This makes
+                      the SFRs more restrictive which is allowed by the PP [6]. This set of SFRs comprise
+                      FDP_ACC.2[ADEL], FDP_ACF.1[ADEL], FMT_SMF.1[ADEL], and FPT_FLS.1[ADEL].
+                      The SFRs FAU_SAS.1[SCP], FIA_AFL.1[PIN], FPT_EMSEC.1 and FPT_PHP.3 realize
+                      additional security functionality which is allowed by the PP [6]. The SFRs FCS_CKM.2
+                      and FCS_CKM.3 realize security functionality required by the Java Card API [14] which is
+                      allowed by the PP [6].
+
+
+
+
+JCOP 4.7 SE051                       All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                 Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                           20 / 120
+NXP Semiconductors
+                                                                                                                   JCOP 4.7 SE051
+                                                                                                                        Security Target Lite
+
+
+3       Security Aspects
+                       This Chapter describes the main security issues of the Java Card System and its
+                       environment addressed in this ST, called "security aspects", in a CC-independent way.
+                       In addition to this, they also give a semi-formal framework to express the CC security
+                       environment anePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+CC Document    Please read the Important Notice and Warnings at the end of this document   1.2
+www.infineon.com                                                                           2020-05-27
+Table of Contents
+1             Revision History ............................................................................................................ 3
+2             Security Target Introduction (ASE_INT) ............................................................................ 4
+2.1           ST Reference ............................................................................................................................................ 4
+2.2           TOE Reference ......................................................................................................................................... 4
+2.3           TOE Identification.................................................................................................................................... 4
+2.4           TOE Overview .......................................................................................................................................... 5
+2.4.1            TOE Definition .................................................................................................................................... 5
+2.4.2            TOE Operational Usage ...................................................................................................................... 5
+2.4.3            TOE Major Security Features.............................................................................................................. 5
+2.5           Guidance Documentation ....................................................................................................................... 6
+2.6           TOE Description ....................................................................................................................................... 6
+2.6.1            Component Overview ........................................................................................................................ 6
+2.6.2            Interfaces of the TOE .......................................................................................................................... 8
+2.6.3            Package Types .................................................................................................................................... 8
+2.6.4            Lifecycle and Delivery ........................................................................................................................ 8
+3             Conformance Claims (ASE_CCL)...................................................................................... 10
+3.1           CC Conformance Claim ......................................................................................................................... 10
+3.2           PP Claim ................................................................................................................................................. 10
+3.3           Package Claim ....................................................................................................................................... 10
+4             Security Problem Definition (ASE_SPD) ........................................................................... 11
+5             Security Objectives (ASE_OBJ) ....................................................................................... 12
+5.1           Security Objectives defined in the claimed PPs ................................................................................... 12
+5.2           Security Objectives defined in this ST .................................................................................................. 12
+5.3           Security Objective Rationale................................................................................................................. 12
+6             Extended Components Definition (ASE_ECD) ................................................................... 13
+7             Security Requirements (ASE_REQ) .................................................................................. 14
+7.1           TOE Security Functional Requirements ............................................................................................... 14
+7.1.1            About the Application Notes in this ST ............................................................................................ 17
+7.1.2            Common SFRs from [PP_BAC] and [PP_SAC] ................................................................................. 17
+7.1.3            SFRs specifically from [PP_SAC] ...................................................................................................... 20
+7.1.4            SFRs specifically from [PP_BAC] ...................................................................................................... 31
+7.1.5            SFRs specifically from [PP_EAC] ...................................................................................................... 41
+7.2           Security Assurance Requirements ........................................................................................................ 55
+7.3           Security Requirements Rationale ......................................................................................................... 56
+7.3.1            Security Functional Requirements Rationale ................................................................................. 56
+7.3.2            Rationale for SFR’s Dependencies ................................................................................................... 56
+7.3.3            Security Assurance Requirements Rationale .................................................................................. 56
+7.3.4            Security Requirements – Internal Consistency ............................................................................... 56
+8             TOE Summary Specification ........................................................................................... 57
+9             References ................................................................................................................... 61
+9.1           Literature ............................................................................................................................................... 61
+9.2           List of Abbreviations.............................................................................................................................. 64
+
+
+
+
+CC Document        Please read the Important Notice and Warnings at the end of this document                                                                1.2
+www.infineon.com                                                                                                                                            2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 1             Revision History
+ Version 1.2                                             Final version of the ST
+
+
+
+
+CC Document                                          3
+                                                                                   1.2
+                                                                                   2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 2            Security Target Introduction (ASE_INT)
+
+ 2.1          ST Reference
+The title of this document is “ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD
+V1.0”.
+
+
+ 2.2          TOE Reference
+The name of the TOE is “ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0”
+interchangeably called ePass in this ST.
+The TOE is a secure chip implementing an ePassport. The TOE is subject to a composite certification based on
+the Infineon Java Card Secora ID S platform, for details on the latter refer to [ST_JC_ID_S_Platform].
+This ST is compatible to [ST_JC_ID_S_Platform].
+
+
+ 2.3          TOE Identification
+The TOE identification data is as shown in the following table:
+
+
+
+ TOE release date            24 February 2020
+
+ TOE version number          1.0
+
+ Applet version              1.1
+
+ JC OS Platform related      CC Identifier of underlying hardware     IFX_CCI_000005
+ identification data         platform
+
+                             Build number                             1357
+
+                             Version of Assymetric Crypto Library     2.07.003
+                             (ACL)
+
+                             Version of Symetric Crypto Library       2.04.002
+                             (SCL)
+
+                             Version of Hardware Support Library      03.12.8812
+                             (HSL)
+
+
+
+The TOE provides a command ‘GET DATA’ with tag 00C1 which provides the release date and the version of the
+product.
+
+
+
+CC Document                                             4
+                                                                                                     1.2
+                                                                                                     2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+The underlying Secora ID S platform provides the APDU command “GET TOE Info“ which returns the Common
+Criteria identifier of the platform, the OS build number, the specific versions of the cryptographic and hardware
+support libraries.
+
+
+    2.4         TOE Overview
+
+2.4.1               TOE Definition
+The Target of Evaluation (TOE) addressed by this ST is an electronic passport representing a smart card
+implementing [ICAO_9303_10], [ICAO_9303_11], [TR-03110_1] and [TR-03110_3]. This smart card / passport
+provides the following application:
+     the travel document containing the related user data as well as data needed for authentication with BAC,
+     PACE, EAC or AA protocols (incl. PACE/BAC passwords); this application is intended to be used by
+     governmental organisations as a machine readable travel document (MRTD).
+For the ePassport application, the travel document holder can control access to his user data by conscious
+presenting his travel document to governmental organisations.The travel document’s chip is integrated into a
+physical (plastic or paper), optically readable part of the travel document, which – as the final product – shall
+eventually supersede still existing, merely optically readable travel documents. The plastic or paper, optically
+readable cover of the travel document, where the travel document’s chip is embedded in, is not part of the
+TOE. The tying-up of the travel document’s chip to the plastic travel document is achieved by physical and
+organizational security measures being out of scope of the TOE.
+
+2.4.2               TOE Operational Usage
+A State or Organization issues MRTDs to be used by the holder for international travel. The traveler presents a
+MRTD to the inspection system to prove his or her identity. The MRTD in context of this ST contains (i) visual
+(eye readable) biographical data and portrait of the holder, (ii) a separate data summary (MRZ data) for visual
+and machine reading using OCR methods (see [ICAO_9303_01]) in the Machine readable zone (MRZ) and (iii)
+data elements on the MRTD’s chip. The authentication of the traveller is based on (i) the possession of a valid
+travel document personalised for a holder with the claimed identity as given on the biographical data page and
+(ii) biometrics using the reference data stored in the travel document. The issuing State or Organisation ensures
+the authenticity of the data of genuine travel documents. The receiving State trusts a genuine travel document
+of an issuing State or Organisation.
+
+2.4.3               TOE Major Security Features
+The following TOE security features are the most significant for its operational use:
+    Verifying authenticity and integrity as well as securing confidentiality of user data in the communication
+     channel between the TOE and the connected terminal supporting the protocols BAC, SAC(PACE) as per
+     [ICAO_9303_11] and EAC as per [TR-03110_1]
+    Averting of inconspicuous tracing of the travel document as per [TR-03110_1]
+    Self-protection of the TOE security functionality and the data stored inside as per [TR-03110_1]
+    Means to check authenticity of the terminal, Terminal Authentication as per [TR-03110_1]
+    Means to prove authenticity of the chip by means of Active Authentication or Chip Authentication as per [TR-
+     03110_1]
+    Chip authentication followed by terminal authentication used as a precondition to provide access to
+     biometric data known as EAC, as per [TR-03110_1]
+
+
+CC Document                                             5
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+Any product using BAC will be conformant to [PP_BAC] only. Any product using PACE but not using EAC will be
+conformant to [PP_SAC] only. Any product using PACE and EAC will be conformant to [PP_EAC] only.
+Organizations being responsible for the operation of inspection systems shall be aware of this context.
+
+ 2.5              Guidance Documentation
+The following guidance documentation is delivered to the customer together with the TOE
+
+ Document name                                                               Version          Date
+
+ Infineon Applet Collection eMRTDV1.0 Administration Guide
+                                                                             1.4              2020-04-14
+
+
+ Infineon Applet Collection eMRTDV1.0 Databook
+                                                                             1.6              2020-04-17
+
+
+
+
+ 2.6              TOE Description
+
+2.6.1               Component Overview
+The TOE is a DI chip with the ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0.
+It is based on the requirements from the ICAO for machine readable travel documents, i.e. [ICAO_9303_10],
+[ICAO_9303_11], [TR-03110_1] and [TR-03110_3].
+Figure 1 shows the TOE in terms of its components.
+The grey color indicates what contributes to fulfill the security claims in this ST. The white color indicates
+optional components which are not in the scope of the security claims of this ST, in CC terminology these are
+non interefering with the TSF of the TOE.
+   -    The two lower layers in the picture represent the smart card controller referenced by IFX_CCI_000005
+        together with the Firmware, Asymmetric Cryptographic Library (ACL) and a Symmetric Crypto Library
+        (SCL). Note that these components are certified by the same CC certificate BSI-DSZ-CC-1110-V2-2019.
+        The hardware platform provides effective protection mechanisms against fault attacks. The platform
+        contains hardware co-processors, which support cryptographic standards such as TDES, AES, RSA and
+        EC. The hardware co-processor SCP has integrated measures against successful SCA.
+   -    The OS platform called “Secora ID S” is a Java Card OS and offers services for:
+                 The standard Java Card features like API, the Java Card Runtime Environment and the Java
+                  Card Virtual Machine
+               Proprietary PACE API providing special countermeasures against side channel leakage
+               GP for content management
+               Crypto operations (hash, EC, RSA, TDES and AES)
+               Communication via the contactless interface and contact interface.
+        It is certified in Common Criteria under the Certificate NSCIB-CC-175887.
+        Secora ID S supports the standard open Java Card mode as well as the proprietary static mode
+        (installation of preloaded code is possible) and the proprietary mode native (specially tailored mode for
+        eMRTD usecase which enforces non traceablity of the TOE). Open and static modes are the two possible
+CC Document                                             6
+                                                                                                          1.2
+                                                                                                          2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+       modes during personalization of the TOE. The TOE goes into native mode once the personalization is
+       terminated. See [ST_JC_ID_S_Platform] for more details on the supported modes in Secora ID S OS.
+   -   ISO or EU Electronic Driving License (eDL) or an Electronic ID(eID) are configurations of SECORA™ ID S
+       Applet Infineon Applet Collection - eMRTD V1.0. For more information on these optional features refer
+       to [UserGuideDataBook], [UserGuideAdmin]. As already said these applications are not part of the TOE
+       Security Functionalities and are non interfering with the TSFs of the TOE. The installation of eDL and
+       eID is done by the customer who uses the cap file of SECORA™ ID S Applet Infineon Applet Collection
+       preloaded on the card by Infineon. Again, no claims of the security for the eDL or the eID applications
+       are made in this ST.
+   -   ePassport configuration of SECORA™ ID S Applet Infineon Applet Collection - eMRTD V1.0 is a Java Card
+       applet which provides the functions of the electronic Passport as per [ICAO_9303_10], [ICAO_9303_11],
+       [TR-03110_1] and [TR-03110_3].
+       The installation of ePass is done by the customer who uses for this purpose the cap file of SECORA™ ID
+       S Applet Infineon Applet Collection preloaded on the card by Infineon.
+       The applet uses the services of the Java Card Secora ID S OS described above. It manages the various
+       stages of the product’s lifecycle once the application is onto the hardware up to its end of life. The
+       application implements the protocols:
+                 BAC
+                 PACE
+                 EAC
+                 AA
+       It does not implement any cryptographic primitives, as these are provided by the underlying Java Card
+       OS. Further it manages file access control and authentication failure handling. Also the application
+       controls the secure messaging including error handling using the Java Card OS Crypto services, which
+       subsequently relies on the features of the underlying hardware providing high integrity and side
+       channel protection. The claims in terms of SFRs in this ST target the SECORA™ ID S Applet Infineon
+       Applet Collection - eMRTD V1.0.
+
+   -   Third party applications can be installed by the customer and running on the card. Note that in this
+       case the JC Secora ID S is delivered in open mode, see [ST_JC_ID_S_Platform] to the customer which
+       will be then able to load and install 3rd party applications.
+The TOE user guidance comprises:
+   -   [UserGuideDataBook] and [UserGuideAdmin] which provide guidance, how to perform personalization
+       and maintain the targeted security level during Personalisation and Operation phase.
+
+
+
+
+CC Document                                           7
+                                                                                                     1.2
+                                                                                                     2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+Figure 1      TOE components overview
+
+
+
+
+2.6.2              Interfaces of the TOE
+   -    The physical interface of the TOE to the external environment is the entire surface of the IC.
+   -    The RF interface (radio frequency power and signal interface) enabling contactless communication
+        between a PICC (proximity integration chip card, PICC) and a terminal reader/writer (proximity coupling
+        device, terminal). The transmission protocol meets [ISO/IEC 14443-3] and [ISO/IEC 14443-4] Type B.
+   -    The contact based interface ISO 7816-3 supported for the purposes of eID and eDL.
+   -    The command interface to the TOE is provided by the ePassport Application.
+
+
+
+2.6.3              Package Types
+The TOE package types and formats are exactly the same as for the underlying Java Card OS. The package
+types and formats of the Java Card OS Secora ID S are described in [ST_JC_ID_S_Platform], section 1.4.3 and
+1.4.6.
+
+
+2.6.4              Lifecycle and Delivery
+The [PP_EAC], [PP_SAC] and [PP_BAC] define the lifecycle phases for the TOE as follows:
+1. Development
+   - Step 1: Development of hardware and IC dedicated software (firmware)
+   - Step 2: Development of IC embedded software
+
+CC Document                                            8
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+2. Manufacturing
+   - Step 3: manufacturing of IC and IC dedicated software. As the TOE does not provide any user ROM,
+       manufacturing of IC embedded software parts in ROM are not relevant here.
+   - Step 4 (optional): Combination of IC with contactless interface of the travel document
+   - Step 5 (Prepersonalization): loading on the device of the executable Java Card OS image. Loading of
+       the application JC package containing the TOE code, eDL and eID code.
+3. Personalisation of Travel Document
+   - Step 6: this step is performed by the customer. The customer receives from Infineon the TOE
+       composed of the following components:
+           o The underlying hardware
+           o The underlying Java Card OS can be in two possible modes: either in the standard Java Card
+                open mode (loading and installation of applets are possible) or in the proprietary Java Card
+                static mode (preloaded by Infineon packages can be installed, applet loading is not possible).
+           o The cap file of SECORA™ ID S Applet Infineon Applet Collection - eMRTD V1.0 is preloaded by
+                Infineon.
+           o The customer then proceeds to installing the ePassport configuration of SECORA™ ID S Infineon
+                Applet Collection - eMRTD V1.0 and optionally installing the ISO/EU eDL or eID. In case the
+                Secora ID S is in open mode the customer can load and install 3rd party applets. During this step
+                the customer also performs the personalisation with biometric data and configuration of the
+                TSF if necessary.
+4. Operational Use
+   - Step 7: once the personalization of the product is finished, the Java Card ID S OS is switched to its
+       proprietary native mode usage of the TOE by the personalizer. Native mode switches off GP and
+       identification commands to disallow tracking of the end user.
+
+
+
+
+CC Document                                             9
+                                                                                                        1.2
+                                                                                                        2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 3             Conformance Claims (ASE_CCL)
+
+ 3.1           CC Conformance Claim
+This Security Target and the TOE is Common Criteria version v3.1 revision 5 part 2 [CCPart2] extended and
+Common Criteria version v3.1 revision 5 part 3 [CCPart3] conformant.
+
+
+ 3.2           PP Claim
+The TOE is strictly conformant
+     -   to [PP_BAC], if a BIS chooses BAC as authentication method
+     -   to [PP_SAC], if a BIS chooses PACE as authentication method
+     -   to [PP_EAC], if a EIS choses PACE as authentication method and additionally uses Extended Access
+         Control, which consists of two parts (i) the Chip Authentication Protocol Version 1 (v.1) and (ii) the
+         Terminal Authentication Protocol Version 1 (v.1) as defined in [TR-03110_1].
+
+
+ 3.3           Package Claim
+The assurance level for the TOE is EAL5 augmented with the components ALC_DVS.2 and AVA_VAN.5 in case
+PACE is used and EAC is not used and conform to [PP_SAC].
+The assurance level for the TOE is EAL5 augmented with the components ALC_DVS.2 and AVA_VAN.5 in case
+PACE and EAC are used and conform to [PP_EAC].
+The assurance level for the TOE is EAL4 augmented with the components ALC_DVS.2 in case BAC is chosen as
+authentication method whereby conformancy to [PP_BAC] is claimed.
+
+
+
+
+CC Document                                              10
+                                                                                                           1.2
+                                                                                                           2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 4            Security Problem Definition (ASE_SPD)
+All assets, subjects and external entities, threats, organisational security policies and assumptions from
+[PP_EAC], [PP_SAC] and [PP_BAC] section 3 “Security Problem Definition” are applicable for this TOE.
+
+
+
+
+CC Document                                             11
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 5             Security Objectives (ASE_OBJ)
+Here follows a concise description of the security objectives applying to this ST followed by a the security
+objective rationale.
+
+ 5.1           Security Objectives defined in the claimed PPs
+All Security Objectives provided by the TOE or by the operational environment as well as the security objectives
+rationale from the claimed PPs [PP_EAC], [PP_SAC] and [PP_BAC] section 4 “Security Objectives” are applicable
+for this TOE.
+
+ 5.2           Security Objectives defined in this ST
+The following security objective is defined additionally in this ST to formally express the extra features of the
+TOE not present in the claimed PPs:
+OT.Active_Auth Travel document’s chip authenticity
+The TOE shall support the Basic Inspection Systems to verify the identity and authenticity of the travel doc-
+ument’s chip as issued by the identified issuing State or Organisation by means of the Active Authentication as
+defined in [ICAO_9303_01]. The authenticity proof provided by travel document’s chip shall be protected
+against attacks with high attack potential.
+
+
+
+ 5.3           Security Objective Rationale
+The Security Objective Rationale from the claimed PPs [PP_EAC], [PP_SAC] and [PP_BAC] stays the same here.
+The additionally defined in this ST security objective OT.Active_Auth above counters the threat T.Counterfeit
+(threat defined in [PP_EAC].
+
+
+
+
+CC Document                                              12
+                                                                                                          1.2
+                                                                                                          2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 6            Extended Components Definition (ASE_ECD)
+[PP_EAC], [PP_SAC] and [PP_BAC] respective sections 5 “Extended Components Definition” are applicable for
+this TOE.
+
+
+
+
+CC Document                                          13
+                                                                                                 1.2
+                                                                                                 2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+  7             Security Requirements (ASE_REQ)
+
+  7.1           TOE Security Functional Requirements
+ The security functional requirements (SFR) for this TOE are defined in this chapter.
+This ST covers the three PPs [PP_SAC], [PP_EAC] and [PP_BAC] each two of which have a non empty
+intersection of SFRs. In the rest of this section we provide a classification of the SFRs of these PPs depending on
+where these SFRs are declared and if they need a refinement here in this ST.
+ Table 1 lists all SFRs appearing both in [PP_SAC] and [PP_BAC].
+ Table 2 lists all SFRs declared in [PP_SAC].
+Table 3 lists all SFRs specific to [PP_BAC]. Note that some of the SFRs appear in both [PP_SAC] and [PP_BAC]
+with same name but different content. In such cases the SFR is iterated with either the extension …/BAC or
+…/PACE.
+Table 4 lists all SFRs specific to [PP_EAC]. Note that [PP_EAC] is an extension of [PP_SAC], therefore all SFRs of
+[PP_SAC] are SFRs in [PP_EAC], i.e. the SFRs listed in Table 3 and Table 4 are also SFRs of [PP_EAC].
+Table 5 lists the SFRs introduced in this ST which are related to the Active Authentication mechanism
+supported by the TOE.
+
+Table 1       TOE SFRs equivalent from both [PP_SAC] and [PP_BAC]
+  FCS_CKM.4
+  FCS_RND.1
+  FMT_MTD.1/INI_ENA
+  FPT_TST.1
+  FPT_PHP.3
+
+
+
+Table 2       TOE SFRs specifically from [PP_SAC]
+  FCS_CKM.1/DH_PACE
+  FCS_COP.1/PACE_ENC
+  FCS_COP.1/PACE_MAC
+  FIA_AFL.1/PACE
+  FIA_UID.1/PACE
+  FIA_UAU.1/PACE
+  FIA_UAU.4/PACE
+  FIA_UAU.5/PACE
+  FIA_UAU.6/PACE
+  FDP_ACC.1/TRM
+  FDP_ACF.1/TRM
+  FDP_RIP.1
+
+CC Document                                             14
+                                                                                                          1.2
+                                                                                                          2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+  FDP_UCT.1/TRM
+  FDP_UIT.1/TRM
+  FTP_ITC.1/PACE
+  FAU_SAS.1
+  FMT_SMF.1
+  FMT_SMR.1/PACE
+  FMT_LIM.1
+  FMT_LIM.2
+  FMT_MTD.1/INI_DIS
+  FMT_MTD.1/KEY_READ
+  FMT_MTD.1/PA
+  FPT_EMS.1
+  FPT_FLS.1
+
+Table 3
+
+Table 4       TOE SFRs specifically from [PP_BAC]
+  FCS_CKM.1
+  FCS_COP.1/SHA
+  FCS_COP.1/ENC
+  FCS_COP.1/AUTH
+  FCS_COP.1/MAC
+  FIA_UID.1
+  FIA_UAU.1
+  FIA_UAU.4
+  FIA_UAU.5
+  FIA_UAU.6
+  FIA_AFL.1
+  FDP_ACC.1
+  FDP_ACF.1
+  FDP_UCT.1
+  FDP_UIT.1
+  FAU_SAS.1/BAC
+  FMT_SMF.1/BAC
+  FMT_SMR.1
+  FMT_LIM.1/BAC
+  FMT_LIM.2/BAC
+  FMT_MTD.1/INI_DIS/BAC
+
+CC Document                                          15
+                                                                                  1.2
+                                                                                  2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+  FMT_MTD.1/KEY_WRITE
+  FMT_MTD.1/KEY_READ/BAC
+  FPT_EMSEC.1
+  FPT_FLS.1/BAC
+
+
+
+
+Table 5       TOE SFRs specifically from [PP_EAC]
+  FCS_CKM.1/CA
+  FCS_COP.1/CA_ENC
+  FCS_COP.1/CA_MAC
+  FCS_COP.1/SIG_VER
+  FIA_UID.1/PACE
+  FIA_UAU.1/PACE
+  FIA_UAU.4/PACE
+  FIA_UAU.5/PACE
+  FIA_UAU.6/EAC
+  FIA_API.1
+  FDP_ACC.1/TRM
+  FDP_ACF.1/TRM
+  FMT_SMR.1/PACE
+  FMT_LIM.1
+  FMT_LIM.2
+  FMT_MTD.1/CVCA_INI
+  FMT_MTD.1/DATE
+  FMT_MTD.1/CAPK
+  FMT_MTD.1/CVCA_UPD
+  FMT_MTD.1/KEY_READ
+  FMT_MTD.3
+  FPT_EMS.1
+
+
+
+
+CC Document                                          16
+                                                                                  1.2
+                                                                                  2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+Table 6       TOE SFRs introduced in this ST
+ FIA_API.1/AA
+ FMT_MTD.1/AA
+ FCS_COP.1/SIG_GEN
+
+
+
+
+7.1.1                About the Application Notes in this ST
+Note that if an SFR has application notes as per the PPs [PP_SAC], [PP_EAC] and [PP_BAC] then these
+application notes apply and can be found in the respective PPs.
+Some SFRs contain additional application notes to ease the understanding of the specificities of this TOE.
+These application notes do not come from the PPs and are prefixed with [IFX specific].
+
+
+
+7.1.2                Common SFRs from [PP_BAC] and [PP_SAC]
+
+7.1.2.1              Class FCS: Cryptographic Support
+
+
+
+
+  FCS_CKM.4                Cryptographic key destruction – Session keys
+
+  Hierarchical to:         No other components.
+
+  Dependencies:            [FDP_ITC.1 Import of user data without security attributes, or FDP_ITC.2 Import of
+                           user data with security attributes, or FCS_CKM.1 Cryptographic key generation]:
+                           fulfilled by FCS_CKM.1 in case of BAC;
+                           fulfilled by FCS_CKM.1/DH_PACE in case of PACE
+
+  FCS_CKM.4.1              The TSF shall destroy cryptographic keys in accordance with a specified
+                           cryptographic key destruction method overwriting the key values with random
+                           values that meets the following: none
+
+                           Application note 19 of [PP_BAC] and application note 28 of [PP_SAC] are both
+ [IFX specific]            applicable for this SFR. There is no contradiction between the two application
+ Application Note:         notes. While the application note from [PP_BAC] simply requests the encryption
+                           and message authentication keys to be destroyed, the application note from
+                           [PP_SAC] provides more detailed requests, when the session keys have to be
+                           destroyed. Therefore FCS_CKM.4 from [PP_SAC] and [PP_BAC] can be combined.
+
+
+
+
+CC Document                                            17
+                                                                                                       1.2
+                                                                                                       2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FCS_RND.1                Quality metric for random numbers
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FCS_RND.1.1              The TSF shall provide a mechanism to generate random numbers that meet
+                          Random numbers generation Class PTG.3 according to [AIS31]
+
+ [IFX specific]           There is no contradiction between application note 24 of [PP_BAC] and application
+ Application Note:        note 31 of [PP_SAC]. Both application notes shall apply and therefore FCS_RND.1
+                          from [PP_BAC] and [PP_SAC] can be combined, i.e. the random numbers shall be
+                          used for the PACE, BAC and the authentication mechanism based on Triple-DES (as
+                          defined in FIA_UAU.4/PACE and FIA_UAU.4).
+
+
+
+
+7.1.2.2             Class FMT Security Management
+
+ FMT_MTD.1/INI_ENA        Management of TSF data – Writing Initialisation and Pre-personalisation Data
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            FMT_SMF.1 Specification of management functions: fulfilled by FMT_SMF.1 for
+                          PACE; fulfilled by FMT_SMF.1/BAC for BAC
+                          FMT_SMR.1 Security roles: fulfilled by FMT_SMR.1/PACE for PACE; fulfilled by
+                          FMT_SMR.1 for BAC
+
+ FMT_MTD.1.1/INI_ENA      The TSF shall restrict the ability to write the Initialisation Data and Pre-
+                          personalisation Data to the Manufacturer.
+
+ [IFX specific]           The application note 42 of [PP_BAC] applies. This application note provides a
+ Application Note:        definition, what is meant by “Pre-Personalisation Data”. This definition is also
+                          applicable to FMT_MTD.1/INI_ENA from [PP_SAC]. Therefore FMT_MTD.1/INI_ENA
+                          from [PP_BAC] and [PP_SAC] can be combined.
+
+
+
+
+CC Document                                            18
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+7.1.2.3             Class FPT Protection of the Security Functions
+
+
+ FPT_TST.1                TSF testing
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FPT_TST.1.1              The TSF shall run a suite of self tests during initial start-up, to demonstrate the
+                          correct operation of the TSF.
+
+ FPT_TST.1.2              The TSF shall provide authorised users with the capability to verify the integrity of
+                          the TSF data.
+
+ FPT_TST.1.3              The TSF shall qrovide authorised users with the capability to verify the integrity of
+                          stored TSF executable code.
+
+
+
+ [IFX specific]           There is no contradiction between application note 46 of [PP_BAC] and application
+                          note 52 of [PP_SAC]. In fact, although the wording is slightly different, the meaning
+ Application Note:
+                          of these application notes is identical. Therefore either of these application notes
+                          applies and FPT_TST.1 from [PP_BAC] and [PP_SAC] can be combined.
+
+
+
+
+ FPT_PHP.3                Resistance to physical attack
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FPT_PHP.3.1              The TSF shall resist physical manipulation and physical probing to the TSF by
+                          responding automatically such that the SFRs are always enforced.
+
+ [IFX specific]           Application note 47 of [PP_BAC] and 53 of [PP_SAC] are equivalent. Application
+                          note 48 of [PP_BAC] is only informative to the reader in the sense, that it provides a
+ Application Note:
+                          context to an older CC standard, but not relevant for the interpretation of
+                          FPT_PHP.3. Therefore either application note 47 of [PP_BAC] or application note 53
+                          of [PP_SAC] applies and FPT_PHP.3 from [PP_BAC] and [PP_SAC] can be combined.
+
+
+
+
+CC Document                                            19
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+7.1.3                SFRs specifically from [PP_SAC]
+
+7.1.3.1              Class FCS: Cryptographic Support
+
+
+  FCS_CKM.1/DH_PACE        Cryptographic key generation – Diffie-Hellman for PACE session keys
+
+  Hierarchical to:         No other components.
+
+  Dependencies:             [FCS_CKM.2 Cryptographic key distribution or FCS_COP.1 Cryptographic
+                           operation]: fulfilled by FCS_CKM.4
+                           Justification: A ECDH agreement is used in order to have no key distribution,
+                           therefore FCS_CKM.2 makes no sense in this case while FCS_CKM.4 Cryptographic
+                           key destruction makes sense.
+
+  FCS_CKM.1.1/DH_PACE      The TSF shall generate cryptographic keys in accordance with a specified
+                           cryptographic key generation algorithm ECDH compliant to [TR_ECC] and
+                           specified cryptographic key size Table 7 column key size that meet the following:
+                           [ICAO_SAC].
+
+
+
+
+Table 7       FCS_CKM/DH_PACE Key Sizes
+  Algorithm                                                               Key size
+  ECDH key agreement algorithm                                            224, 256, 320, 384, 512
+  AES session keys                                                        128, 192, 256
+  TDES session keys                                                       112
+
+
+
+
+  FCS_COP.1/PACE_ENC        Cryptographic operation – Encryption / Decryption AES / 3DES
+
+  Hierarchical to:          No other components.
+
+  Dependencies:             [FDP_ITC.1 Import of user data without security attributes, or FDP_ITC.2 Import
+                            of user data with security attributes, or FCS_CKM.1 Cryptographic key
+                            generation]: fulfilled by FCS_CKM.1/DH_PACE
+                            FCS_CKM.4 Cryptographic key destruction: fulfilled by FCS_CKM.4.
+
+  FCS_COP.1.1/PACE_ENC      The TSF shall perform secure messaging – encryption and decryption in
+                            accordance with a specified cryptographic algorithm AES and 3DES in CBC mode
+
+CC Document                                           20
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                           and cryptographic key sizes 128, 192 and 256 bits for AES and 112 bits for 3DES
+                           that meet the following: compliant to [ICAO_SAC].
+
+ [IFX specific]            3DES in CBC mode is used with key size of 112 bit. AES in CBC mode is used with
+ Application Note:         key size of 128, 192 or 256 bit. The TOE implements the cryptographic primitives
+                           (i.e. Triple-DES and AES) for secure messaging with encryption of the transmitted
+                           data and encrypting the nonce in the first step of PACE. The keys are agreed
+                           between the TOE and the terminal as part of the PACE protocol according to
+                           FCS_CKM.1/DH_PACE.
+
+
+
+
+ FCS_COP.1/PACE_MAC        MAC Cryptographic operation – MAC
+
+ Hierarchical to:          No other components.
+
+ Dependencies:             [FDP_ITC.1 Import of user data without security attributes, or FDP_ITC.2 Import
+                           of user data with security attributes, or FCS_CKM.1 Cryptographic key
+                           generation]: fulfilled by FCS_CKM.1/DH_PACE
+                           FCS_CKM.4 Cryptographic key destruction: fulfilled by FCS_CKM.4.
+
+ FCS_COP.1.1/PACE_MAC      The TSF shall perform secure messaging – message authentication code in
+                           accordance with a specified cryptographic algorithm CMAC d objectives of the TOE. They can be instantiated as assumptions,
+                       threats, objectives (for the TOE and the environment) or organizational security policies.
+                       The description is based on [6].
+                       This chapters described only the Security Aspects which have been added in comparison
+                       to the PP [6].
+
+                  3.1 Integrity
+
+                 3.1.1 SA.INTEG-APPLI-DATA-PHYS: Integrity of Application Data (Sensitive
+                       Result)
+                       Integrity-sensitive application data must be protected against unauthorized modification
+                       by physical attacks.
+
+                  3.2 Configuration Module
+
+                 3.2.1 SA.CONFIGURATION-MODULE: Configuration Module
+                       The Configuration Module is a JCOP functionality which allows to read and modify
+                       configuration items in the configuration area of the TOE.
+
+                  3.3 Modular Design
+
+                 3.3.1 SA.MODULAR-DESIGN: Modular Design
+                       The TOE might contain one or more Modules implementing particular functionality. The
+                       list of Modules present in the TOE must be retrievable. The Modules have an associated
+                       AID which allows to identify them. The AID is equivalent to the Package AID of JavaCard
+                       packages. Modules can only be deleted, re-loading of a previously deleted module or
+                       replacing a present module must not be possible. Interfaces to a Module can be Public
+                       or TOE internal. Public Interfaces can directly be accessed by any Applet or via an
+                       APDU, TOE internal interfaces can only be accessed by the TOE itself, Applets use the
+                       corresponding JavaCard API [14].
+
+                 3.3.2 SA.MODULE-INVOCATION: Module Invocation
+                       Invoking a module must be transparent to the user. If a Module has a TOE internal
+                       interface, is not present and is invoked by the user, the TOE must preserve a secure
+                       state by throwing an exception or returning an appropriate error status word to the CAD.
+
+
+
+
+JCOP 4.7 SE051                        All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                  Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                            21 / 120
+NXP Semiconductors
+                                                                                                                   JCOP 4.7 SE051
+                                                                                                                        Security Target Lite
+
+
+4       Security Problem Definition (ASE_SPD)
+                       The Security Problem Definition is described within the following sections. Only additional
+                       and refined items compared to the PP [6] are described.
+
+                  4.1 Assets
+                       Assets are security-relevant elements to be directly protected by the TOE. Confidentiality
+                       of assets is always intended with respect to un-trusted people or software, as various
+                       parties are involved during the first stages of the smart card product life-cycle. Details
+                       concerning the threats are given in Section 4.2 "Threats" hereafter.
+                       Assets have to be protected, some in terms of confidentiality and some in terms of
+                       integrity or both integrity and confidentiality. These assets might get compromised by the
+                       threats that the TOE is exposed to.
+                       The assets to be protected by the TOE are listed below. They are grouped according to
+                       whether it is data created by and for the user (User data) or data created by and for the
+                       TOE (TSF data). This definition of grouping is taken from Section 5.1 of [6].
+
+                 4.1.1 User Data
+
+                       D.APSD_KEYS                        Refinement of D.APP_KEYS of [6]. Application Provider Security
+                                                          Domains cryptographic keys are needed to establish secure channels
+                                                          with the AP. These keys can be used to load and install applications
+                                                          on the card if the Security Domain has the appropriate privileges. To
+                                                          be protected from unauthorized disclosure and modification.
+                       D.ISD_KEYS                         Refinement of D.APP_KEYS of [6]. Issuer Security Domain
+                                                          cryptographic keys are needed to perform card management
+                                                          operations on the card. To be protected from unauthorized disclosure
+                                                          and modification.
+                       D.VASD_KEYS                        Refinement of D.APP_KEYS of [6]. Verification Authority Security
+                                                          Domain cryptographic keys needed to verify applications Mandated
+                                                          DAP signature. To be protected from unauthorized disclosure and
+                                                          modification.
+                       D.CARD_MNGT_DATA                   The data of the card management environment, like for instance,
+                                                          the identifiers, the privileges, life cycle states. To be protected from
+                                                          unauthorized modification.
+
+
+                 4.1.2 TSF Data
+
+                       D.CONFIG_ITEM                 A configuration that can be changed using the Configuration Mechanism.
+                       D.MODULE_CODE                 The code of a Module. The code of a module might comprise Java code,
+                                                     native code, code of a native Library or a combination of them. To be
+                                                     protected against unauthorized disclosure and modification. Further to be
+                                                     protected against unauthorized removal or presence forgery.
+                       D.MODULE_DATA                 Private data of a Module, like the contents of its private fields. To be
+                                                     protected from unauthorized disclosure and modification.
+
+
+
+
+JCOP 4.7 SE051                        All information provided in this document is subject to legal disclaimand Retail-MAC and
+                           cryptographic key sizes 112, 128, 192, 256 bit that meet the following: compliant
+                           to [ICAO_SAC] .
+
+ [IFX specific]            In accordance with [ICAO_SAC] the (two-key) Triple-DES (112 Bit) could be used
+                           in Retail mode for secure messaging.
+ Application Note:
+
+
+
+
+7.1.3.2             Class FIA Identification and Authentication
+
+
+ FIA_AFL.1/PACE           Authentication failure handling – PACE authentication using non-blocking
+                          authorisation data
+
+ Dependencies:            FIA_UAU.1 Timing of authentication: fulfilled by FIA_UAU.1/PACE
+
+ Hierarchicalto:          No other components.
+
+
+
+CC Document                                          21
+                                                                                                     1.2
+                                                                                                     2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FIA_AFL.1.1/PACE         The TSF shall detect when a configurable number (see application note below) of
+                          unsuccessful authentication attempt occurs related to authentication attempts
+                          using the PACE password as shared password
+
+ FIA_AFL.1.2/PACE         When the defined number of unsuccessful authentication attempts has been met,
+                          the TSF shall increasingly slow down the performance up to a maximum not
+                          higher than 7 seconds verifying the authentication token.
+
+ [IFX specific]           The number of failed authentication attempts is configurable. This configurable
+                          number can be in the range [1..7f].
+ Application note
+
+
+
+
+ FIA_UID.1/PACE           Timing of identification
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FIA_UID.1.1/PACE         The TSF shall allow
+                          1. to establish a communication channel,
+                          2. carry out the PACE Protocol according to [ICAO_SAC]
+                          3. to read the Initialization Data if it is not disabled by TSF according to
+                             FMT_MTD.1/INI_DIS
+                          4. none
+                          on behalf of the user to be performed before the user is identified.
+
+ FIA_UID.1.2/PACE         The TSF shall require each user to be successfully identified before allowing any
+                          other TSF-mediated actions on behalf of that user.
+
+
+
+
+ FIA_UAU.1/PACE           Timing of authentication
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            FIA_UID.1 Timing of identification: fulfilled by FIA_UID.1/PACE
+
+ FIA_UAU.1.1/PACE         The TSF shall allow
+                          1. to establish a communication channel,
+                          2. carrying out the PACE Protocol according to [ICAO_SAC]
+                          3. to read the Initialization Data if it is not disabled by TSF according to
+                             FMT_MTD.1/INI_DIS,
+                          4. none
+CC Document                                           22
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+                          on behalf of the user to be performed before the user is authenticated.
+
+ FIA_UAU.1.2/PACE         The TSF shall require each user to be successfully authenticated before allowing
+                          any other TSF-mediated actions on behalf of that user.
+
+
+
+
+ FIA_UAU.4/PACE           Single-use authentication of the Terminals by the TOE
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+
+
+ FIA_UAU.4.1/PACE         The TSF shall prevent reuse of authentication data related to
+                          1. PACE Protocol according to [ICAO_SAC]
+                          2. Authentication Mechanism based on Triple-DES and AES
+                          3. none
+
+
+
+
+ FIA_UAU.5/PACE           Multiple authentication mechanisms
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FIA_UAU.5.1/PACE         The TSF shall provide
+                          1. PACE Protocol according to [ICAO_SAC] ,
+                          2. Passive Authentication according to [ICAO_9303_1]
+                          3. Secure messaging in MAC-ENC mode according to [ICAO_SAC]
+                          4. secure channel protocol 03 as specified in [GPv2_3_1] with AES 256 bits key
+                             length
+                          5. none
+                          to support user authentication.
+
+
+
+ FIA_UAU.5.2/PACE         The TSF shall authenticate any user’s claimed identity according to the following
+                          rules:
+                          1. Having successfully run the PACE protocol the TOE accepts only received
+                             commands with correct message authentication code sent by means of secure
+
+CC Document                                          23
+                                                                                                    1.2
+                                                                                                    2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                             messaging with the key agreed with the terminal by means of the PACE
+                             protocol.
+                          2. The TOE accepts the authentication attempt as Personalisation Agent by
+                             secure channel protocol 03 as specified in [GPv2_3_1] with AES 256 bits key
+                             length.
+                          3. none
+
+ [IFX specific]           This SFR also specifies the means for authentication of the personalization agent
+ Application Note:        that are used during personalization phase which are the scp03 as per [GPv2_3_1],
+                          see point 2 of FIA_UAU.5.2/PACE above.
+
+
+
+
+ FIA_UAU.6/PACE           Re-authenticating of Terminal by the TOE
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FIA_UAU.6.1/PACE         The TSF shall re-authenticate the user under the conditions each command sent
+                          to the TOE after successful run of thers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                  Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                            22 / 120
+NXP Semiconductors
+                                                                                                                      JCOP 4.7 SE051
+                                                                                                                           Security Target Lite
+
+
+                   4.2 Threats
+
+                  4.2.1 Integrity
+
+                 4.2.1.1 T.INTEG-APPLI-DATA[REFINED]: Integrity of Application Data
+
+                        The attacker executes an application to alter (part of) another application’s data.
+                        Directly threatened asset(s): D.APP_I_ DATA, D.PIN, D.APP_KEYS, D.ISD_KEYS,
+                        D.VASD_KEYS and S.APSD_KEYS.
+                        This threat is a refinement of the Threat T.INTEG-APPLI-DATA from [6].
+
+                  4.2.2 Unauthorized Execution
+
+                 4.2.2.1 T.MODULE_EXEC: Code Execution of Modules
+
+                        The attacker bypasses the presence check of a Module which is not present with
+                        TOE internal interface to execute arbitrary code. See SA.MODULAR-DESIGN and
+                        SA.MODULE-INVOCATION for details. Directly threatened asset(s): D.MODULE_
+                        CODE.
+
+                  4.2.3 Card Management
+
+                 4.2.3.1 T.UNAUTHORIZED_CARD_MNGT: Unauthorized Card Management
+
+                        The attacker performs unauthorized card management operations (for instance
+                        impersonates one of the actor represented on the card) in order to take benefit of the
+                        privileges or services granted to this actor on the card such as fraudulent:
+                        •   load of a package file
+                        •   installation of a package file
+                        •   extradition of a package file or an applet
+                        •   personalization of an applet or a Security Domain
+                        •   deletion of a package file or an applet
+                        •   privileges update of an applet or a Security Domain
+                        Directly threatened asset(s): D.ISD_KEYS, D.APSD_KEYS, D.APP_C_DATA, D.APP_
+                        I_DATA, D.APP_CODE, D.SEC_DATA, and D.CARD_MNGT_DATA (any other asset
+                        may be jeopardized should this attack succeed, depending on the virulence of the
+                        installed application).
+                        This security objective is a refinement of the Threats T.INSTALL and T.DELETION from
+                        [6].
+
+                 4.2.3.2 T.COM_EXPLOIT: Communication Channel Remote Exploit
+
+                        An attacker remotely exploits the communication channels established between a third
+                        party and the TOE in order to modify or disclose confidential data.
+                        All assets are threatened.
+
+                 4.2.3.3 T.LIFE_CYCLE: Life Cycle
+
+                        An attacker accesses to an application outside of its expected availability range thus
+                        violating irreversible life cycle phases of the application (for instance, an attacker
+
+JCOP 4.7 SE051                           All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                     Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                               23 / 120
+NXP Semiconductors
+                                                                                                                     JCOP 4.7 SE051
+                                                                                                                          Security Target Lite
+
+
+                        repersonalizes the application). Directly threatened asset(s): D.APP_I_ DATA,
+                        D.APP_C_DATA, and D.CARD_MNGT_DATA.
+
+                  4.2.4 Operating System
+
+                 4.2.4.1 T.OS_OPERATE: Incorrect Operating System Behavior
+
+                        Modification of the correct OS behavior by unauthorized use of TOE or use of incorrect
+                        or unauthorized instructions or commands or sequence of commands, in order to obtain
+                        an unauthorized execution of the TOE code. An attacker may cause a malfunction of TSF
+                        or of the Smart Card embedded OS in order to (1) by-pass the security mechanisms (i.e.
+                        authentication or access control mechanisms) or (2) obtain unexpected result from the
+                        embedded OS behavior. Different kind of attack path may be used as:
+                        1. Applying incorrect unexpected or unauthorized instructions, commands or command
+                           sequences,
+                        2. Provoking insecure state by insertion of interrupt (reset), premature termination of
+                           transaction or communication between IC and the reading device.
+                        Info: Any implementation flaw in the OS itself can be exploited with this attack path
+                        to lead to an unsecured state of the state machine of the OS. The attacker uses the
+                        available interfaces of the TOE. A user could have certain specified privileges that allow
+                        loading of selected programs. Unauthorized programs, if allowed to be loaded, may
+                        include either the execution of legitimate programs not intended for use during normal
+                        operation (such as patches, filters, Trojan horses, etc.) or the unauthorized loading of
+                        programs specifically targeted at penetration or modification of the security functions.
+                        Attempts to generate a non-secure state in the Smart Card may also be made through
+                        premature termination of transactions or communications between the IC and the card
+                        reading device, by insertion of interrupts, or by selecting related applications that may
+                        leave files open.
+
+                  4.2.5 Random Numbers
+
+                 4.2.5.1 T.RND: Deficiency of Random Numbers
+
+                        An attacker may predict or obtain information about random numbers generated by
+                        the TOE for instance because of a lack of entropy of the random numbers provided.
+                        An attacker may gather information about the produced random numbers which might
+                        be a problem because they may be used for instance to generate cryptographic keys.
+                        Here the attacker is expected to take advantage of statistical properties of the random
+                        numbers generated by the TOE without specific knowledge about the TOE’s generator.
+                        Malfunctions or premature ageing are also considered which may assist in getting
+                        information about random numbers.
+
+                  4.2.6 Configuration Module
+
+                 4.2.6.1 T.CONFIG: Unauthorized configuration
+
+                        The attacker tries to change configuration items without authorization. Directly threatened
+                        asset(s): D.CONFIG_ITEM.
+
+
+
+
+JCOP 4.7 SE051                          All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                    Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                              24 / 120
+NXP Semiconductors
+                                                                                                                    JCOP 4.7 SE051
+                                                                                                                         Security Target Lite
+
+
+                  4.2.7 Secure Box
+
+                 4.2.7.1 T.SEC_BOX_BORDER: SecureBox Border Infringement
+
+                        An attacker may try to use malicious code placed in the Secure Box to modify the correct
+                        behavior of the Operating System (OS). With the aim to
+                        1. disclose the Java Card System code,
+                        2. disclose or alter applet code, disclose or alter Java Card System data, or disclose or
+                           alter applet data.
+
+                  4.2.8 Module replacement
+
+                 4.2.8.1 T.MODULE_REPLACEMENT: Replacement of Module
+
+                        An attacker loads a Module with functionality differing from a previously deleted Module
+                        to bypass TOE Security Functions. See SA.MODULAR-DESIGN for details. Directly
+                        threatened assets: D.JCS_DATA.
+
+                   4.3 Organisational Security Policies
+
+                  4.3.1 OSP.PROCESS-TOE: Identification of the TOE
+                        An accurate identification must be established for the TOE. This requires that each
+                        instantiation of the TOE carries this identification.
+
+                  4.3.2 OSP.KEY-CHANGE: Security Domain Keys Change
+                        The Application Provider (AP) shall change its initial security domain keys (APSD) before
+                        any operation on its Security Domain.
+
+                  4.3.3 OSP.SECURITY-DOMAINS: Security Domains
+                        Security domains can be dynamically created, deleted and blocked during usage phase
+                        in post-issuance mode.
+
+                  4.3.4 OSP.SECURE-BOX: Secure Box Border
+                        Execution of untrusted native code shall be possible without any harm, manipulation, or
+                        influence on other parts of the TOE.
+
+                   4.4 Assumptions
+                        Note that the assumption A.DELETION is excluded. The Card Manager is part of the
+                        TOE and therefore the assumption is no longer relevant.
+
+                  4.4.1 A.USE_DIAG: Usage of TOE’s Secure Communication Protocol by OE
+                        It is assumed that the operational environment supports and uses the secure
+                        communication protocols offered by the TOE.
+
+
+
+
+JCOP 4.7 SE051                         All information provided in this document is subject to legal disclaimers.          © NXP B.V. 2020. All rights reserved.
+
+Evaluation document                                   Rev. 1.3 — 30 June 2020
+PUBLIC                                                                                                                                             25 / 120
+NXP Semiconductors
+                                                                                                                    JCOP 4.7 SE051
+                                                                                                                         Security Target Lite
+
+
+                 4.4.2 A.USE_KEYS: Protected Storage of Keys Outside of TOE
+                       It is assumed that the keys which are stored outside the TOE and which are used for
+                       secure communication and authentication between Smart Card and terminals are
+                       protected for confidentiality and integrity in their own storage environment. This is
+                       especially true for D.APSD_KEYS, D.ISD_KEYS, and D.VASD_KEYS.
+                       Info: This is to assume that the keys used in terminals or systems are correctly
+                       protected for confidentiality and integrity in their own environment, as the disclosure of
+                       such information which is shared with the TOE but is not under the TOE control, may
+                       compromise the security of the TOE.
+
+                 4.4.3 A.PROCESS-SEC-IC: Protection during Packaging, Finishing and
+                       Personalisation
+                       It is assumed that security procedures are used after delivery of the TOE by the TOE
+                       Manufacturer up to delivery to the end consumer to maintain confidentiality and integrity
+                       of the TOE and of its manufacturing and test e PACE protocol shall be verified as being sent
+                          by the PACE terminal.
+
+
+
+
+7.1.3.3             Class FDP User Data Protection
+
+
+ FDP_ACC.1/TRM            Subset access control – Terminal Access
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            FDP_ACF.1 Security attribute based access control: fulfilled by FDP_ACF.1/TRM
+
+ FDP_ACC.1.1/TRM          The TSF shall enforce the Access Control SFP on terminals gaining access to the
+                          User Data stored in the travel document and EF.SOD
+
+ Application note:        Please note that the Document Security Object (SOD) stored in EF.SOD (see
+                          [ICAO_9303_01]) does not belong to the user data, but to the TSF-data. The
+                          Document Security Object can be read out by the PACE authenticated BIS-PACE,
+                          see [ICAO_9303_01].
+
+
+
+
+CC Document                                          24
+                                                                                                       1.2
+                                                                                                       2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FDP_ACF.1/TRM            Security attribute based access control – Terminal Access
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            FDP_ACC.1 Subset access control: fulfilled by FDP_ACC.1/TRM
+                          FMT_MSA.3 Static attribute initialisation: not fulfilled, but justified
+                          The access control TSF according to FDP_ACF.1/TRM uses security attributes
+                          having been defined during the personalisation and fixed over the whole life time
+                          of the TOE. No management of these security attributes (i.e. SFR FMT_MSA.1 and
+                          FMT_MSA.3) is necessary here.
+
+ FDP_ACF.1.1/TRM          The TSF shall enforce the Access Control SFP to objects based on the following:
+                          1. Subjects:
+                                                      a) Terminal,
+                                                      b) BIS-PACE;
+                          2. Objects:
+                                                      a) data in EF.DG1, EF.DG2 and EF.DG5 to EF.DG16 ,
+                                                         EF.SOD and EF.COM of the logical travel document
+                                                      b) data in EF.DG3 of the logical travel document,
+                                                      c) data in EF.DG4 of the logical travel document
+                          3. Security attributes:
+                                                      a) Authentication status of terminals
+                          4. none
+
+
+
+ FDP_ACF.1.2/TRM          The TSF shall enforce the following rules to determine if an operation among
+                          controlled subjects and controlled objects is allowed:
+                          1. A BIS-PACE is allowed to read data objects from FDP_ACF.1/TRM according to
+                             [ICAO_SAC] after a successful PACE authentication as required by
+                             FIA_UAU.1/PACE.
+
+ FDP_ACF.1.3/TRM          The TSF shall explicitly authorise access of subjects to objects based on the
+                          following additional rules: none
+
+ FDP_ACF.1.4/TRM          The TSF shall explicitly deny access of subjects to objects based on the following
+                          additional rules:
+                          1. Any terminal being not authenticated as PACE authenticated BIS-PACE is not
+                             allowed to read, to write, to modify, to use any User Data stored on the travel
+                             document.
+                          2. Terminals not using secure messaging are not allowed to read, to write, to
+                             modify, to use any data stored on the travel document
+                          3. None
+
+
+
+CC Document                                            25
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FDP_RIP.1                Subset residual information protection
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            No dependencies.
+
+ FDP_RIP.1.1              The TSF shall ensure .Personalisation Agent,
+                           3.Terminal,
+                           4.PACE authenticated BIS-PACE,
+                           5.Country Verifying Certification Authority,
+                           6.Document Verifier,
+                           7.Domestic Extended Inspection System
+                           8.Foreign Extended Inspection System.
+
+ FMT_SMR.1.2/PACE          The TSF shall be able to associate users with roles.
+
+
+
+
+ FMT_LIM.1                Limited capabilities
+
+ Hierarchical to:         No other components.
+
+ Dependencies:            FMT_LIM.2 Limited availability.
+
+ FMT_LIM.1.1              The TSF shall be designed in a manner that limits their capabilities so that in
+                          conjunction with “Limited availability (FMT_LIM.2)” the following policy is
+                          enforced: Deploying Test Features after TOE Delivery does not allow,
+                          1.User Data to be manipulated and disclosed,
+
+
+CC Document                                           50
+                                                                                                       1.2
+                                                                                                       2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                          2.TSF data to be disclosed or manipulated,
+                          3.software to be reconstructed,
+                          4.substantial information about construction of TSF to be gathered which may
+                          enable other attacks and
+                          5.sensitive User Data (EF.DG3 and EF.DG4) to be disclosed.
+
+
+
+
+ FMT_LIM.2                Limited availability
+
+ Hierarchical to:
+                          No other components.
+
+
+ Dependencies:            FMT_LIM.1 Limited capabilities.
+
+ FMT_LIM.2.1              The TSF shall be designed in a manner that limits their availability so that in
+                          conjunction with “Limited capabilities (FMT_LIM.1)” the following policy is
+                          enforced:
+                          Deploying Test Features after TOE Delivery does not allow:
+                          1.User Data to be manipulated and disclosed,
+                          2.TSF data to be disclosed or manipulated
+                          3.software to be reconstructed,
+                          4.substantial information about construction of TSF to be gathered which may
+                          enable other attacks and
+                          5.sensitive User Data (EF.DG3 and EF.DG4) to be disclosed .
+
+
+
+
+ FMT_MTD.1/CVCA_INI        Management of TSF data – Initialization of CVCA Certificate and Current Date
+
+ Hierarchical to:
+                           No other components.
+
+
+ Dependencies:             FMT_SMF.1 Specification of management functions
+                           FMT_SMR.1 Security roles
+
+ FMT_MTD.1.1/CVCA_INI      The TSF shall restrict the ability to write the
+
+CC Document                                            51
+                                                                                                        1.2
+                                                                                                        2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                           1.initial Country Verifying Certification Authority Public Key,
+                           2.initial Country Verifying Certification Authority Certificate,
+                           3.initial Current Date,
+                           4. none
+                           to Personalisation agent.
+
+
+
+
+ FMT_MTD.1/CVCA_UPD         Management of TSF data – Country Verifying Certification Authority
+
+ Hierarchical to:           No other components.
+
+ Dependencies:              FMT_SMF.1 Specification of management functions
+                            FMT_SMR.1 Security roles
+
+ FMT_MTD.1.1/CVCA_UPD       The TSF shall restrict the ability to update the
+                            1.Country Verifying Certification Authority Public Key,
+                            2.Country Verifying Certification Authority Certificate
+                            to Country Verifying Certification Authority.
+
+
+
+
+ FMT_MTD.1/DATE             Management of TSF data – Current date
+
+ Hierarchical to:
+                            No other components.
+
+
+ Dependencies:              FMT_SMF.1 Specification of management functionsFMT_SMR.1 Security roles
+
+ FMT_MTD.1.1/DATE           The TSF shall restrict the ability to modify the Current date to
+                            1.Country Verifying Certification Authority,
+                            2.Document Verifier,
+                            3.Domestic Extended Inspection System.
+
+
+
+
+CC Document                                            52
+                                                                                                 1.2
+                                                                                                 2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FMT_MTD.1/CAPK            Management of TSF data – Chip Authentication Private Key
+
+ Hierarchical to:
+                           No other components.
+
+
+ Dependencies:             FMT_SMF.1 Specification of management functions, FMT_SMR.1 Security roles
+
+ FMT_MTD.1.1/CAPK         The TSF shall restrict the ability to load the Chip Authentication Private Key to
+                          Personalisation agent.
+
+
+
+
+ FMT_MTD.1/KEY_READ         Management of TSF data – Key Read
+
+ Hierarchical to:           No other components.
+
+ Dependencies:              FMT_SMF.1 Specification of management functionsFMT_SMR.1 Security roles
+
+ FMT_MTD.1.1/KEY_READ       The TSF shall restrict the ability to read the
+                            1.PACE passwords ,
+                            2.Chip Authentication Private Key,
+                            3.Personalisation Agent Keys
+                            to none.
+
+
+
+
+ FMT_MTD.3                Secure TSF data
+
+ Hierarchical to:
+                          No other components.
+
+
+ Dependencies:            FMT_MTD.1 Management of TSF data
+
+ FMT_MTD.3.1              The TSF shall ensure that only secure values of the certificate chain are accepted
+                          for TSF data of the Terminal Authentication Protocol v.1 and the Access Control.
+
+ Refinement:              The certificate chain is valid if and only if
+                          1. the digital signature of the Inspection System Certificate can be verified as
+                          correct with the public key of the Document Verifier Certificate and the expiration
+                          date of the Inspection System Certificate is not before the Current Date of the TOE,
+
+
+CC Document                                             53
+                                                                                                       1.2
+                                                                                                       2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                          2. the digital signature of the Document Verifier Certificate can be verified as
+                          correct with the public key in the Certificate of the Country Verifying Certification
+                          Authority and the expiration date of the Certificate of the Country Verifying
+                          Certification Authority is not before the Current Date of the TOE and the expiration
+                          date of the Document Verifier Certificate is not before the Current Date of the TOE,
+                          3.the digital signature of the Certificate of the Country Verifying Certification
+                          Authority can be verified as correct with the public key of the Country Verifying
+                          Certification Authority known to the TOE.
+                          The Inspection System Public Key contained in the Inspection System Certificate
+                          in a valid certificate chain is a secure value for the authentication reference data of
+                          the Extended Inspection System.
+                          The intersection of the Certificate Holder Authorizations contained in the
+                          certificates of a valid certificate chain is a secure value for Terminal Authorization
+                          of a successful authenticated Extended Inspection System.
+
+
+
+
+ FMT_MTD.1/AA
+ Management of TSF        Active Authentication Private Key
+ data
+
+ Hierarchical to:         No other components.
+
+                          FMT_SMF.1 Specification of management functions: fulfilled by FMT_SMF.1
+ Dependencies:
+                          FMT_SMR.1 Security roles: fulfilled by FMT_SMR.1/PACE
+                          The TSF shall restrict the ability to create and load the Active Authentication
+ FMT_MTD.1.1/AA
+                          Private Key to the Manufacturer and the Personalisation Agent.
+
+ [IFX specific]           This SFR has been included in this security target in addition to the SFRs defined
+                          by the Protection Profiles claimed in section 3.2 to address the import of private
+ Application Note:
+                          key used for AA. This extension does not conflict with the strict conformance to the
+                          claimed Protection Profiles
+
+
+
+
+7.1.5.6             Class FPT Protection of the Security Functions
+
+
+ FPT_EMS.1                  TOE Emanation
+
+ Hierarchical to:           No other components.
+
+ Dependencies:              No Dependencies.
+
+
+
+CC Document                                           54
+                                                                                                         1.2
+                                                                                                         2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ FPT_EMS.1.1                The TOE shall not emit variations in power consumption or timing during com-
+                            mand execution in excess of non-useful information enabling access to
+                            1.Chip Authentication Session Keys
+                            2.PACE session Keys (PACE-K MAC, PACE-KEnc),
+                            3.the ephemeral private key ephem SK PICC-PACE,
+                            4.none
+                            5.Personalisation Agent Key(s),
+                            6.Chip Authentication Private Key and
+                            7. Active Authentication Private Key.
+
+ FPT_EMS.1.2                The TSF shall ensure any users are unable to use the following interface smart card
+                            circuit contacts to gain access to
+                            1.Chip Authentication Session Keys
+                            2.PACE Session Keys (PACE-K MAC, PACE-KEnc),
+                            3.the ephemeral private key ephem SK PICC-PACE,
+                            4.none
+                            5.Personalisation Agent Key(s) and
+                            6.Chip Authentication Private Key and
+                            7. Active Authentication Private Key.
+
+
+
+
+ 7.2           Security Assurance Requirements
+For the BAC feature, the TOE claims EAL 4 augmented with ALC_DVS.2, therefore [PP_BAC] section 6.2 “Security
+Assurance Requirements for the TOE” applies.
+For PACE and PACE-EAC features, the current document claims EAL5 augmented with ALC_DVS.2 and
+AVA_VAN.5 therefore it claims a higher assurance level compared to [PP_SAC] and [PP_EAC], section 6.2
+respectively.
+
+
+
+
+CC Document                                           55
+                                                                                                     1.2
+                                                                                                     2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 7.3          Security Requirements Rationale
+
+7.3.1             Security Functional Requirements Rationale
+Respective sections 6.3.1 “Security Functional Requirements Rationale” of [PP_SAC], [PP_BAC] and [PP_EAC]
+are applicable for this chapter.
+For the additionally defined SFRs in this ST, FIA_API.1/AA, FMT_MTD.1/AA and FCS_COP.1/SIG_GEN formalizing
+the Active Authentication feature they meet the security objective OT.Active_Auth.
+
+
+
+
+7.3.2             Rationale for SFR’s Dependencies
+[PP_SAC], [PP_BAC] and [PP_EAC] section 6.3.2 “Rationale for SFR’s Dependencies” are also applicable for this
+chapter.
+
+
+7.3.3             Security Assurance Requirements Rationale
+[PP_BAC] section 6.3.3 “Security Assurance Requirements Rationale “ is applicable for this chapter.
+[PP_EAC] and [PP_SAC] and their respective sections 6.3.3 “Security Assurance Requirements Rationale“ are
+also applicable for this chapter with one additional rationale justifying the security assurance dependencies.
+With the exception of ALC_DVS.2 and AVA_VAN.5, all assurance components are part of the EAL5 package,
+which by package design does not have any dependency conflicts and is hierarchical to EAL4. The assurance
+components ALC_DVS.2 and AVA_VAN.5 are also part of the assurance requirements from [PP_SAC], where
+assurance dependencies are met as is shown in section 6.3.3 from [PP_SAC].
+EAL5+ augmented with ALC_DVS.2 and AVA_VAN.5 is appropriate for this TOE, because this assurance level is
+requested by several states. The assurance expectations for this kind of application are high due to the
+sensitivity of data stored by the TOE. Therefore several governmental organizations request for an increased
+assurance level.
+
+
+7.3.4              Security Requirements – Internal Consistency
+The rationale for the internal consistency of the SFRs from [PP_SAC], [PP_BAC] and [PP_EAC] section 6.3.4
+“Security Requirements – Internal Consistency” are also applicable to this chapter.
+The assurance package EAL5 and EAL4 are pre-defined sets of internally consistent assurance requirements.
+The dependency analysis for the sensitive assurance components in [PP_SAC], [PP_EAC] and [PP_BAC] section
+7.3.3 “Security Assurance Requirements Rationale” together with the additional rational from section 7.3.3
+show that the assurance requirements are internally consistent as all (additional) dependencies are satisfied
+and no inconsistency appears.
+The rationale for internal consistency between functional and assurance requirements from [PP_SAC] ,
+[PP_EAC] and and [PP_BAC] section 6.3.4 “Security Requirements – Internal Consistency” are also applicable to
+this chapter.
+
+
+
+
+CC Document                                            56
+                                                                                                        1.2
+                                                                                                        2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+    8             TOE Summary Specification
+This TOE summary specification described in this section relies on the security services provided by the
+platform product. For a description of these services please refer to [ST_JC_ID_S_Platform].
+In the following each SFR is mentioned together with an indication for the PP from which these are originating
+        -   (BAC) stands for SFRs originating from [PP_BAC].
+        -   (SAC) stands for SFRs originating from [PP_SAC].
+        -   (EAC) stands for SFRs originating from [PP_EAC]. Note that we include here also in this group the SFRs
+            related to Active Authentication.
+The composite TOE provides the security functions as follows:
+       SF_EAC_PACE_BAC
+The TOE implements the EAC, PACE and BAC protocol (PICC side). It encompasses:
+        -   ECDH key generation, FCS_CKM.1/DH_PACE (SAC) and FCS_CKM.1/CA (EAC): The TOE uses the
+            platform service “Elliptic Curves EC” for EC key generation. Further for session key generation the
+            application uses the hybrid physical random number generator of the platform complying to PTG.3 as
+            per [AIS31]. For the key generation the TOE supports “Generic Mapping” provided by the platform.
+        -   Generation of Document Basic Access Keys, FCS_CKM.1 (BAC), FCS_COP.1/SHA (BAC): The TOE uses
+            the cryptographic APIs provided by the underlying Secora ID S OS.
+        -   Key destruction, FCS_CKM.4: The TOE uses the platform API ‘clearKey’ service to destroy session keys.
+            The platform API ‘clearKey’ uses random numbers compliant to PTG.3 as per [AIS31] to overwrite the
+            session keys.
+        -   Provision of random numbers, as per FCS_RND.1. Authentication failure handling, FIA_AFL.1/PACE
+            (SAC), FIA_AFL.1 (BAC): The TOE implements this check in such a way, that it withstands tearing events.
+            A counter for unsuccessful authentication attempts is incremented before authentication is performed
+            and reset in case of successful authentication.
+        -   Prevention of replay attacks, FIA_UAU.4/PACE (EAC), FIA_UAU.4/PACE (SAC), FIA_UAU.4 (BAC):
+            Replay attacks are prevented by the cryptographic protocol, which relies on good quality random
+            numbers as required by FCS_RND.1 of this ST and supported by the underlying RNG of the platform and
+            claimed in the ST of the platform with SFR FCS_RNG.1.
+        -   Multiple authentication, FIA_UAU.5/PACE (EAC), FIA_UAU.5/PACE (SAC), FIA_UAU.5 (BAC): The TOE
+            follows the protocol as described in [ICAO_SAC].
+ SF_AA
+  - Signature generation for the Active Authentication mechanism covered by FIA_API.1/AA,
+     FCS_COP.1/SIG_GEN
+  - Injecting private cryptographic keys used for the signatures as per FMT_MTD.1/AA
+ SF_AuthPersoAgent
+  - FIA_UAU.5/PACE (EAC) , FIA_UAU.5/PACE (SAC), FCS_COP.1/AUTH (BAC): The TOE uses the protocol
+     scp v0.3 as per [GPv2_3_1] based on AES [FIPS_197] for authenticating the personalization agent.
+
+
+
+
+CC Document                                                57
+                                                                                                           1.2
+                                                                                                           2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+   SF_SecureMessaging
+    - Secure messaging, encryption/decryption, FCS_COP.1/PACE_ENC (SAC), FCS_COP.1/ENC (BAC): The
+       TOE uses the proprietary PACE API from Secora ID S OS.
+    - Secure messaging integrity protection, FCS_COP.1/PACE_MAC (SAC), FCS_COP.1/MAC (BAC): The TOE
+       uses the underlying platform PACE dedicated API to calculate CMAC or Retail-MAC.
+    - FCS_COP.1/CA_ENC (EAC), FCS_COP.1/CA_MAC (EAC) and FCS_COP.1/SIG_VER (EAC) are satisfied by
+       using the standard Java Card API supported by the platform.
+    - FCS_COP.1/CA_MAC (EAC) also covers to the GP scp03 used for secure card content management
+       during personalization. This aspect of secure messaging by the TOE relies on the specially tailored API
+       to GP SCP from the underlying platform and described in the SFR FCS_COP.1/SCP.
+    - Multiple authentication, FIA_UAU.5/PACE (SAC), FIA_UAU.5 (BAC): The TOE performs a MAC check for
+       every received message before instruction is executed, if the MAC check fails secure messaging is
+       aborted; every response during secure messaging is MAC’ed by the TOE.
+    - Re-authentication of terminal, FIA_UAU.6/EAC (EAC), FIA_UAU.6/PACE (SAC), FIA_UAU.6 (BAC): The
+       TOE checks for every incoming message, whether the message is genuine (MAC check).
+    - Trusted channel, FTP_ITC.1/PACE (SAC): The TOE follows the standardized implementation of the
+       trusted channel according to [ICAO_SAC].
+
+   SF_AccessControl
+    - Allow specific access before user identification, FIA_UID.1/PACE (EAC), FIA_UID.1/PACE (SAC),
+       FIA_UID.1 (BAC): The access rights information of the TOE grant access to EF.CardAccess (see
+       [ICAO_9303_11]) and EF.ATR/INFO (see [ISO7816-4]) before PACE or BAC authentication is performed.
+       The TOE allows to read a specific subset of initialization data.
+    - Allow specific access before user authentication, FIA_UAU.1/PACE (EAC), FIA_UAU.1/PACE (SAC),
+       FIA_UAU.1 (BAC): The access rights information of the TOE grant access to EF.CardAccess and
+       EF.ATR/INFO before PACE or BAC authentication was performed. The TOE allows to read a specific
+       subset of initialization data.
+    - Subset and security attribute based access control, FDP_ACC.1/TRM (EAC), FDP_ACC.1/TRM (SAC),
+       FDP_ACC.1 (BAC), FDP_ACF.1/TRM (EAC), FDP_ACF.1/TRM (SAC), FDP_ACF.1 (BAC), the TOE blocks
+       access to EF.DG1, EF.DG2 and EF.DG5 to EF.DG16, EF.SOD and EF.COM, EF.DG3 and EF.DG4 in case BAC
+       or PACE protocol is not successfully performed.
+    - Residual information protection, FDP_RIP.1: as soon secure messaging is stopped, the whole secure
+       messaging context including session keys is wiped with random numbers.
+    - Data exchange confidentiality, FDP_UCT.1/TRM (SAC), FDP_UCT.1 (BAC): during secure messaging,
+       responses by the ICC are always wrapped (encrypted and MAC’ed) before being sent.
+    - Data exchange integrity, FDP_UIT.1/TRM (SAC), FDP_UIT.1 (BAC) : during secure messaging, responses
+       by the ICC are always wrapped (encrypted and MAC’ed) before being sent. A MAC check is performed for
+       each message received during secure messaging.
+    - Storage of initialization and pre-personalisation data, FAU_SAS.1 (SAC), FAU_SAS.1/BAC (BAC):
+       [PP_BAC] requests storage of IC Identification data, whereas [PP_SAC] requests storage of Initialisation
+       and Pre-Personalisation data, whereby IC Identification data is a subset of Initialisation data. The TOE
+       does not make any distinction, whether BAC or PACE is performed, i.e. stores all of the requested data.
+       The TOE at its stage of delivery (Personalisation stage) contains a Personalisation key. The
+       Personalisation agent has the option to calculate various checksums including software, file system,
+       chip information and lifecycle information.
+    - Management functions linked to different life cycle states, FMT_SMF.1 (SAC), FMT_SMF.1/BAC (BAC):
+       The management functions “Initialization” and “pre-Personalisation” are part of the developer
+       lifecycle.
+CC Document                                           58
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+   - Access is linked to security roles, FMT_SMR.1/PACE (EAC), FMT_SMR.1/PACE (SAC), FMT_SMR.1 (BAC):
+     Access rights are implemented such, that they depend on lifecycle stage and authentication stage (e.g.
+     whether PACE authentication or authentication as Personalisation agent was successfully performed).
+     Certain commands are blocked during specific lifecycle states, such as the command to read the
+     Initialisation data or update file data in operation state. Read access to specific files is granted or
+     denied depending on the authentication state. Life cycle transition from Personalisation to operation
+     stage can only be performed by the Personalisation agent. A back transition is blocked.
+  - Writing of initialization and pre-personalisation data restricted to manufacturer, FMT_MTD.1/INI_ENA:
+     during Personalisation and operation there is no command available to write initialization data (e.g.
+     create files). Card manager keys can be updated in personalization phase. Note that personalization
+     keys are the card manager/ issuer security domain key and therefore are not owned by the applet.
+  - Reading of initialization and pre-personalisation data restricted to Personalisation agent,
+     FMT_MTD.1/INI_DIS (SAC) and Disabling of Read Access to Initialization Data to the Personalisation
+     agent FMT_MTD.1/INI_DIS/BAC (BAC): Although these two SFRs have slightly different meanings, the
+     TOE generally blocks reading of initialization and pre-Personalisation data in operation mode. Only the
+     Personalisation agent is granted to set the lifecycle state from Personalisation to operation. A back
+     transition is blocked.
+  - Reading of EAC, PACE or BAC keys and Personalisation agent key not possible, FMT_MTD.1/KEY_READ
+     (EAC), FMT_MTD.1/KEY_READ (SAC), FMT_MTD.1/KEY_READ/BAC (BAC): The Personalisation key,
+     PACE passwords, Document Basic Access Keys for BAC, Chip Authentication Private Key for EAC are
+     stored in a special key storage within the platform, which only allows to handle this key by reference;
+     no read access is performed by the application.
+  - Only Personalisation agent allowed to write Document Security Object (SOD), FMT_MTD.1/PA: In
+     operation mode the “STORE DATA” command is blocked.
+  - Only Personalisation agent allowed to write Document Basic Access Keys, FMT_MTD.1/KEY_WRITE
+     (BAC): in operation stage the proprietary commdata (to prevent any possible copy,
+                       modification, retention, theft or unauthorised use). This means that the Phases after TOE
+                       Delivery are assumed to be protected appropriately.
+                       The assets to be protected are: The information and material produced and/or processed
+                       by the Security IC Embedded Software Developer in Phase 1 and by the Composite
+                       Product Manufacturer can be grouped as follows:
+                       1. the Security IC Embedded Software including specifications, and to write Document Basic Access Keys is blocked.
+  - FMT_MTD.1.1/CVCA_INI (EAC)requires that the TSF shall restrict the ability to write the initial Country
+     Verifying Certification Authority Public Key, the initial Country Verifying Certification Authority
+     Certificate, and the initial Current Date to the Personalization Agent. Access over to this data is a
+     subject to an access control.
+  - FMT_MTD.1.1/CVCA_UPD (EAC)requires that the TSF shall restrict the ability to update the Country
+     Verifying Certification Authority Public Key and the Country Verifying Certification Authority Certificate
+     to the Country Verifying Certification Authority. SF_AccessControl realizes the appropriate control over
+     the access rights.
+  - FMT_MTD.1.1/DATE (EAC)requires that the TSF shall restrict implementation anthe ability to modify the Current date to
+     the Country Verifying Certification Authority, the Document Verifier, and the Domestic Extended
+     Inspection System. SF_AccessControl realizes the appropriate control over the access rights.
+  - FMT_MTD.1.1/CAPK (EAC)requires that the TSF shall restrict the ability to load the Chip Authentication
+     Private Key to the Personalization Agent. SF_AccessControl realizes the appropriate control over the
+     access rights.
+  - FMT_MTD.3 (EAC) that the TSF shall ensure that only secure values of the certificate chain are accepted
+     for TSF data of the Terminal Authentication Protocol and the Access Control as described in the
+     refinement of the SFR.
+ SF_DataProtection
+  - TSF is designed, that it has limited capability and limited availability, FMT_LIM.1 (EAC), FMT_LIM.2
+     (EAC), FMT_LIM.1 (SAC), FMT_LIM.1/BAC (BAC), FMT_LIM.2 (SAC), FMT_LIM.2/BAC (BAC): in
+     Personalisation stage only limited test functionality is available. CRC on the personalized data groups
+     can be retrieved during personalization phase only.
+
+CC Document                                           59
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+   -   Side channel protection, FPT_EMS.1 (EAC), FPT_EMS.1 (SAC), FPT_EMSEC.1 (BAC): The TOE uses the
+       platform service “SF_Physical” which relies on its side on the hardware to reduce the side channel
+       leakage.
+   -   Prevention of malfunction, FPT_FLS.1 (SAC), FPT_FLS.1/BAC (BAC): The TOE uses the platform service
+       “SF_Physical” which relies on its side on the hardware to detect
+   -   Self-tests, FPT_TST.1: During startup of the Secora ID S OS the UMSLC (User Mode Security Life Control)
+       selftest offered by the hardware platform is performed.
+   -   Physical protection, FPT_PHP.3: The TOE uses the platform services “SF_Physical”.
+
+
+
+
+CC Document                                          60
+                                                                                                     1.2
+                                                                                                     2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+
+ 9              References
+
+ 9.1            Literature
+
+
+ [AIS31]                  Functionality classes and evaluation methodology for physical random number
+                          generators
+                          AIS31, Version 2.1, 2011-12-02, Bundesamt für Sicherheit in der
+                          Informationstechnik.
+
+ [CCPart2]                Common Criteria for Information Technology Security Evaluation Part 2: Security
+                          Functional Requirements; Version 3.1 Revision 5 April 2017, CCMB-2017-04-002
+
+ [CCPart3]                Common Criteria for Information Technology Security Evaluation Part 3: Security
+                          Assurance Requirements; Version 3.1 Revision 5 April 2017, CCMB-2017-04-003
+
+ [CompositeEvaluation]    Composite product evaluation for Smart Cards and similar devices, April 2012,
+                          Version 1.2, CCDB-2012-04-001
+                          EU – eMRTD Specification. ANNEX to the Commission Implementing Decision
+ [EU-eMRTD]
+                          laying down the technical specifications regarding the standards for security
+                          features and biometrics in passports and travel documents issued by Member
+                          States and repealing Decisions C(2006) 2909 and C(2008) 8657
+ [TR_ECC]                 Federal Office for Information Security (BSI) TR-03111 Elliptic Curve Cryptography
+                          Version 2.0, 2012-06-28
+
+ [ICAO_SAC]               International Civil Aviation Organization Machine Readable Travel
+                          DocumentsTechnical Report Supplemental Access Control for Machine Readable
+                          Travel Documents Version 1.00, November 2010
+
+ [ICAO_9303_01]           ICAO Doc 9303, Machine Readable Travel Documents, part 1 – Machine Readable
+                          Passports, Seventh Edition, 2015, International Civil Aviation Organization
+
+ [ICAO_9303_10]           International Civil Aviation Organization, DOC 9303 Machine Readable Travel
+                          Documents Seventh Edition – 2015, Part 10: Logical Data Structure (LDS) for
+                          Storage of Biometrics and Other Data in the Contactless Integrated Circuit (IC)
+
+ [ICAO_9303_11]           International Civil Aviation Organization, DOC 9303 Machine Readable Travel
+                          Documents Seventh Edition – 2015 Part 11: Security Mechanisms for MRTD's
+
+ [ISO9797-1]              ISO/IEC International Standard 9797-1:2011-(E), Information technology – Security
+                          techniques – Message Authentication Codes (MACs) – Part 1: Mechnanisms using a
+                          block cipher, Second Edition 2011-03-01
+
+ [ISO14443-3]             ISO/IEC International Standard 14443-3 Identification cards -- Contactless
+                          integrated circuit(s) cards -- Proximity cards -- Part 3: Initialization and
+                          anticollisionFirst edition 2001-02-01, AMENDMENT 1: Bit rates of fc/64, fc/32 and
+CC Document                                          61
+                                                                                                      1.2
+                                                                                                      2020-05-27
+Security Target
+ePassport configuration of SECORA™ ID S Infineon Applet Collection - eMRTD V1.0
+
+
+
+                          fc/16 2005-06-01, ISO/IEC Defect Report and Technical Corrigendum 1 for
+                          International 2005-12-16, AMENDMENT 3: Handling of reserved fields and valud
+                          related documentation,
+                       2. pre-personalisation and personalisation data including specifications of formats and
+                          memory areas, test related data,
+                       3. the User Data and related documentation, and
+                       4. material for software development support
+  es
+                          2006-03-15
+
+ [ISO9796-2]              ISO/IEC International Standard ISO9796-2 Information technolo                   gy --  as long a 

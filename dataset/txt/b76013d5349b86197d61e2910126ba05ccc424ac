@@ -1,0 +1,1747 @@
+ Recognition Arrangement
+evidence adduced.                                                                                       recognition for components
+                                                                                                        up to EAL 2 and ALC_FLR
+This certificate is not an endorsement of the IT Product by the Federal Office for                                  only
+Information Security or any other organisation that recognises or gives effect to this
+certificate, and no warranty of the IT Product by the Federal Office for Information
+Security or any other organisation that recognises or gives effect to this certificate, is
+either expressed or implied.
+Bonn, 12 February 2020
+For the Federal Office for Information Security
+
+
+
+
+Bernd Kowalski                              L.S.
+Head of Division
+
+                                   Bundesamt für Sicherheit in der Informationstechnik
+                       Godesberger Allee 185-189 - D-53175 Bonn -    Postfach 20 03 63 - D-53133 Bonn
+                   Phone +49 (0)228 99 9582-0 - Fax +49 (0)228 9582-5477 - Infoline +49 (0)228 99 9582-111
+Certification Report                                            BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+                       This page is intentionally left blank.
+
+
+
+
+                                                                                  4 / 33
+BSI-DSZ-CC-0879-V4-2020                                                                                        Certification Report
+
+
+
+
+Contents
+A. Certification......................................................................................................................6
+   1.   Preliminary Remarks....................................................................................................6
+   2.   Specifications of the Certification Procedure...............................................................6
+   3.   Recognition Agreements..............................................................................................7
+   4.   Performance of Evaluation and Certification................................................................8
+   5.   Validity of the Certification Result.................................................................................8
+   6.   Publication....................................................................................................................9
+B. Certification Results.......................................................................................................10
+   1. Executive Summary....................................................................................................11
+   2. Identification of the TOE.............................................................................................12
+   3. Security Policy............................................................................................................15
+   4. Assumptions and Clarification of Scope.....................................................................15
+   5. Architectural Information.............................................................................................16
+   6. Documentation...........................................................................................................16
+   7. IT Product Testing.......................................................................................................16
+   8. Evaluated Configuration.............................................................................................17
+   9. Results of the Evaluation............................................................................................18
+   10. Obligations and Notes for the Usage of the TOE.....................................................19
+   11. Security Target..........................................................................................................20
+   12. Regulation specific aspects (eIDAS, QES)..............................................................20
+   13. Definitions.................................................................................................................20
+   14. Bibliography..............................................................................................................23
+C. Excerpts from the Criteria..............................................................................................26
+
+D. Annexes.........................................................................................................................27
+
+
+
+
+                                                                                                                                 5 / 33
+Certification Report                                                               BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+A.      Certification
+
+1.      Preliminary Remarks
+Under the BSIG1 Act, the Federal Office for Information Security (BSI) has the task of
+issuing certificates for information technology products.
+Certification of a product is carried out on the instigation of the vendor or a distributor,
+hereinafter called the sponsor.
+A part of the procedure is the technical examination (evaluation) of the product according
+to the security criteria published by the BSI or generally recognised security criteria.
+The evaluation is normally carried out by an evaluation facility recognised by the BSI or by
+BSI itself.
+The result of the certification procedure is the present Certification Report. This report
+contains among others the certificate (summarised assessment) and the detailed
+Certification Results.
+The Certification Results contain the technical description of the security functionality of
+the certified product, the details of the evaluation (strength and weaknesses) and
+instructions for the user.
+
+2.      Specifications of the Certification Procedure
+The certification body conducts the procedure according to the criteria laid down in the
+following:
+●   Act on the Federal Office for Information Security 1
+●   BSI Certification and Approval Ordinance2
+●   BSI Schedule of Costs 3
+●   Special decrees issued by the Bundesministerium des Innern (Federal Ministry of the
+    Interior)
+●   DIN EN ISO/IEC 17065 standard
+●   BSI certification: Scheme documentation describing the certification process (CC-
+    Produkte) [3]
+●   BSI certification: Scheme documentation on requirements for the Evaluation Facility, its
+    approval and licencing process (CC-Stellen) [3]
+●   Common Criteria for IT Security Evaluation (CC), Version 3.1 4 [1] also published as
+    ISO/IEC 15408.
+
+1
+     Act on the Federal Office for Information Security (BSI-Gesetz - BSIG) of 14 August 2009,
+     Bundesgesetzblatt I p. 2821
+2
+     Ordinance on the Procedure for Issuance of Security Certificates and approval by the Federal Office for
+     Information Security (BSI-Zertifizierungs- und -Anerkennungsverordnung - BSIZertV) of 17 December
+     2014, Bundesgesetzblatt 2014, part I, no. 61, p. 2231
+3
+     Schedule of Cost for Official Procedures of the Bundesamt für Sicherheit in der Informationstechnik
+     (BSI-Kostenverordnung, BSI-KostV) of 3 March 2005, Bundesgesetzblatt I, p. 519
+
+
+
+                                                                                                           6 / 33
+BSI-DSZ-CC-0879-V4-2020                                                              Certification Report
+
+
+
+
+●   Common Methodology for IT Security Evaluation (CEM), Version 3.1 [2] also published
+    as ISO/IEC 18045
+●   BSI certification: Application Notes and Interpretation of the Scheme (AIS) [4]
+
+3.      Recognition Agreements
+In order to avoid multiple certification of the same product in different countries a mutual
+recognition of IT security certificates - as far as such certificates are based on ITSEC or
+CC - under certain conditions was agreed.
+
+3.1.    European Recognition of CC – Certificates (SOGIS-MRA)
+The SOGIS-Mutual Recognition Agreement (SOGIS-MRA) Version 3 became effective in
+April 2010. It defines the recognition of certificates for IT-Products at a basic recognition
+level and, in addition, at higher recognition levels for IT-Products related to certain SOGIS
+Technical Domains only.
+The basic recognition level includes Common Criteria (CC) Evaluation Assurance Levels
+EAL 1 to EAL 4. For "Smartcards and similar devices" a SOGIS Technical Domain is in
+place. For "HW Devices with Security Boxes" a SOGIS Technical Domains is in place, too.
+In addition, certificates issued for Protection Profiles based on Common Criteria are part of
+the recognition agreement.
+The current list of signatory nations and approved certification schemes, details on
+recognition, and the history of the agreement can be seen on the website at
+https://www.sogis.eu.
+The SOGIS-MRA logo printed on the certificate indicates that it is recognised under the
+terms of this agreement by the related bodies of the signatory nations. A disclaimer
+beneath the logo indicates the specific scope of recognition.
+This certificate is recognized under SOGIS-MRA for all assurance components selected.
+
+3.2.    International Recognition of CC – Certificates (CCRA)
+The international arrangement on the mutual recognition of certificates based on the CC
+(Common Criteria Recognition Arrangement, CCRA-2014) has been ratified on 08
+September 2014. It covers CC certificates based on collaborative Protection Profiles (cPP)
+(exact use), CC certificates based on assurance components up to and including EAL 2 or
+the assurance family Flaw Remediation (ALC_FLR) and CC certificates for Protection
+Profiles and for collaborative Protection Profiles (cPP).
+The current list of signatory nations and approved certification schemes can be seen on
+the website: https://www.commoncriteriaportal.org.
+The Common Criteria Recognition Arrangement logo printed on the certificate indicates
+that this certification is recognised under the terms of this agreement by the related bodies
+of the signatory nations. A disclaimer beneath the logo indicates the specific scope of
+recognition.
+This certificate is recognized according to the rules of CCRA-2014, i. e. up to and including
+CC part 3 EAL 2+ ALC_FLR components.
+
+4
+     Proclamation of the Bundesministerium des Innern of 12 February 2007 in the Bundesanzeiger dated
+     23 February 2007, p. 3730
+
+
+
+                                                                                                    7 / 33
+Certification Report                                                       BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+4.      Performance of Evaluation and Certification
+The certification body monitors each individual evaluation to ensure a uniform procedure, a
+uniform interpretation of the criteria and uniform ratings.
+The product Infineon Security Controller M7893 B11 with optional RSA2048/4096
+v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and Toolbox v2.03.008
+and with specific IC dedicated software (firmware), has undergone the certification
+procedure at BSI. This is a re-certification based on BSI-DSZ-CC-0879-V3-2018. Specific
+results from the evaluation process BSI-DSZ-CC-0879-V3-2018 were re-used.
+The evaluation of the product Infineon Security Controller M7893 B11 with optional
+RSA2048/4096 v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and
+Toolbox v2.03.008 and with specavoid an indefinite usage of the certificate when evolved attack methods would
+require a re-assessment of the products resistance to state of the art attack methods, the
+maximum validity of the certificate has been limited. The certificate issued on 12 February
+2020 is valid until 11 February 2025. Validity can be re-newed by re-certification.
+The owner of the certificate is obliged:
+
+5
+     Information Technology Security Evaluation Facility
+
+
+
+                                                                                             8 / 33
+BSI-DSZ-CC-0879-V4-2020                                                        Certification Report
+
+
+
+
+     1. when advertising the certificate or the fact of the product's certification, to refer to
+        the Certification Report as well as to provide the Certification Report, the Security
+        Target and user guidance documentation mentioned herein to any customer of the
+        product for the application and usage of the certified product,
+     2. to inform the Certification Body at BSI immediately about vulnerabilities of the
+        product that have been identified by the developer or any third party after issuance
+        of the certificate,
+     3. to inform the Certification Body at BSI immediately in the case that security relevant
+        changes in the evaluated life cycle, e.g. related to development and production sites
+        or processes, occur, or the confidentiality of documentation and information related
+        to the Target of Evaluation (TOE) or resulting from the evaluation and certification
+        procedure where the certification of the product has assumed this confidentiality
+        being maintained, is not given any longer. In particular, prior to the dissemination of
+        confidential documentation and information related to the TOE or resulting from the
+        evaluation and certification procedure that do not belong to the deliverables
+        according to the Certification Report part B, or for those where no dissemination
+        rules have been agreed on, to third parties, the Certification Body at BSI has to be
+        informed.
+In case of changes to the certified version of the product, the validity can be extended to
+the new versions and releases, provided the sponsor applies for assurance continuity (i.e.
+re-certification or maintenance) of the modified product, in accordance with the procedural
+requirements, and the evaluation does not reveal any security deficiencies.
+
+6.      Publication
+The product Infineon Security Controller M7893 B11 with optional RSA2048/4096
+v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and Toolbox v2.03.008
+and with specific IC dedicated software (firmware), has been included in the BSI list of
+certified products, which is published regularly (see also Internet: https://www.bsi.bund.de
+and [5]). Further information can be obtained from BSI-Infoline +49 228 9582-111.
+Further copies of this Certification Report can be requested from the developer 6 of the
+product. The Certification Report may also be obtained in electronic form at the internet
+address stated above.
+
+
+
+
+6
+     Infineon Technologies AG
+     Am Campeon 1-12
+     85579 Neubiberg
+
+
+
+                                                                                              9 / 33
+Certification Report                                                    BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+B.      Certification Results
+The following results represent a summary of
+●   the Security Target of the sponsor for the Target of Evaluation,
+●   the relevant evaluation results from the evaluation facility, and
+●   complementary notes and stipulations of the certification body.
+
+
+
+
+                                                                                         10 / 33
+BSI-DSZ-CC-0879-V4-2020                                                           Certification Report
+
+
+
+
+1.     Executive Summary
+The Target of Evaluation (TOE) is an Infineon Security Controller M7893 B11 with optional
+Software Library RSA2048/4096 v2.03.008, EC v2.03.008, SHA-2 v1.01, SCL v2.02.010
+libraries, and Toolbox v2.03.008, as well as with specific IC dedicated software (firmware).
+The TOE provides a real 16-bit CPU-architecture and is compatible to the 80251
+microcontroller architecture. The major components of the core system are the two CPUs
+(Central Processing Units), acting as one, the MMU (Memory Management Unit) and MED
+(Memory Encryption/Decryption Unit). The dual interface controller is able to communicate
+using either the contact based or the contactless interface.
+The TOE consists of the hardware part, the firmware parts and the software parts.
+The software parts are differentiated into the cryptographic libraries RSA, EC, and SHA-2,
+symmetric cryptographic libraries and the supporting libraries Toolbox and Base. The Base
+Library does not provide any specific security functionality on its own. However it is a
+necessary perquisite in order to use the RSA, EC and Toolbox libraries.
+This TOE is intended to be used in smart cards and other form factors for particularly
+security-relevant applications and for its prevalent use as developing platform for smart
+card operating systems. The term Smartcard Embedded Software is used in the following
+for all operating systems and applications stored and executed on the TOE. The TOE is
+the platform for the Smartcard Embedded Software.
+The Security Target [6] is the basis for this certification. It is based on the certified
+Protection Profile Security IC Platform Protection Profile, Version 1.0, 15 June 2007, BSI-
+CC-PP-0035-2007 [8]. The TOE Security Functional Requirements are implemented by
+the following TOE Security Functionality:
+  TOE Security Functionality         Addressed issue
+  SF_DPM                             Device Phase Management:
+                                     The life cycle of the TOE is split up into several
+                                     phases. Different operation modes help to protect
+                                     the TOE during each phase of its lifecycle.
+  SF_PS                              Protection against Snooping:
+                                     The TOE uses various means to protect from
+                                     snooping of memories and busses and prevents
+                                     single stepping.
+  SF_PMA                             Protection against Modifying Attacks:
+                                     This TOE implements protection against
+                                     modifying attacks of memories, alarm lines and
+                                     sensors.
+  SF_PLA                             Protection against Logical Attacks:
+                                     The memory access control of the TOE uses a
+                                     memory management unit (MMU) to control the
+                                     access to the available physical memory by using
+                                     virtual memory addresses and to segregate the
+                                     code and data to a privilege level model. The
+                                     MMU controls the address permissions of up
+                                     seven privileged levels and gives the software the
+                                     possibility to define different access rights. The
+                                     address permissions of the privilege levels are
+
+
+
+
+                                                                                                11 / 33
+Certification Report                                                         BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+  TOE Security Functionality           Addressed issue
+                                       controlled by the MMU. In case of an access
+                                       violation the MMU will trigger a reset and then a
+                                       trap service routine can react on the access
+                                       violation.
+  SF_CS                                Cryptographic Support:
+                                       The TOE is equipped with several hardware
+                                       accelerators and software modules to support the
+                                       standard      symmetric     and       asymmetric
+                                       cryptographic operations. The components are a
+                                       coprocessor supporting the DES and AES
+                                       algorithms and a combination of a coprocessor
+                                       and software modules to support RSA
+                                       cryptography, RSA key generation, ECDSA
+                                       signature generation and verification, ECDH key
+                                       agreement and EC public key calculation and
+                                       public key testing. Furthermore, the TOE is
+                                       equipped with an optional SHA-2 library and
+                                       HASH module as well as well as an AIS31
+                                       conformant TRNG that meets the functionality
+                                       class PTG.2. In addition the optional Symmetric
+                                       library (SCL) provides a high-level interface to
+                                       3DES and AES symmetric cryptographic
+                                       operation implemented on the symmetric
+                                       hardware coprocessor.
+
+                               Table 1: TOE Security Functionalities
+For more details please refer to the Security Target [6] and [9], chapter 8.
+The assets to be protected by the TOE are defined in the Security Target [6] and [9],
+chapter 4.1.2. Based on these assets the TOE Security Problem is defined in terms of
+Assumptions, Threats and Organisational Security Policies. This is outlined in the Security
+Target [6] and [9], chapter 4.
+This certification covers the configurations of the TOE as outlined in chapter 8.
+The vulnerability assessment results as stated within this certificate do not include a rating
+for those cryptographic algorithms and their implementation suitable for encryption and
+decryption (see BSIG Section 9, Para. 4, Clause 2).
+The certification results only apply to the version of the product indicated in the certificate
+and on the condition that all the stipulations are kept as detailed in this Certification
+Report. This certificate is not an endorsement of the IT product by the Federal Office for
+Information Security (BSI) or any other organisation that recognises or gives effect to this
+certificate, and no warranty of the IT product by BSI or any other organisation that
+recognises or gives effect to this certificate, is either expressed or implied.
+
+2.      Identification of the TOE
+The Target of Evaluation (TOE) is called:
+ Infineon Security Controller M7893 B11 with optional RSA2048/4096 v2.03.008, EC
+   v2.03.008, SHA-2 v1.01, SCL v2.02.010 libraries and Toolbox v2.03.008 and with
+                     specific IC dedicated software (firmware),
+The following table outlines the TOE deliverables:
+
+
+
+                                                                                              12 / 33
+BSI-DSZ-CC-0879-V4-2020                                                                 Certification Report
+
+
+
+
+           No Type        Identifier                    Release           Form of Delivery
+           1    HW        M7893 Smart Card IC           B11 (produced in Complete modules, with or
+                                                        Dresden)         without inlay mounting, with or
+                                                                         without inlay antenna mounting,
+                                                                         in form of plain wafers, in an IC
+                                                                         case or in bare dies
+           2    SW        RSA library (optional)        RSA2048           Object code in electronic form
+                                                        v2.03.008
+                                                        RSA4096
+                                                        v2.03.008
+           3    SW        EC library (optional)         EC v2.03.008      Object code in electronic form
+           4    SW        SHA-2 library (optional)      SHA-2 v1.01       Object code in electronic form
+           5    SW        Toolbox library (optional)    Toolbox           Object code in electronic form
+                                                        v2.03.008
+           6    SW        SCL library (optional)        v2.02.010         Object code in electronic form
+           7    FW        STS Self Test Software (the   FW-identifier     Stored in test ROM on the IC
+                          IC Dedicated Test Software)   78.019.03.4       (patch in SOLID FLASH)
+           8    FW        RMS Resource              FW-identifier         Stored in reserved area of user
+                          Management System (the IC 78.019.03.4           ROM on the IC (patch in SOLID
+                          Dedicated Support                               FLASH)
+                          Software)
+           9    FW        Service Algorithm (SA)        FW-identifier     Stored in reserved area of user
+                                                        78.019.03.4       ROM on the IC (patch in SOLID
+                                                                          FLASH)
+           10   FW        Flash Loader                  FW-identifier     Stored in reserved area of user
+                                                        78.019.03.4       ROM and parts of it in SOLID
+                                                                          FLASH on the IC (patch in
+                                                                          SOLID FLASH)
+           11   SW        ROM code (including           --                Stored in User ROM on the IC.
+                          Embedded Software and
+                                                                          Only in case the IC Embedded
+                          crypto libraries)
+                                                                          Software Developer provides
+                                                                          Infineon with code for ROM.
+           12   SW        NVM image (including          --                Stored in Flash memory on the
+                          Embedded Software and                           IC.
+                          crypto libraries)
+                                                                          Only in case the IC Embedded
+                                                                          Software Developer provides
+                                                                          Infineon with code for Flash
+                                                                          memory.
+           13   DOC       SLx 70 Family Production      2015-04-01        Personalized pdf-file
+                          and Personalization User’
+                          Manual
+           14   DOC       M7893 Hardware Reference 19-06-24               Personalized pdf-file
+                          Manual 3.0
+           15   DOC       M7893 Errata Sheet 4.2        2019-08-07        Personalized pdf-file
+           16   DOC       M7893 Security Guidelines     2019-09-25        Personalized pdf-file
+           17   DOC       16-bit Security Controller    2019-02-19        Personalized pdf-file
+                          Family SLE 70
+                          Programmer’s Reference
+                          Manual 9.10
+
+
+
+
+                                                                                                     13 / 33
+Certification Report                                                            BSI-DSZ-CC-0879-V4-2020
+
+
+
+
+             No Type    Identifier                    Release           Form of Delivery
+             18   DOC   SLE70 Asymmetric Crypto       2019-07-15        Personalized pdf-file (optional)
+                        Library for Crypto@2304T
+                        RSA / ECC / Toolbox User
+                        Interface (2.03.008)
+             19   DOC   SCL78 Symmetric Crypto        2016-12-09        Personalized pdf-file (optional)
+                        Library for SCP v3,
+                        DES/AES, 16-bit Security
+                        Controller, User Interface
+                        (2.02.010)
+             20   DOC   Crypto@2304T User Manual 2010-03-23             Personalized pdf-file
+             21   DOC   SLx70 Family Secure Hash      2009-11-06        Personalized pdf-file (optional)
+                        Algorithm SHA-2 (SHA
+                        256/224, SHA 512/384)
+                        Library Version V1.01
+             22   DOC   AMM Advanced Mode NRG         2019-10-22        Personalized pdf-file (optional)
+                        SAM Addendum 2.0
+
+                                     Table 2: Deliverables of the TOE
+
+The delivery documentation describes all procedures that are necessary to maintain
+security when distributing versions of the TOE or parts of it to the user’s site including the
+necessary intermediate delivery procedures.
+Furthermore, the delivery documentation describes in a sufficient manner how the various
+procedures and technical measures provide for the detection of modifications and any
+discrepancies between the TOE respective parts of it send by the TOE Manufacturer and
+the version received by the Composite Product Manufacturer.
+Three different delivery procedures have to be taken into consideration:
+    ●   Delivery of the IC dedicated software components (IC dedicated SW, guidance)
+        from the TOE Manufacturer to the IC Embedded Software Developer.
+    ●   Delivery of the IC Embedded Software (ROM / Flash data, initialisation and pre-
+        personalisation data) from the IC Embedded Software Developer to the TOE
+        Manufacturer.
+    ●   Delivery of the final TOE from the TOE Manufacturer to the Composite Product
+        Manufacturer. After phase 3 the TOE is delivered in form of wafers or sawn wafers,
+        after phase 4 in form of modules (with or without inlay antenna).
+Respective distribution centers are listed in Appendix B (see below).
+The individuaific
+configured, not flashed and not personalized TOE products to the user warehouse.
+Extra authentication means applied in the PIN-Letter status of the Flash Loader preserve that only the intended
+user with the intended PIN-Letter can configure with user specific information and enable the normal Flash
+Loader functions in a second step. By that the user orders the products and receives - in a protected way - the
+belonging PIN-Letter. PIN-Letter and delivered chips must match.
+By delivery the user warehouse gets filled and depending on market demands the user can immediate apply the
+authentication means of the PIN-letter. If passing, the TOE products become user specific configured and the
+Flash Loader can be used for this specific user in a second step.
+The following table outlines the different ways how the user can input his software on this TOE – a TOE without
+user available ROM. User software comprises usually the operating system and applications, which are for
+Infineon Technologies simply a user data package which is handled as a fixed data package during production.
+This provides high process flexibility for the user of which an overview is given in the following table:
+
+
+                         Table 2        Options to implement user software on the chip
+ Case                          Option                                          Flash Loader Status
+         The user or/and a subcontractor downloads the
+         software into the SOLID FLASH™ NVM on his             The Flash Loader can be activated or reactivated
+ 1.      own. Infineon Technologies has not received user      by the user or subcontractor to download his
+         software and there are no user data of the            software in the SOLID FLASH™ NVM.
+         Composite TOE in the ROM.
+         The user provides his complete software for the
+         download into the SOLID FLASH™ NVM to
+                                                               The Flash Loader is permanently disabled prior
+ 2       Infineon Technologies AG. The software is
+                                                               delivery.
+         downloaded to the SOLID FLASH™ NVM during
+         chip production.
+                                                               When leaving the Infineon Technologies
+                                                               production facility, the Flash Loader is blocked,
+         The user provides software for the download into      but can be activated or reactivated by the user or
+         the SOLID FLASH™ NVM to Infineon                      subcontractor to complete the previously stored
+ 3       Technologies AG. The software is downloaded to        software parts in the SOLID FLASH™ NVM.
+         the SOLID FLASH™ NVM during chip
+         production.                                           Precondition is that the user has provided an own
+                                                               reactivation procedure in software prior chip
+                                                               production to Infineon Technologies AG.
+
+For the cases with active Flash Loader on board and whenever the user has finalized his SW-download,
+respectively the TOE is in the final state and about to be delivered to the end-user, the user is obligated to lock
+the Flash Loader. This locking is the final step and results in a permanent deactivation of the Flash Loader. This
+means that once being in the locked status, the Flash Loader cannot be reactivated anymore.
+Note that whenever a TOE comes without active Flash Loader, BPU and PIN-Letter process are not possible.
+All in all various delivery combinations are given and for example, a product can come with a fix configuration
+and with Flash Loader, to enable the user to download software, but without BPU option and with PIN-Letter.
+The following cases can occur:
+
+                         Table 3        Options with Flash Loader, BPU and PIN-Letter
+CC Document                                              10                                                       1.8
+                                                                                                           2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+ Case           Order                                              Option
+   1     Fix configuration,            Infineon Technologies configures and flashes all software as ordered.
+         Flash Loader is               The entire user software must be delivered to Infineon Technologies
+         locked (permanent)             prior production.
+   2     Flash Loader                  Infineon configures the chip as ordered and
+         functional, BPU               the user flashes his software at his own premises.
+         feature blocked               If requested, Infineon Technologies can optionally download also
+                                        shares of the user software during production. These user software
+                                        shares must be delivered to Infineon Technologies prior production.
+                                        The user can finalize his software package at his premises.
+   3     Flash Loader           The user:
+         functional                 Activates the Flash Loader,
+         and active BPU             configures the chip applying the BPU feature and
+         feature
+                                    flashes his software at his own premises.
+                                    If requested, Infineon Technologies can optionally download also
+                                       shares of the user software during production. These user software
+                                       shares must be delivered to Infineon Technologies prior production.
+                                       The user can finalize his software package at his premises.
+   4     Flash Loader           Infineon cugfoerins the chip as ordered. The user receives his PIN-letter and
+         functional             fills his warehouse. As required the user:
+         and PIN-Letter                applies the PIN-Letter on the chips taken from his warehouse, gets the
+                                          chips user specific configured,
+                                       activates the Flash Loader and
+                                       the user flashes his software at his own premises.
+                                If requested, Infineon Technologies can optionally download also shares of the
+                                user software during production. These user software shares must be delivered
+                                to Infineon Technologies prior production. The user can finalize his software
+                                package at his premises.
+   5     Flash Loader           Infineon configures the chip as ordered. The user receives his PIN-letter and
+         functional,            fills his warehouse. As required the user:
+         active BPU and                applies the PIN-Letter on the chips taken from his warehouse, gets the
+         PIN-Letter                       chips user specific configured,
+                                       activates the Flash Loader,
+                                       applies his user specific chip configuration with the BPU feature and
+                                       flashes his software at his own premises.
+                                If requested, Infineon Technologies can optionally download also shares of the
+                                user software during production. These user software shares must be delivered
+                                to Infineon Technologies prior production. The user can finalize his software
+                                package at his premises.
+
+The listing provided in the confidential security target [8] contains the memory size ranges and other blocking
+options, focusing on the maximum respectively minimum user available limitations. Within those limitations the
+TOE configurations can vary under only one identical IC-hardware, regardless whether the configurations are set
+by Infineon or within further limitations by the user. All configurations throughout all different mask sets the
+TOE is made off and all thereof resulting derivatives have no impact on security and are covered by the
+certificate.
+
+CC Document                                            11                                                     1.8
+                                                                                                       2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+Note that this TOE has no user available ROM. The user software and data are entirely located in a dedicated and
+protected part of the SOLID FLASH™ NVM. The long life storage endurance together with the means for error
+detection and correction serves for excellent reliability and endurance.
+In addition to the above listed flexible ranges, the user guidance contains a number of predefined configurations
+for those customers not making use of the BPU option. All of these configurations belong to the TOE as well and
+are of course made of the equal hardware and are inside the above declared ranges.
+Today’s predefined configurations of the TOE are listed in the hardware reference manual HRM [1] and is
+completed with the list of identification data of the derivatives. These predefined products come with the most
+requested configurations and enables to produce volumes on stock in order to simplify logistic processes.
+According to the BPU option, a non-limited number of configurations of the TOE may occur in the field. The
+number of various configurations depends on the user and order contract only.
+This TOE provides dedicated identification means and outputs the platform identifier, the design step and
+further configuration information. The hardware reference manual HRM [1] is part of the user guidance and
+enables for the clear interpretation of the read out identification data. More information is given in the
+confidential Security Target [8].
+These output data enable the user for clear identification of the TOE and also of one of the different mask sets
+and therewith for examination of the validity of the certificate.
+In addition, a dedicated RMS function allows reading out the present configuration in detail. The output RMS
+data together with the hardware reference manual HRM [1] enables for clear identification of a product and its
+configuration. All these steps for gathering identification and detailed configuration information can be done by
+the user without involving the vendor, Infineon Technologies AG.
+
+The TOE consists of the hardware part, the firmware parts in the alternative versions and the optional software
+parts. The Smartcard Embedded Software, i.e. the operating system and applications are not part of the TOE.
+
+The firmware comes with several alternative versions and consists of:
+    the Boot Software (BOS) firmware conducting configuration and testing task (see chapter 2.2.2) at start-
+        up of the TOE
+    the Resource Management System (RMS) library providing essential basis functions for the management
+        of the RAM, the branch table, the Memory Management Unit (MMU) and other resources
+    the optional Flash Loader enabling for the download of user software to the SOLID FLASH™ NVM and
+        required for the optional Bill per Use (BPU) feature and the PIN-letter feature
+    the Radio Frequency Application Interface (RFAPI) supporting functions located in the ROM.
+        The RFAPI functions are not part of the TOE Security Functionality (TSF)
+    the NRG ROM part implementing some basic routines and used by the NRG if ordered.
+        The NRG ROM part is not part of the TSF functionality.
+
+The firmware parts BOS, RFAPI and NRG are implemented in a separated Test-ROM also being part of the TOE
+but not available for the user. Completing firmware components are located in the SOLID FLASH™ NVM.
+
+The optional software parts are differentiated into following libraries:
+    The asymmetric cryptographic libraries (ACL) in following alternative versions:
+       v2.08.007, v2.07.003 and v2.06.003.
+           o All ACL libraries provide RSA1 2048/4096 cryptography.
+                The library supports also smaller key lengths, but the certification follows the national regulation
+                by the BSI1.
+
+
+
+1
+    Rivest-Shamir-Adleman asymmetric cryptographic algorithm
+
+
+CC Document                                                    12                                                1.8
+                                                                                                          2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+             o All ACL libraries provide elliptic curve cryptography EC2
+        the Toolbox library in the versions v2.08.007, v2.07.003 and v2.06.003 provides basic mathematical
+         functions for a simplified user interface to the Crypto@2304T. The Toolbox library is not part of the TOE
+         Security Functionality (TSF).
+        the symmetric cryptographic libraries (SCL) in the improved and enhanced version v2.04.002 and the
+         version v2.02.010 provide simplified interfaces and utilize the full services of the SCP to the user
+        the hardware support library (HSL) in the versions 01.22.4346 and 02.01.6634 provides a simplified
+         interface and utilizes the full services of the SOLID FLASH™ NVM to the user
+        the hardware support library (HSL) in the versions 03.11.8339 and 03.12.8812 provide equal to the above
+         a simplified interface, utilizes the full services of the SOLID FLASH™ NVM to the user, and enables the
+         use of an additional advanced reading respectively writing method
+        the CIPURSE™ Cryptographic Library (CIPURSE™ CL and CCL) in the version v02.00.0004 provides the
+         user OSPT alliance CIPURSE™ V2 conformant communication functionality between a PICC and a PCD
+        the NRG Software. The NRG is not part of the TOE Security Functionality (TSF).
+
+The RSA, EC and Toolbox libraries provide certain functionality via an API to the Smartcard Embedded Software.
+The private parts of the cryptographic libraries are only used internally and have no user interface. If neither the
+RSA- nor the EC library is delivered, also the belonging private parts are not on board. The Toolbox library does
+not have private library parts.
+Each of the libraries ACL, SCL, HSL and NRG is independent from the other libraries and also independent of the
+alternative library version of the equal type. This means for example that the HSL-1 runs alone and does not need
+parts of HSL-2.
+A combination respectively mix up of the two alternative libraries of equal type has not been considered in the
+design and is not allowed: The user can select either one or the other of the same library type or none of it.
+If the user considers the optional software libraries, the TOE can be delivered including – in free combinations –
+or not including any of the optional libraries.
+
+If the user decides not to use any of the offered asymmetric cryptographic libraries, regardless of the version
+chosen, none of the cryptographic libraries is consequently delivered and the accompanying Additional Specific
+Security Functionality (O.Add-Functions) Rivest-Shamir-Adleman (RSA) and/ or EC is/are not provided by the
+TOE. Else it depends of the chosen library whether the Additional Specific Security Functionality
+(O.Add-Functions) Rivest-Shamir-Adleman (RSA) and/ or EC is/are supported.
+
+The Toolbox library, regardless of the version chosen, provides the user optionally basic arithmetic and modular
+arithmetic operations, in order to support user software development using long integer operations. These basic
+arithmetic operations do not provide security functionality, implement no security mechanism, and do not
+proved additional specific security functionality – as defined for the cryptographic libraries.
+The user developed software using the Toolbox basic operations is not part of the TOE.
+The Toolbox library is not part of the TOE Security Functionality (TSF).
+
+The symmetric cryptographic library SCL – in both versions – offers a high level interface to perform the
+cryptographic operations DES, TDES and AES with different key lengths on the symmetric cryptographic
+coprocessor (SCP) for this TOE. In addition, the SCL in version v2.04.002 implements computation of a CMAC
+using AES and 3DES algorithms.
+
+1
+ BSI – Bundesamt für Sicherheit in der Informationstechnik – Federal Office for Information Security: Following the national BSI
+    recommendations, RSA key lengths below 1976 bits are not included in the certificate. Please note that the BSI expects this key length
+    as appropriate until 2022 and recommends for longer usage times key lengths of 3000 bits or higher.
+2 The Elliptic Curve Cryptography is abbreviated with EC only in the further, in order to avoid conflicts with the abbreviation for the Error
+    Correction Code ECC.
+
+
+CC Document                                                          13                                                                 1.8
+                                                                                                                                 2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+The SCL implements already several block cipher modes as declared in this document and covering a wide range
+of applications, the SCL offers in addition the flexibility to implement additional block cipher modes defined by
+the user.
+This library provides a simplified interface to the hardware Symmetric Cryptographic Coprocessor (SCP) and
+preserves the security and performance requirements as required by the user.
+Note that the definition of the key lengths follows the national AIS32 regulation regarding the 100 bit security
+level by the BSI. This excludes the single DES operation from the certification.
+
+Beside the inclusion and support of cryptographic libraries this TOE comes with the optional Hardware Support
+Library (HSL) in different versions significantly simplifying the management of the SOLID FLASH™ NVM
+functionality. The HSL constitutes an application interface (API) accessing the HSL state machine and
+abstracting low level properties like special function registers and settings of specific hardware features. In short
+the HSL provides a user friendly also use case oriented interface considering endurance, reliability and
+performance requirements.
+In certain configurations each of the HSL versions provide also functions implementing tearing safe behaviour of
+the SOLID FLASH™ NVM. If applied the user has no need to care about cases where the TOE is unintentionally
+removed from the power supply or the radio frequency field even during managing the SOLID FLASH™ NVM.
+Anyhow, the HSL – regardless of the version – remains as an optional library, as even sudden power off situations
+do not lead to exploitable conditions of the TOE. In the worse, the TOE ends operation in case of a faulty
+programmed SOLID FLASH™ NVM location.
+In addition to the above, the HSL in version 03.12.8812 and 03.11.8339 provide an advanced additional method
+called Incremental Write (IWR). This method provides enhanced endurance of the SOLID FLASH NVM even
+beyond the erase endurance limits for often written objects. Thus this method serves applications with a demand
+for high endurance and fast writing times. On the other hand, the read times using this method are slower than
+the other methods provided.
+
+The order option CIPURSE™ Cryptographic Library (CIPURSE™ CL) provides cryptographic functionality to
+implement a CIPURSE™ V2 conformant protocol.
+This protocol provides a secure mutual authentication of two entities, namely the terminal (denoted as PCD =
+Proximity Coupling Device (CIPURSE™-compliant terminal)) and a smart card or a token in other form factors
+which is called PICC. PICC stands for Proximity Integrated Circuit Card (CIPURSE™-compliant card).
+Beside the mutual authentication, the protocol implements measures to maintain the integrity of the transferred
+data and preserves in parallel the confidentiality of the transferred data.
+By that the CIPURSE™ CL supports the user to implement systems conformant to the CIPURSE™ open standard
+implementing a secured, interoperable and flexible transit fare collection solution, including ISO 7816, ISO/IEC
+14443-4 communication and AES-128 bit cryptography for multiple payment types.
+
+The NRG Software is a further order option and implements the routines for a NRG interface. The NRG provides
+an operating system handling the emulation of a NRG card together with the RF interface. One part of the NRG
+is permanently stored in the ROM and the second part consisting of patch and API is located in the SOLID
+FLASH™ NVM. The second part is only present if the NRG is part of the delivery. If the NRG is not part of the
+delivery the ROM part is present but not used. The NRG implements tearing safe behaviour in context with the
+SOLID FLASH™ NVM management and is therefore independent from the HSL. The NRG is not part of the TOE
+Security Functionality (TSF).
+
+Deselecting one of the optional libraries does not include the code implementing functionality, which the user
+decided not to use. Not including the code of the deselected functionality has no impact of any other security
+policy of the TOE; it is exactly equivalent to the situation where the user decides just not to use the functionality.
+
+All optional software libraries are stored respectively can be loaded into the SOLID FLASH™ NVM.
+All other Smartcard Embedded Software loaded into the SOLID FLASH™ NVM does not belong to the TOE and
+is not subject of the evaluation.
+CC Document                                               14                                                       1.8
+                                                                                                            2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+1.2            Target of Evaluation overview
+The TOE comprises the Infineon Technologies Dual Interface Security Controller IFX_CCI_000003h with options
+with specific IC dedicated software, optional cryptographic- and further services libraries.
+The TOE is a member of the Infineon Technologies AG high security controller-family meeting the highest
+requirements in terms of performance and security. A summary product description is given in this Security
+TargePublic
+
+
+
+
+   Common Criteria Public Security Target
+   EAL6 augmented / EAL6+
+   IFX_CCI_000003h
+   IFX_CCI_000005h
+   IFX_CCI_000008h
+   IFX_CCI_00000Ch
+   IFX_CCI_000013h
+   IFX_CCI_000014h
+   IFX_CCI_000015h
+   IFX_CCI_00001Ch
+   IFX_CCI_00001Dh
+   IFX_CCI_000021h
+   IFX_CCI_000022h
+
+   H13
+
+   Resistance to attackers with HIGH attack potential
+                                    Including optional Software Libraries
+                            Flash Loader – 3x ACL – 4x HSL – 2x SCL – NRG – CCL
+
+
+
+
+ Author: Infineon Technologies
+ Revision: 1.8
+
+
+
+
+CC Document            Please read the Important Notice and Warnings at the end of this document          1.8
+www.infineon.com                                                                                   2020-04-22
+Public
+
+
+
+
+Table of Contents
+2.2.1         Hardware of the TOE ...................................................................................................................26
+2.2.2         Firmware and software of the TOE .............................................................................................. 27
+2.2.3         Interfaces of the TOE................................................................................................................... 32
+2.2.4         Guidance documentation ............................................................................................................ 33
+2.2.5         Forms of delivery ......................................................................................................................... 35
+2.2.6         Production sites ........................................................................................................................... 37
+3.1.1         Adding Objectives ....................................................................................................................... 39
+3.1.2         AES and TDES .............................................................................................................................40
+3.1.3         Loader .........................................................................................................................................40
+3.1.4         CIPURSE Cryptographic Library (CCL) ......................................................................................... 41
+3.1.5         Summary .....................................................................................................................................42
+4.1.1         Additional Threat due to TOE specific Functionality .................................................................... 43
+4.1.2         Assets regarding the Threats .......................................................................................................44
+4.2.1         Augmented Organizational Security Policy .................................................................................46
+4.3.1         Augmented Assumptions ............................................................................................................ 47
+4.3.2         Note regarding CIPURSE™ CL .....................................................................................................48
+5.3.1         Clarification of “Treatment of User Data (OE.Resp-Appl)” .......................................................... 54
+5.3.2         Clarification of “Protection during Composite product Manufacturing (OE.Process-Sec-IC)” ...... 54
+6.1.1         Definition of FPT_TST.2 ..............................................................................................................60
+6.1.2         TSF self-test (FPT_TST) ............................................................................................................... 61
+7.1.1         Extended Components FCS_RNG.1 and FAU_SAS.1 ................................................................... 65
+7.1.2         Subset of TOE testing.................................................................................................................. 70
+7.1.3         Memory access control ................................................................................................................ 71
+7.1.4         Support of Cipher Schemes ......................................................................................................... 74
+7.1.5         Data Integrity FDP_SDI.2 and FDP_SDC.1 ................................................................................. 103
+7.1.6         Application Note to FPT_FLS.1 Failure with preservation of secure state .................................. 104
+7.3.1         Refinements .............................................................................................................................. 109
+7.4.1         Rationale for the Security Functional Requirements .................................................................. 113
+7.4.2         Rationale of the Assurance Requirements ................................................................................. 124
+8.1.1         Listing of SFRs implemented by SF_DPM Device Phase Management ...................................... 126
+8.2.1         Listing of SFRs implemented by SF_PS Protection against Snooping........................................ 129
+8.3.1         Listing of SFRs implemented by SF_PMA Protection against Modifying Attacks ...................... 131
+8.4.1         Listing of SFRs implemented by SF_PLA Protection against Logical Attacks ............................ 132
+8.5.1         Implementation of AES and TDES by the Symmetric Cryptographic Coprocessor SCP ............. 133
+8.5.2         Implementation of TDES, AES and CMAC by the Symmetric Cryptographic Library SCL .......... 135
+8.5.3         RSA Cryptographic Library for all versions................................................................................. 137
+8.5.4         Elliptic Curves Cryptographic Library for all versions ................................................................. 139
+8.5.5         Toolbox Library for all versions .................................................................................................. 140
+8.5.6         CIPURSE™ Cryptographic Library ............................................................................................. 141
+8.5.7         Hybrid PTRNG ........................................................................................................................... 141
+8.5.8         Listing of SFRs implemented by SF_CS “Cryptographic Support” ............................................. 142
+
+
+
+
+CC Document                 Please read the Important Notice and Warnings at the end of this document                                                   1.8
+www.infineon.com                                                                                                                                 2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+
+1              Security Target Introduction (ASE_INT)
+
+1.1            Security Target and Target of Evaluation Reference
+The title of this document is Confidential Security Target as given on the front page and it covers and describes
+one hardware platform respectively one IC representing the Target of Evaluation (TOE) with following Common
+Criteria Identifiers:
+     IFX_CCI_000003h
+         IFX_CCI_000005h
+         IFX_CCI_000008h
+         IFX_CCI_00000Ch
+         IFX_CCI_000013h
+         IFX_CCI_000014h
+         IFX_CCI_000015h
+         IFX_CCI_00001Ch
+         IFX_CCI_00001Dh
+         IFX_CCI_000021h
+      IFX_CCI_000022h
+in the design step H13 and including optional software libraries and dedicated firmware in several versions as
+stated and assigned in the table below.
+
+In order to ease the readability of this document the bunch of Common Criteria Identifiers as listed above is
+shortened and simply expressed with TOE (Target of Evaluation) or IFX_CCI_000003h with options.
+
+This document is formed according to Common Criteria CCv3.1 EAL6 augmented (EAL6+) and comprises the
+Infineon Technologies AG Security Controller (Integrated Circuit IC) with the above listed Common Criteria
+Identifiers and with specific IC dedicated firmware and optional software.
+
+The target of evaluation (TOE) is described in the following.
+This Public Security Target has the revision 1.8 and is dated 2020-04-22.
+
+
+
+
+CC Document                                              3                                                      1.8
+                                                                                                         2020-04-22
+Public Security Target
+Common Criteria v3.1 - EAL6 augmented / EAL6+
+Security Target Introduction (ASE_INT)
+
+
+The Target of Evaluation (TOE) is the Infineon Security Controller with following optional available software
+packages:
+    The asymmetric cryptographic libraries (ACL) in following alternative versions:
+       v2.08.007, v2.07.003 and v2.06.003.
+            o All ACL libraries provide RSA1 2048/4096 cryptography.
+                The library supports also smaller key lengths, but the certification follows the national regulation
+                by the BSI2.
+            o All ACL libraries provide elliptic curve cryptography EC3
+    the Toolbox library in the versions v2.08.007, v2.07.003 and v2.06.003 provides basic mathematical
+       functions for a simplified user interface to the Crypto@2304T. The Toolbox library is not part of the TOE
+       Security Functionality (TSF).
+    the symmetric cryptographic libraries (SCL) in the improved and enhanced version v2.04.002 and the
+       version v2.02.010 provide simplified interfaces and utilize the full services of the SCP to the user
+    the hardware support library (HSL) in the versions 01.22.4346 and 02.01.6634 provides a simplified
+       interface and utilizes the full services of the SOLID FLASH™ NVM to the user
+    the hardware support library (HSL) in the versions 03.11.8339 and 03.12.8812 provide equal to the above
+       a simplified interface, utilizes the full services of the SOLID FLASH™ NVM to the user, and enables the
+       use of an additional advanced reading respectively writing method
+    the CIPURSE™ Cryptographic Library (CIPURSE™ CL and CCL) in the version v02.00.0004 provides the
+       user OSPT alliance CIPURSE™ V2 conformant communication functionality between a PICC and a PCD
+    the NRG Software. The NRG is not part of the TOE Security Functionality (TSF).
+and with further specific IC dedicated firmware in several alternative versions.
+
+Please note that always the highest version number points to the most recent status of a library coming usually
+with improvements and/or additional functionality.
+
+Note that each of the versions of the ACL, SCL, HSL, CCL and the NRG are optional and alternatively. This means
+that the TOE comes either with one of the alternative library types– depending on the user choice - or with none.
+The library types can Security Target Lite
+Common Criteria EAL6 augment ed / EAL6+
+
+
+
+
+M7892 Design Step P11
+
+
+
+
+Document version 2.2 as of 2020-04-23
+
+
+Author: Infineon Technologies
+
+
+
+
+CC Developer Document                     2020-04-23
+                                                                                                                M7892 P11
+                                                                                                        Security Target Lite
+Public
+
+
+
+
+Edition 2020-04-23
+
+Published by Infineon Technologies AG,
+
+81726 Munich, Germany.
+
+© 2020 Infineon Technologies AG
+
+All Rights Reserved.
+
+
+
+
+Legal Disclaimer
+
+The information given in this document shall in no event be regarded as a guarantee of conditions or characteristics. With
+respect to any examples or hints given herein, any typical values stated herein and/or any information regarding the
+application of the device, Infineon Technologies AG hereby disclaims any and all warranties and liabilities of any kind,
+including without limitation, warranties of non-infringement of intellectual property rights of any third party.
+
+Information
+
+For further information on technology, delivery terms and conditions and prices, please contact the nearest Infineon
+Technologies AG Office (www.infineon.com).
+
+Warnings
+
+Due to technical requirements, components may contain dangerous substances. For information on the types in question,
+please contact the nearest Infineon Technologies AG Office.
+
+Infineon Technologies AG components may be used in life-support devices or systems only with the express written approval
+of Infineon Technologies AG, if a failure of such components can reasonably be expected to cause the failure of that life-
+support device or system or to affect the safety or effectiveness of that device or system. Life support devices or systems are
+intended to be implanted in the human body or to support and/or maintain and sustain and/or protect human life. If they
+fail, it is reasonable to assume that the health of the user or other persons may be endangered.
+
+
+
+
+CC Developer Document                                           2                                                  2020-04-23
+                                                                                                              M7892 P11
+                                                                                                      Security Target Lite
+Public
+
+Trademarks of Infineon Technologies AG
+AURIX™, C166™, CanPAK™, CIPOS™, CoolGaN™, CoolMOS™, CoolSET™, CoolSiC™, CORECONTROL™, CROSSAVE™, DAVE™, DI-
+POL™, DrBlade™, EasyPIM™, EconoBRIDGE™, EconoDUAL™, EconoPACK™, EconoPIM™, EiceDRIVER™, eupec™, FCOS™,
+HITFET™, HybridPACK™, Infineon™, ISOFACE™, IsoPACK™, i-Wafer™, MIPAQ™, ModSTACK™, my-d™, NovalithIC™,
+OmniTune™, OPTIGA™, OptiMOS™, ORIGA™, POWERCODE™, PRIMARION™, PrimePACK™, PrimeSTACK™, PROFET™, PRO-
+SIL™, RASIC™, REAL3™, ReverSave™, SatRIC™, SIEGET™, SIPMOS™, SmartLEWIS™, SOLID FLASH™, SPOC™, TEMPFET™,
+thinQ!™, TRENCHSTOP™, TriCore™.
+
+
+Trademarks updated August 2015
+
+
+Other Trademarks
+All referenced product or service names and trademarks are the property of their respective owners.
+
+
+
+
+CC Developer Document                                        3                                                  2020-04-23
+                                                                                                         M7892 P11
+                                                                                                 Security Target Lite
+Public
+
+
+Revision History
+
+Major changes since previous revision
+Date           Version     Change Description
+
+2017-10-25     1.0         Initial version
+2017-11-16     1.1         Update references in Chapter 9.
+2017-11-21     1.2         Update references in Chapter 9.
+2019-10-29     2.0         Updated user guidance. Introduced NRG terminology. Signatures for MAE lib is updated.
+2020-03-30     2.1         Accepted final remarks and provided minor editorial update.
+
+
+
+
+CC Developer Document                                        4                                               2020-04-23
+                                                                                                                                                                         M7892 P11
+                                                                                                                                                                 Security Target Lite
+Public
+
+
+
+Table of Contents
+Revision History ................................................................................................................................................................................. 4
+Table of Contents ............................................................................................................................................................................... 5
+1           Security Target Introduction (ASE_INT) ............................................................................................................. 7
+1.1         Security Target and Target of Evaluation Reference .......................................................................................... 7
+1.2         Target of Evaluation overview ................................................................................................................................... 14
+2           Target of Evaluation Description ......................................................................................................................... 19
+2.1         TOE Definition................................................................................................................................................................... 19
+2.2         Scope of the TOE .............................................................................................................................................................. 24
+2.2.1          Hardware of the TOE ............................................................................................................................................... 25
+2.2.2          Firmware and software of the TOE .................................................................................................................... 27
+2.2.3          Interfaces of the TOE ............................................................................................................................................... 29
+2.2.4          Guidance documentation ....................................................................................................................................... 29
+2.2.5          Forms of delivery ...................................................................................................................................................... 30
+2.2.6          Production sites ......................................................................................................................................................... 31
+3           Conformance Claims (ASE_CCL) .......................................................................................................................... 32
+3.1         CC Conformance Claim .................................................................................................................................................. 32
+3.2         PP Claim ............................................................................................................................................................................... 32
+3.3         Package Claim ................................................................................................................................................................... 32
+3.4         Conformance Rationale ................................................................................................................................................. 33
+3.4.1          Security Problem Definition ................................................................................................................................. 34
+3.4.2          Security Objective ..................................................................................................................................................... 34
+3.4.3          Summary ....................................................................................................................................................................... 34
+3.5         Application Notes ............................................................................................................................................................ 35
+4           Security Problem Definition (ASE_SPD) ............................................................................................................ 36
+4.1         Threats ................................................................................................................................................................................. 36
+4.1.1          Additional Threat due to Loader Package Functionality .......................................................................... 36
+4.1.2          Additional Threat due to TOE specific Functionality ................................................................................. 37
+4.1.3          Assets regarding the Threats................................................................................................................................ 38
+4.2         Organizational Security Policies ................................................................................................................................ 38
+4.2.1          Augmented Organizational Security Policy .................................................................................................... 39
+4.3         Assumptions ...................................................................................................................................................................... 40
+4.3.1          Augmented Assumptions ....................................................................................................................................... 41
+5           Security objectives (ASE_OBJ) .............................................................................................................................. 42
+5.1         Security objectives for the TOE.................................................................................................................................. 42
+5.2         Security Objectives for the Development and Operational Environment ................................................ 44
+5.2.1          Clarification of “Protection during Composite product manufacturing (OE.Process-Sec-IC)” . 46
+5.2.2          Clarification of “Treatment of User Data (OE.Resp-Appl)” ...................................................................... 46
+5.3         Security Objectives Rationale ..................................................................................................................................... 46
+6           Extended Component Definition (ASE_ECD) ................................................................................................... 50
+6.1         Component “Subset TOE security testing (FPT_TST.2)” ................................................................................. 50
+6.2         Definition of FPT_TST.2 ................................................................................................................................................ 50
+6.3         TSF self-test (FPT_TST) ................................................................................................................................................ 50
+7           Security Requirements (ASE_REQ) ..................................................................................................................... 52
+7.1         TOE Security Functional Requirements ................................................................................................................. 52
+7.1.1          Extended Components FCS_RNG.1 and FAU_SAS.1 ..................................................................................... 54
+7.1.2          Subset of TOE testing ............................................................................................................................................... 55
+7.1.3          Memory access control ........................................................................................................................................... 56
+7.1.4          Support of Cipher Schemes ................................................................................................................................... 58
+7.1.5          Data Integrity .............................................................................................................................................................. 71
+
+
+ACC Developer Document                                                                             5                                                                                  2020-04-23
+                                                                                                                                                                      M7892 P11
+                                                                                                                                                              Security Target Lite
+Public
+
+7.1.6         Support of MAE and Flash Loader ...................................................................................................................... 72
+7.2        TOE Security Assurance Requirements.................................................................................................................. 74
+7.2.1         Refinements ................................................................................................................................................................. 75
+7.2.2         ADV_SPM Formal Security Policy Model ......................................................................................................... 77
+7.3        Security Requirements Rationale ............................................................................................................................. 78
+7.3.1         Rationale for the Security Functional Requirements ................................................................................. 78
+7.3.2         Rationale of the Assurance Requirements ...................................................................................................... 86
+8          TOE Summary Specification (ASE_TSS) ............................................................................................................. 88
+8.1        SF_DPM: Device Phase Management ....................................................................................................................... 88
+8.2        SF_PS: Protection against Snooping ......................................................................................................................... 89
+8.3        SF_PMA: Protection against Modifying Attacks .................................................................................................. 91
+8.4        SF_PLA: Protection against Logical Attacks .......................................................................................................... 93
+8.5        SF_CS: Cryptographic Support.................................................................................................................................... 93
+8.5.1         Triple DES ..................................................................................................................................................................... 94
+8.5.2         AES................................................................................................................................................................................... 95
+8.5.3         RSA .................................................................................................................................................................................. 96
+8.5.4         Elliptic Curves EC ...................................................................................................................................................... 98
+8.5.5         SHA-2 ........................................................................................................................................................................... 100
+8.5.6         SCL ................................................................................................................................................................................ 100
+8.5.7         PTRNG respectively TRNG.................................................................................................................................. 101
+8.5.8         Summary of SF_CS: Cryptographic Support ................................................................................................ 101
+8.6        SF_MAE: Mutual Authentication Extension ....................................................................................................... 101
+8.7        Assignment of Security Functional Requirements to TOE’s Security Functionality ......................... 102
+8.8        Security Requirements are internally consistent ............................................................................................ 104
+9          Literature................................................................................................................................................................. 105
+10         Appendix.................................................................................................................................................................. 107
+11         List of Abbreviations ............................................................................................................................................ 110
+12         Glossary.................................................................................................................................................................... 113
+
+
+
+
+CC Developer Document                                                                       6                                                                                      2020-04-23
+                                                                                                                M7892 P11
+                                                                                                        Security Target Lite
+Public
+
+
+1                     Security Target Introduction (ASE_INT)
+1.1                 Security Target and Target of Evaluation Reference
+The title of this document is Security Target Lite Common Criteria EAL6 augmented / EAL6+ M7892 Design Step P11.
+
+This     document     comprises    the     Infineon   Technologies    AG    Security   Controller    (Integrated   Circuit   IC),
+M7892 Design Step P11, with specific IC dedicated firmware and optional software:
+
+            RSA v2.03.008 or v2.07.003,
+
+            EC v2.03.008 or v2.07.003,
+
+            SHA-2 v1.01
+
+            Toolbox v2.03.008 or v2.07.003
+
+            Symmetric Crypto Library v2.02.010
+
+In addition, the TOE is available with alternative firmware packages as versioned in Table 1: Identification.
+
+The target of evaluation (TOE) M7892 Design Step P11 is described in the following.
+
+The reference to the belonging confidential Security Target is given in chapter 9.
+
+The Target of Evaluation (TOE) is the Infineon Security Controller, M7892 Design Step P11, with the optional libraries
+RSA2048/4096 v2.03.008 or v2.07.003, EC v2.03.008 or v2.07.003, SHA-2 v1.01, Toolbox v2.03.008 or v2.07.003 , and
+symmetric crypto library v2.02.010, as well as with specific IC dedicated firmware, including the Flash Loader enhanced by
+the Mutual Authentication Extension (MAE).
+
+The version of ECC, RSA and Toolbox libraries cannot be chosen independently. The libraries have to be of one version.
+
+The design step of this TOE is P11.
+
+The Security Target is based on the Protection Profile PP-0084 “Security IC Platform Protection Profile with Augmentation
+Packages” [12] as publicly available for download at https://www.bsi.bund.de and certified under BSI-CC-PP-0084-2014. MAE
+and Flash Loader are regarded by the definition of “loader package1+” according to “PP0084: Interpretations” [35].
+
+The Protection Profile and the Security Target are built in compliance with Common Criteria v3.1.
+
+The Security Target takes into account all relevant current final interpretations.
+
+This TOE concept is based on the architecture, family concept and principles of the Integrity Guard implemented in the
+controllers by Infineon Technologies AG deemed for high security requiring applications.
+
+This TOE is based and built from the equal design sources as already certified in the forerunner process BSI-DSZ-CC-0891-V4-
+2019 and has seen further improvements.
+
+The certification body of this process is the German BSI, whereas the abbreviation stands for Federal Office for Information
+Security, in German Bundesamt für Sicherheit in der Informationstechnik.
+
+
+
+
+CC Developer Document                                           7                                                   2020-04-23
+                                                                                                                          M7892 P11
+                                                                                                                  Security Target Lite
+Public
+
+                                                            Table 1: Identification
+
+              Object                    Version      Date                                      Registration
+
+                                                                 Security Target Common Criteria EAL6 augmented / EAL6+
+    Security Target                      2.2      2020-04-23
+                                                                 M7892 Design Step P11
+
+                                                                 M7892 Design Step P11
+
+                                                                            With FW-Identifier         78.015.18.2
+
+                                                                            MAE:                       8.00.006
+
+                                                                 And following optional alternative SW - libraries:
+                                                                 either     RSA2048           v2.03.008 or v2.07.003
+                                                                 or         RSA4096           v2.03.008 or v2.07.003
+                                                                 and belonging User Guidance documentation (1).
+    Target of Evaluation
+                                                                 And further optional software:
+                                                                 SHA-2                v1.01
+                                                                 EC                   v2.03.008 or v2.07.003
+                                                                        1
+                                                                 Base                 v2.03.008 or v2.07.003
+                                                                 Toolbox              v2.03.008 or v2.07.003
+                                                                 SCL                  v2.02.010
+                                                                 and belonging User Guidance documentation (1).
+
+                                                                 Security IC Platform Protection Profile with Augmentation
+    Protection Profile                   1.0      2014-01-13
+                                                                 Packages BSI-CC-PP-0084-2014
+
+                                                                 Common Criteria for Information Technology Security Evaluation
+
+                                                                 Part 1: Introduction and general model
+                                         3.1                     CCMB-2017-04-001
+    Common Criteria                 Revision       2017-04       Part 2: Security functional requirements
+                                          5                      CCMB-2017-04-002
+
+                                                                 Part 3: Security Assurance Components CCMB-
+                                                                 2017-04-003
+
+    (1) Chapter 2.2.4 describes briefly the contents of the individual documents of the User Guidance Documentation, while
+    the individual documents are versioned and entitled in chapter 9 literature and references. The listed set of user guidance
+    documents belongs to the TOE.
+
+
+Note that the ROM contains no user data and the user has no access.
+
+
+
+
+1
+    Please note that the Base Library cannot be ordered. However this library is part of the delivery if the RSA2048, the RSA4096, the EC or
+      the Toolbox library is ordered.
+
+
+
+CC Developer Document                                                   8                                                      2020-04-23
+                                                                                                                    M7892 P11
+                                                                                                            Security Target Lite
+Public
+
+The user can identify the TOE and its configuration using the Non-ISO ATR in combination with firmware functions. The TOE
+answers the Non-ISO ATR with the Generic Chip Identification Mode (GCIM). The GCIM outputs a chip identifier byte, design
+step, firmware identifier version and further configuration information. The identification data and configuration details are
+described in the confidential Security Target [10] and in the Family Hardware Reference Manual HRM [1].
+
+Furthermore, the MAE can be identified utilising its version, as described in the Production and personalization Mutual
+Authentication Extension [36]. The version is part of the “basic chip information” provided by the command
+FLASH_GET_CHIP_STATUS.
+
+This TOE is represented by various products, differentiated by various configuration possibilities, done either by Infineon
+settings during production or, after delivery, by means of blocking at customer premises.
+
+Despite these configuration possibilities, all products are derived from the equal hardware design results, the M7892 Design
+Step P11. The GCIM mode is explained and detailed in the user guidance document hardware reference manual HRM [1].
+
+All product derivatives are identically from module design, layout and footprint, but are made different in their possibilities
+to connect to different types of antennas or to a contact based interface only. Therefore, the TOE is represented and made
+out of different mask sets:
+The main difference between the mask sets of the TOE is on one metal mask (M1) to implement different input capacitances
+in the analogue part of the radio frequency interface (RFI). This differentiation in the input capacitances allows the
+connection to a wider range of various antenna types, or respectively, to a contact based interface only. Note that external
+antennas or interfaces are not part of the TOE.
+
+An overview upon the different mask sets is provided in the Confidential Security Target [10].
+
+To each of the capacitances related mask sets belonging to the TOE, an individual value is assigned, which is part of the data
+output of the Generic Chip Identification Mode (GCIM). This number is located in the GCIM part individual length byte to
+clearly differentiate between the mask sets related to the different input capacitances. Thereby, the clear identification of
+the silicon design step is given.
+
+There are no other differences between the mask sets the TOE is produced with. Details are explained in the user guidance
+hardware reference manual HRM [1]. An overview upon the different mask sets is given in the confidential Security Target
+[10].
+
+The M7892 Design Step P11 allows for a maximum of configuration possibilities defined by the customer order or his blocking
+following the market needs. For example, a M7892 Design Step P11 product can come in one project with the fully available
+                        1
+SOLID FLASH™ NVM or in another project with any other SOLID FLASH™ NVM -size below the physical implementation size,
+or with a different RAM size. And more, the user has the free choice, whether he needs the symmetric coprocessor SCP, or
+the asymmetric coprocessor Crypto@2304T, or both, or none of them. In addition, the user decides, whether the TOE comes
+with a free combination of software libraries or without any. However, the version of ECC, RSA and Toolbox libraries cannot
+be chosen independently. If selected the libraries have to be of one version. And, to be even more flexible, various interface
+options can be chosen as well. To sum up the major selections, the user defines by his order:
+
+
+1
+    Infineon® SOLID FLASH™ is an Infineon Trade Mark and stands for the Infineon EEPROM working as Flash memory. The abbreviation NVM
+      is short for Non Volatile Memory.
+
+
+
+CC Developer Document                                              9                                                     2020-04-23
+                                                                                                                          M7892 P11
+                                                                                                                  Security Target Lite
+Public
+
+             The available memory sizes of the SOLID FLASH™ NVM and RAM.
+              Note that there is no user available ROM on the TOE.
+
+             The availability of the cryptographic coprocessors.
+
+             The availability of the optional cryptographic libraries.
+
+             The availability of Mutual Authentication Extension (MAE) and Flash Loader for available interfaces like ISO-7816,
+              contactless ISO-14443.
+
+             The availability of various interface options.
+
+             The possibility to tailor the product by blocking on his own premises.
+
+             The degree of freedom of the chip configuration is predefined by Infineon Technologies AG and made available via
+              the order tool.
+
+Beside fix TOE configurations, which can be ordered as usual, this TOE implements optionally the so called Bill-Per-Use (BPU)
+ability. This solution enables our customer to tailor the product on his own to the required configuration – project by project.
+By that BPU allows for significant reduction of logistic cost at all participating parties and serves for acceleration of delivery of
+tailored product to the end-user.
+
+BPU enables our customers to block the chip on demand into the final configuration at his own premises, without further
+delivery or involving support by Infineon Technology Further information is given in the confidential Security Target [10].
+
+The entire configuration storage area is protected against manipulation, perturbation and false access. Note that the IFX-only
+part of the configuration page is already access protected prior delivery to the user and the TOE leaves the Infineon
+Technology premises only locked into User Mode.
+
+The Flash Loader BPU software part is only present on the products which have been ordered with the BPU option. In all
+other cases this software is not present on the product. If a product is ordered without Flash Loader, also the Flash Loader
+software is not present and the BPU configuration changes are blocked in the IFX-configuration, which renders BPU
+functionality unusable. Various delivery combinations are given and for example, a product can come with a fix configuration
+and with Flash Loader, to enable the user to download software, but without BPU option. Following cases can occur:
+
+          
+                                                                           1
+              Order in fixed configuration, without activatable MAE and Flash Loader:
+              no download of user software and no blocking possibility after delivery
+
+             Order in fixed configuration with activatable MAE and Flash Loader but without BPU option:
+              download of user software but no blocking possibility after delivery
+
+             Order with activatable MAE and Flash Loader and Bill-per-Use option in starting configuration:
+              final chip configuration by the user and download of user software
+
+In case a customer decides to order the TOE with activatable MAE and Flash Loader, he has to make sure that the Flash
+Loader is protected against misuse. This explicitly includes the delivery process from Infineon to the customer. In addition,
+the Flash Loader has to be used in an MSSR-audited environment. Furthermore, the Flash Loader (and MAE) has to be
+
+
+
+1
+    „Activatable MAE“ means either that MAE is installed and will be active after power-up / reset of the TOE, or that MAE can be reinstalled
+      and activated via the Flash Loader.
+
+
+
+CC Developer Document                                                 10                                                        2020-04-23
+                                                                                                                 M7892 P11
+                                                                                                         Security Target Lite
+Public
+
+deactivated permanently before chips are delivered to the end-customer. These aspects are not within the scope of this
+evaluation but have to be considered for a composite TOE.
+
+Beside the various TOE configurations further possibilities of how the user inputs his software on the TOE, i.e. the operating
+system and applications, are in place. This provides a maximum of flexibility and for this an overview is given in the following
+table:
+
+
+                         Table 2: Options to implement user software at Infineon production premises
+
+
+                                                                    After successful external authentication using MAE, the
+          The user or/and a subcontractor downloads the
+                                                                    Flash Loader can be activated by the user or
+          software into the SOLID FLASH™ NVM on his own.
+ 1.                                                                 subcontractor to download his software in the SOLID
+          Infineon Technologies has not received user
+                                                                    FLASH™ NVM – until the Flash Loader is finally
+          software and there are no user data in the ROM.
+                                                                    permanently deactivated by the user.
+
+
+          The user provides software for the download into
+          the SOLID FLASH™ NVM to Infineon Technologies
+                                                                    The Flash Loader is permanently deactivated (and MAE is
+ 2        AG. The software is downloaded to the SOLID
+                                                                    not installed).
+          FLASH™ NVM during chip production. I.e. there are
+          no user data in the ROM.
+
+
+                                                                    MAE and the Flash Loader are deactivated afterwards, but
+          The user provides software for the download into
+                                                                    can be reactivated by the user or subcontractor to
+          the SOLID FLASH™ NVM to Infineon Technologies
+                                                                    download his software in the SOLID FLASH™ NVM.
+ 3        AG. The software is downloaded to the SOLID
+                                                                    Precondition is that the user has provided an own
+          FLASH™ NVM during chip production. I.e. there are
+                                                                    reactivation procedure in software prior chip production
+          no user data in the ROM.
+                                                                    to Infineon Technologies AG.
+
+
+
+For the cases with activatable MAE and Flash Loader on board and whenever the user has finalized his software download,
+respectively the TOE is in the final state and about to be delivered to the end-user, the user is obligated to lock the Flash
+Loader. The locking is the final step and results in a permanent deactivation of the Flash Loader. This means that once being
+in the locked status, the Flash Loader cannot be reactivated anymore. In locked state it is also impossible to re-install/activate
+the MAE (as this would need an active Flash Loader).
+
+Note that whenever a TOE comes with a permanently deactivated the Flash Loader, BPU is not possible.
+
+The following listing contains the memory size ranges and other blocking options, focusing on the maximum respectively
+minimum user available limitations. Within those limitations the TOE configurations can vary under only one identical IC-
+hardware, regardless whether the configurations are set by Infineon or within further limitations by the user. All
+configurations the TOE is made off and all thereof resulting derivatives have no impact on security and are covered by the
+
+
+
+CC Developer Document                                          11                                                     2020-04-23
+                                                                                                                             M7892 P11
+                                                                                                                     Security Target Lite
+Public
+
+certificate.
+Wherever user blocking is stated in the table below, the user can block the chip within the therein defined limitations, but
+only if the product was ordered with the BPU option.
+The below given configuration possibilities are valid unchanged throughout the mentioned different mask sets. Wherever
+user blocking is stated below, the user can block the chip within the defined limitations, but only if the product was ordered
+with the user configuration capability.
+
+The following table provides an excerpt of possible configurations:
+
+                                     Table 3: Configuration ranges and blocking options for the user
+
+    Module                 /                Feature    Max-Value             Min-Value       (User
+    (User view)                                        (User view)           view)                   User Blocking      User Blocking Step
+
+    Memories
+
+
+    SOLID FLASH™ NVM                                   Max. 404 KByte        Min. 0 KByte            Yes                1 KByte
+
+
+    RAM for the user                                   8 KByte               1 KByte                 Yes                1 KByte
+
+
+    Modules
+
+
+    Crypto@2304T                                       Available             Not available           Yes                On/off
+
+
+    SCP                                                Available             Not available           Yes                On/off
+
+
+    Interfaces
+
+
+    ISO 7816-3 slave                                   Available             Not available           Yes                On/off
+
+
+    RFI – ISO 14443 generally                          Available             Not available           Yes                On/off
+
+
+    ISO 14443 Type A card mode                         Available             Not available           By order only      None
+
+
+    ISO 14443 Type B card mode                         Available             Not available           By order only      None
+
+
+    ISO 18092 NFC passive mode                         Available             Not available           By order only      None
+
+
+    NRG hardware support for card mode                 Available             Not available           By order only      None
+
+             1
+    NRG SW support for 4k cards                        Available             Not available           By order only      None
+
+             1
+    NRG SW support for 1k cards                        Available             Not available           By order only      None
+
+
+
+1
+    NRG software is not part of the TOE Security Functionality (TSF)
+
+
+
+CC Developer Document                                                   12                                                        2020-04-23
+                                                                                                                            M7892 P11
+                                                                                                                    Security Target Lite
+Public
+
+
+There are further communication modes and blocking options available which are outlined in the confidential Security Target
+[10] and the confidential User Guidance.
+
+All possible TOE configurations equal and/or within the physical specified ranges as outlined in the confidential Security
+Target [10] and in the hardware reference manual HRM [1] are covered by the certificate.
+
+Note that there is no user available on-chip ROM module anymore. The user software and data are now located in a
+dedicated and protected part of the SOLID FLASH™ NVM. The long life storage endurance, the automatic management of
+often used memory pages, together with the means for error detection and correction serves for comparable respectively
+equal reliability and endurance, compared to a conventional ROM.
+
+Beside the above listed flexible ranges, the user guidance contains a number of predefined configurations for those
+customers not making use of the BPU option. All of these configurations belong to the TOE as well and are of course made of
+the equal hardware and are inside the above declared ranges.
+
+According to the BPU option, a non-limited number of configurations of the TOE may occur in the field. The number of
+various configurations depends on the user and purchase contract only.
+
+Note that the TOE answers to the Non-ISO-ATR with the Generic Chip Identification Mode (GCIM) answer. This GCIM outputs
+a coded clear identifier for the chip type, the design step and further configuration information such as the firmware version.
+The user guidance document hardware reference manual HRM [1] enables for clear interpretation of the read out GCIM data.
+
+These GCIM data enable the user for clear identification of the TOE and also of one of the different mask sets and therewith
+for checking the validity of the certificate.
+
+In addition, a dedicated RMS function allows reading out the present configuration in detail. Together with the programmer’s
+reference manual (PRM) [3], this allows for clear identification of a product and its configuration.
+
+All these steps for gathering identification and detailed configuration information can be done by the user himself, without
+involving Infineon Technologies AG.
+
+The TOE consists of the hardware part, the firmware parts and the optional software parts. The Smartcard Embedded
+Software, i.e. the operating system and applications are not part of the TOE.
+
+The firmware parts are the RMS, the Service Algorithm Minimal (SAM) the STS firmware for test purpose, the NRG software
+interface routines, as well as the MAE enhanced Flash Loader for downloading user software to the SOLID FLASH™ NVM. For
+further details regarding the firmware refer to chapter 2.2.2.Firmware patches (if there are any present) are stored in the
+SOLID FLASH™ NVM. The TOE has no user ROM. IFX ROM contains no user data.
+
+Please note that the NRG software is not part of the security functionality of the TOE.
+                                                                                     1    2        3
+The software parts are differentiated into the cryptographic libraries RSA , EC SHA-2 , and symmetric cryptographic library
+(SCL), as well as the supporting libraries Toolbox and Base.
+
+1
+    Rivest-Shamir-Adleman asymmetric cryptographic algorithm
+2
+    The Elliptic Curve Cryptography is abbreviated with EC only in the further, in order to avoid conflicts with the abbreviation for the Error
+      Correction Code ECC.
+3
+    SHA Secure Hash Algorithm
+
+
+
+CC Developer Document                                                  13                                                         2020-04-23
+                                                                                                                    M7892 P11
+                                                                                                            Security Target Lite
+Public
+
+These libraries provide the Smartcard Embedded Software with a certain functionality via an API. However, the Base Library
+does not provided a dedicated functionality on its own and is mainly used internally by the RSA, EC and Toolbox libraries. If
+none of the libraries RSA, EC and Toolbox is delivered, also the Base Library is not on board.
+
+Thus the customer can choose, whether the TOE is delivered including - in free combinations - the functionality of the
+cryptographic libraries SCL, EC, RSA, SHA-2 and the supporting Toolbox library. However, the version of ECC, RSA and Toolbox
+libraries cannot be chosen independently. If selected the libraries have to be of one version. If RSA or EC or Toolbox is
+delivered, automatically the Base Library is part of the shipment too.
+
+If the user decides not to use one or all of the crypto library(s), the specific library(s) is (are) not delivered to the user and the
+accompanying additional specific security functionality Rivest-Shamir-Adleman (RSA) and/ or EC and/or SHA-2 and/or SCL
+based Advanced Encryption Standard (AES) and SCL based Triple Data Encryption Standard (TDES) is/are not provided by the
+TOE.
+
+The optional Toolbox library provides the user with basic arithmetic and modular arithmetic operations, in order to support
+user software development using long integer operations. These basic arithmetic operations do not provide any security
+functionality, implement no security mechanism, and do not provide additional specific security functionality - as defined for
+the cryptographic libraries.
+The user developed software using the Toolbox basic operations is not part of the TOE.
+
+The Toolbox library is not part of the TOE Security Functionality (TSF) of this TOE and does not provide any security functional
+requirement.
+
+The Base Library provides the low level interface to the asymmetric cryptographic coprocessor for the RSA, EC and Toolbox
+libraries. The Base Library does not provide any dedicated security functionality on its own.
+
+Deselecting one of the libraries does not include the code implementing functionality, which the user decided not to use. Not
+including the code of the deselected functionality has no impact of any other security policy of the TOE; it is exactly
+equivalent to the situation where the user decides just not to use the functionality.
+
+The SCL, RSA, EC, SHA-2 and Toolbox libraries can be loaded, together with the Smartcard Embedded software, into the
+SOLID FLASH™ NVM. This holds also for the Base Library, if the RSA, EC or Toolbox or combinations hereof is/are part of the
+shipment.
+
+The Smartcard Embedded Software does not belong to the TOE and is not subject of the evaluation.
+
+
+1.2                Target of Evaluation overview
+The TOE comprises the Infineon Technologies Dual Interface Security Controller M7892 Design Step P11 with specific IC
+dedicated firmware and optional SCL, RSA, EC, SHA-2 and Toolbox libraries.
+
+The TOE is a member of the Infineon Technologies AG high security controller family meeting the highest requirements in
+terms of performance and security. A summary product description is given in this Security Target (ST).
+
+This TOE is intended to be used in any application and device requiring the highest level of security, and can be used for
+example not only as a secure smart card, but also as a secure element on a printed circuit board or similar. The capabilities of
+this TOE can be used almost everywhere, where highly secure applications are in use and of course in any other application
+as well. This TOE is deemed for governmental, corporate, transport and payment markets, or wherever a secure root of trust
+
+
+
+CC Developer Document                                            14                                                      2020-04-23
+                                                                                                                  M7892 P11
+                                                                                                          Security Target Lite
+Public
+
+is required. Various types of applications can use this TOE in almost any device or form factor, for example in closed loop
+logical access controls, physical access controls, secure internet access control and internet authentication, or as multi-
+application token or simply as encrypted storage.
+
+This member of the high security controller family features a security philosophy focusing on data integrity instead of
+numerous sensors. By that two main principles combined in close synergy are utilized in the security concept called the
+“Integrity Guard”. These main principles are the comprehensive error detection, including the dual CPU, and the full
+encrypted data path, leaving no plain data on the chip. These principles proved that they provide excellent protection against
+invasive and non-invasive attacks known today.
+                                                                                                                                 2
+The intelligent shielding algorithm finishes the layers, finally providing the so called intelligent implicit active shielding “I -
+shield”. This provides physical protection against probing and forcing.
+
+This dual interface controller is able to communicate using either the contact based or the contactless interface. The
+implemented dual interface provides a maximum flexibility in using following communication protocols respectively
+methods:
+
+Contact based interfaces
+
+               ISO 7816
+                The ISO defined standard contact based communication protocol, using the pads.
+
+Contactless interfaces
+
+               ISO 14443 Type A and Type B
+                These are ISO defined proximity contactless protocols using an external antenna and the TOE implemented
+                analogue and digital radio frequency interface.
+
+               ISO/IEC 18092 passive mode,
+                The ISO defined proximity contactless protocol using an external antenna and the TOE implemented analogue and
+                digital radio frequency interface.
+
+          
+                              1
+                NRG software interface,
+                The proprietary proximity contactless protocol using an external antenna and the TOE implemented analogue and
+                digital radio frequency interface, as well as the memory part reserved for NRG use.
+
+               And various further communication modes (see Note below).
+
+Note:         All interfaces and protocols can be made available sequentially. How the interfaces are used or combined depends
+exclusively on the user software. Further communication modes, details and an overview about their combinations are
+outlined in the confidential Security Target [9].
+
+The TOE provides a real 16-bit CPU-architecture and is compatible to the MCS®251 instruction set with an execution time
+faster than a standard MCS®251 microcontroller at the same clock frequency. The major components of the core system are
+the dual CPU (Central Processing Units), acting as one, the MMU (Memory Management Unit) and MED (Memory
+Encryption/Decryption Unit). The dual CPU controls each other in order to detect faults and serve by this for data integrity.
+The TOE implements a full 16 MByte linear addressable memory space for each privilege level, a simple scalable Memory
+
+1
+    NRG software is not part of the TOE Security Functionality (TSF)
+
+
+
+CC Developer Document                                                  15                                              2020-04-23
+                                                                                                                M7892 P11
+                                                                                                        Security Target Lite
+Public
+
+Management concept and a scalable stack size. The flexible memory concept consists of ROM- and Flash-memory as part of
+the nonvolatile memory (NVM), respectively SOLID FLASH™ NVM. For the SOLID FLASH™ NVM the Unified Channel
+Programming (UCP) memory technology is used.
+
+The RMS library providing some functionality via an API to the Smartcard Embedded Software contains for example SOLID
+FLASH™ NVM service routines. The Service Algorithm Minimal (SAM) provides functionality for the tearing-safe write into the
+SOLID FLASH™ NVM. The STS firmware is used for test purposes during start-up and the MAE and Flash Loader allow for
+mutual authentication with the TOE and secure downloading of user software to the SOLID FLASH™ NVM during the
+manufacturing process. The firmware parts are implemented in the ROM and in access protected areas of the SOLID FLASH™
+NVM.
+
+The BSI has changed names and abbreviations for Random Number Generators, which is clarified as follows: The Physical
+True Random Number Generator (PTRNG), also named True Random Number Generator (TRNG) is afreely be combined but not two versions of the equal type. For examples ACL with SCL with
+HSL with NRG is welcome but a combination of HSL in version 03.11.8339 and at the same time with HSL in
+version 01.22.4346 would not work. The library types are entirely independent from each other.
+The security relevant differences in the versions - if any - are detailed in chapter 8. The claims of this Security
+Target take the corresponding versions into account and thus the wording in the following refers to the library
+type which is cited or else the claim includes always all named versions.
+
+The design step of this TOE is H13.
+
+The Security Target is based on the Protection Profile PP-0084 Security IC Platform Protection Profile with
+Augmentation Packages [9] as publicly available for download at https://www.bsi.bund.de and certified under
+BSI-CC-PP-0084-2014.
+The Security Target is built in compliance with Common Criteria v3.1 Revision 5.
+
+The Security Target takes into account all relevant current final interpretations.
+
+1
+ Rivest-Shamir-Adleman asymmetric cryptographic algorithm
+2
+ BSI – Bundesamt für Sicherheit in der Informationstechnik – Federal Office for Information Security: Following the national BSI
+    recommendations, RSA key lengths below 1976 bits are not included in the certificate. Please note that the BSI expects this key length
+    as appropriate until 2022 and recommends for longer usage times key lengths of 3000 bits or higher.
+3 The Elliptic Curve Cryptography is abbreviated with EC only in the further, in order to avoid conflicts with the abbreviation for the Error
+  physical random number
+generator and meets the requirements of the functionality class AIS31 PTG.2, see [16]. It is used for provision of random
+number generation as a security service to the user and for internal purposes. The produced genuine random numbers can
+be used directly or as seed for the Deterministic Random Number Generator (DRNG), formerly named as Pseudo Random
+Number Generator (PRNG). The DRNG respectively PRNG is not in the scope of the evaluation. The TRNG respectivel   Correction Code ECC.
+
+
+CC Documy PTRNG
+is senp
