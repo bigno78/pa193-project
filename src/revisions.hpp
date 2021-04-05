@@ -10,51 +10,6 @@
 #include "utils.hpp"
 #include "json.hpp"
 
-struct Column {
-    size_t start;
-    std::string data;
-};
-
-inline std::vector<Column> split_line_into_columns(const std::string& line) {
-    std::vector<Column> cols;
-    size_t i = 0;
-    size_t n = line.size();
-    
-    while(true) {
-        // search for the beginning of a column - first non-space character
-        while(i < n && is_space(line[i])) {
-            ++i;
-        }
-
-        if (i >= n) {
-            return cols;
-        }
-
-        Column col = { i, {} };
-
-        // read till the end of the column - two consecutive spaces
-        int spaces = 0;
-        while(i < n && spaces < 2) {
-            if (is_space(line[i]))
-                ++spaces;
-            else
-                spaces = 0;
-            ++i;
-        }
-
-        if (i >= n) {
-            col.data = line.substr(col.start, i - col.start);
-            cols.push_back(col);
-            return cols;
-        }
-
-        col.data = line.substr(col.start, i - 2 - col.start);
-        cols.push_back(col);
-    }
-
-    assert(false);
-}
-
 struct Table {
     std::vector< std::string > header;
     std::vector< std::vector< std::string > > data;

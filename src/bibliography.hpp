@@ -33,14 +33,6 @@ inline bool is_entry(const std::string& line) {
     return std::regex_match(line, match, reg);
 }
 
-inline bool is_empty_line(const std::string& line) {
-    return std::find_if(
-                    line.begin(),
-                    line.end(),
-                    [](char c){ return !is_space(c); }
-           ) == line.end();
-}
-
 /**
  * Parses the first line of a bibliography entry.
  * Returns the key (the stuff in []) and the start of the citation following it.
