@@ -5,6 +5,7 @@
 #include <vector>
 #include <regex>
 #include <sstream>
+#include <optional>
 
 #include "utils.hpp"
 #include "json.hpp"
@@ -177,6 +178,39 @@ inline nlohmann::json read_revision_table(const Table& table) {
     }
 
     return j;
+}
+
+inline std::optional<std::string> parse_date(const std::string& date) {
+    static std::regex date_reg(R"((\d{1,2})\W([a-zA-Z]+|\d{1,2})\W(\d{4}))");
+    std::smatch match;
+
+    if (!std::regex_match(date, match, date_reg)) {
+        return std::nullopt;
+    }
+
+    static std::map<std::string, std::string> months {
+        { "janunary", "01" }, { "jan", "01" },
+        { "february", "02" }, { "feb", "02" },
+        { "march", "03" }, { "mar", "03" },
+        { "april", "04" }, { "apr", "04" },
+        { "may", "05" }, { "may", "05" },
+        { "june", "06" }, { "jun", "06" },
+        { "july", "07" }, { "jul", "07" },
+        { "august", "08" }, { "aug", "08" },
+        { "september", "09" }, { "sept", "09" },
+        { "october", "10" }, { "oct", "10" },
+        { "november", "11" }, { "nov", "11" },
+        { "december", "12" }, { "dec", "12" },
+    };
+
+    std::string day = match[1], month = match[2], year = match[3];
+    if (is_alpha(month[0]) && months.count(month) > 0) {
+        month = months[month];
+    } else if (std::stoul(month) > 12) {
+        std::swap(day, month); 
+    }
+
+    return day + "-" + month + "-" + year;
 }
 
 /**

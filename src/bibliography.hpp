@@ -17,29 +17,20 @@
 #include <locale>
 #include <codecvt>
 
-// is this line the begining of bibliography entry - does it start with '['?
+
 inline bool is_entry(const std::string& line) {
+    // regular expressions are slow so first do a quick test
+    // if it even makes sense to use one
+    // for most lines this should fail fast
     size_t i = 0;
     while (i < line.size() && line[i] != '[') {
-        if (!is_space(line[i])) {
-            return false;
-        }
-        ++i;
-    }
-    
-    ++i;
-    if (i >= line.size() || line[i] == ']') {
-        return false;
-    }
-
-    while(i < line.size()) {
-        if (line[i] == ']') {
-            return true;
-        }
+        if (!is_space(line[i])) return false;
         ++i;
     }
 
-    return false;
+    static const std::regex reg(R"(\s*\[\w+\]\s+\w.*)");
+    std::smatch match;
+    return std::regex_match(line, match, reg);
 }
 
 inline bool is_empty_line(const std::string& line) {
@@ -141,23 +132,23 @@ inline nlohmann::json parse_bibliography(const std::vector<std::string>& data) {
     nlohmann::json res;
     for (size_t i = 0; i < entries.size(); ++i) {
         size_t j = entries[i];
-        auto [ key, citation ] = parse_entry(data[j]);
-        j++;
+        
+        auto [ key, citation ] = parse_entry(data[j++]);
+        citation = join_columns(citation);
+
         while(true) {
-            // decide if we should end this citation
+            // first decide if we should end this citation
+            // we wanna end if we reached the next entry or an empty line
             if (i+1 < entries.size()) { // there is one more entry
                 if (j >= entries[i+1] || is_empty_line(data[j])) break;
             } else { // we are parsing last entry
                 if (j >= data.size() || is_empty_line(data[j])) break;
             }
+
             append_line(citation, join_columns(data[j]));
             j++;
         }
-        // convert to std::string
-        //using convert_type = std::codecvt_utf8<wchar_t>;
-        //std::wstring_convert<convert_type, wchar_t> converter;
-        //std::string string_key = converter.to_bytes(key);
-        //std::string string_cit = converter.to_bytes(citation);
+
         res[key] = citation;
     }
 
