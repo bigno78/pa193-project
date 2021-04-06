@@ -46,7 +46,7 @@ inline Table parse_revisions_table(const std::vector<std::string>& data, size_t 
             if (!last_row.empty() && last_row.back().start == cols[0].start) {
                 append_line(table.data.back().back(), cols[0].data);
             } else {
-                std::cout << "skipping: " << data[i] << "\n";
+                //std::cout << "skipping: " << data[i] << "\n";
             }
         }
 
@@ -88,7 +88,7 @@ inline nlohmann::json read_revision_table(const Table& table) {
     
     static std::regex version_reg(R"(ver|rev)", std::regex_constants::icase);
     static std::regex date_reg(R"(date)", std::regex_constants::icase);
-    static std::regex description_reg(R"(description|changes|subject)", std::regex_constants::icase);
+    static std::regex description_reg(R"(description|change|subject)", std::regex_constants::icase);
     std::smatch match;
 
     // now try to guess what data each column contains
@@ -120,7 +120,7 @@ inline nlohmann::json read_revision_table(const Table& table) {
     nlohmann::json j = nlohmann::json::array({});
     for (size_t i = has_header ? 1 : 0; i < table.data.size(); ++i) {
         const auto& row = table.data[i];
-        j.push_back( nlohmann::json{} );
+        j.push_back( nlohmann::json{ {"version", "" }, { "date", "" }, { "description", "" } } );
         if (mapping[VERSION] != -1) {
             j.back()["version"] = row[mapping[VERSION]];
         }
@@ -128,7 +128,7 @@ inline nlohmann::json read_revision_table(const Table& table) {
             j.back()["date"] = row[mapping[DATE]];
         }
         if (mapping[DESCRIPTION] != -1) {
-            j.back()["decription"] = row[mapping[DESCRIPTION]];
+            j.back()["description"] = row[mapping[DESCRIPTION]];
         }
     }
 
@@ -229,7 +229,7 @@ inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
 
     for (size_t i = 0; i < search_depth; ++i) {
         if (is_revisions_header(data[i])) {
-            std::cout << "found: " << data[i] << "\n";
+            //std::cout << "found: " << data[i] << "\n";
             Table table = parse_revisions_table(data, i);
             if (table.data.empty()) {
                 continue;
@@ -249,5 +249,5 @@ inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
         }
     }
 
-    return {};
+    return nlohmann::json::array({});
 }

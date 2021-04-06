@@ -39,5 +39,9 @@ std::string parse_title(std::vector<std::string> data) {
 			i--;
 		}
 	}
-	return *(std::max_element(candidets.begin(), candidets.end(), [](std::string a, std::string b) {return a.length() < b.length(); }));
+	auto it = (std::max_element(candidets.begin(), candidets.end(), [](std::string a, std::string b) {return a.length() < b.length(); }));
+	if (it == candidets.end()) {
+		return "";
+	}
+	return *it;
 }

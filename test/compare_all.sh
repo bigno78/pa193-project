@@ -12,7 +12,7 @@ out_path=$3
 for f in $(ls $out_path/*.json); do
     file=$(basename $f)
     if [ -e $ref_path/$file ]; then
-        echo $file 
+        # echo $file 
         python3 $comp $ref_path/$file $f
     fi
 done

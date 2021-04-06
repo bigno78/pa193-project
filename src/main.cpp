@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 			}
 			auto j = parse_document(in_file);
 			out_file << std::setw(4) << j << std::endl;
-			std::cout << j.dump(4) << "\n";
+			//std::cout << j.dump(4) << "\n";
 		}
 	} else { // no input files -> take input from std::cin
 		//auto j = parse_document(std::cin);

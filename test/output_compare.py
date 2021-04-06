@@ -150,7 +150,7 @@ def main():
     actual = load_file(sys.argv[1])
     expected = load_file(sys.argv[2])
 
-    checks = (check_title,)
+    checks = (check_title, check_bibliography, check_revisions)
     points = 0
     for check in checks:
         points += check(actual, expected)
