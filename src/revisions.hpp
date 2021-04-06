@@ -10,9 +10,18 @@
 #include "utils.hpp"
 #include "json.hpp"
 
-struct Table {
+struct RevisionsTable {
+    enum { VERSION, DATE, DESCRIPTION };
+    std::array<int, 3> mapping { -1, -1, -1 };
     std::vector< std::string > header;
     std::vector< std::vector< std::string > > data;
+
+    void append_row(const std::vector<Column>& row) {
+        data.emplace_back();
+        for (const auto& col : row) {
+            data.back().push_back(col);
+        }
+    }
 };
 
 inline Table parse_revisions_table(const std::vector<std::string>& data, size_t start_pos) {
@@ -169,19 +178,6 @@ inline std::optional<std::string> parse_date(const std::string& date) {
 }
 
 /**
- * Returns true iff the provided line is a title of the section containing the revisions table
- * 
- * Rules:
- *  - title should be reasonable short - at most 3 words
- *  - title should contain one of the keywords: 'revision', 'evolution', 'version'
- */
-inline bool is_revisions_title(const std::string& line) {
-    static std::regex title_reg(R"(revision|evolution|version)", std::regex_constants::icase);
-    std::smatch match;
-    return std::regex_search(line, match, title_reg) && count_words(line) <= 3;
-}
-
-/**
  * Determines if the provided line contains a header of the revisions table
  * 
  * Rules:
@@ -223,6 +219,99 @@ inline bool is_revisions_header(const std::string& line) {
 
     return matched >= 2;
 }
+
+inline bool parse_revisions_table(const std::vector<std::string>& data, size_t start_pos, RevisionsTable& table) {
+    size_t i = start_pos;
+    size_t n = data.size();
+
+    std::vector<Column> last_row;
+    size_t max_dist = 3;
+    size_t dist = 0;
+
+    while(true) {
+        if (dist >= max_dist || i >= n) {
+            // we want to return true if we find any rows at all
+            return !last_row.empty();
+        }
+
+        auto row = split_line_into_columns(data[i]);
+
+        if (!last_row.empty()) {
+            if (row.size() == last_row.size()) {
+                // we found a new row
+                table.append_row(last_row);
+                last_row = row;
+                dist = 0;
+            } else if (row.size() == 1) {
+                // allow overlow in the last column
+                if (row.back().start == last_row.back().start) {
+                    append_line(last_row.back().data, row.back().data);
+                } else {
+                    std::cout << "skipping: " << data[i] << "\n";
+                    dist++;
+                }
+            } else {
+                // we dont recognize this as a row
+                std::cout << "skipping: " << data[i] << "\n";
+                dist++;
+            }
+        } else {
+            if (row.size() >= 2) {
+                last_row = row;
+                dist = 0;
+            } else {
+                std::cout << "skipping: " << data[i] << "\n";
+                dist++;
+            }
+        }
+
+        i++;
+    }
+}
+
+/**
+ * Returns true iff the provided line is a title of the section containing the revisions table
+ * 
+ * Rules:
+ *  - title should be reasonable short - at most 3 words
+ *  - title should contain one of the keywords: 'revision', 'evolution', 'version'
+ */
+inline bool is_revisions_title(const std::string& line) {
+    static const std::regex title_reg(R"(revision|evolution|version)", std::regex_constants::icase);
+    std::smatch match;
+    return count_words(line) <= 3 && std::regex_search(line, match, title_reg);
+}
+
+/**
+ * Checks if above the line at index <line_index> there is a title of the revisions section.
+ */
+inline bool has_revisions_title(const std::vector<std::string>& data, size_t line_index) {
+    size_t search_len = std::min(6, line_index);
+    for (size_t i = 1; i <= search_len; ++i) {
+        if (is_revisions_title(data[line_index - i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline std::optional<Table> try_parse_revisions(const std::vector<std::string>& data, size_t start_pos) {
+    std::vector<Column> cols = split_line_into_columns(data[i]);
+    if (cols.size() < 2) {
+        return std::nullopt;
+    }
+
+    Table table;
+    if (has_revisions_title(data, start_pos)) {
+        // parse_table_from_title();
+        // return table;
+    }
+
+    // std::optional<header> header = parse_revisions_header(cols);
+    if (header) {
+        //
+    }
+}   
 
 inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
     size_t search_depth = data.size();
