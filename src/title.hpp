@@ -43,5 +43,10 @@ std::string parse_title(std::vector<std::string> data) {
 	if (it == candidets.end()) {
 		return "";
 	}
+	if ((*it).empty()) {
+		std::string line = data[0];
+		trim(line);
+		return line;
+	}
 	return *it;
 }
