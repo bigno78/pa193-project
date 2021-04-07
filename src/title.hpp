@@ -19,9 +19,9 @@ std::string parse_title(std::vector<std::string> data) {
 				break;
 			}
 		}
-		if (is_empty_line(data[i]) && !current.empty()) {
+		if (is_empty_line(line) && !current.empty()) {
+			std::cout << line << std::endl;
 			std::string candidet = current[0];
-			trim(candidet);
 			for (size_t j = 1; j < current.size(); j++) {
 				trim(current[j]);
 				append_line(candidet, current[j]);
@@ -42,6 +42,11 @@ std::string parse_title(std::vector<std::string> data) {
 	auto it = (std::max_element(candidets.begin(), candidets.end(), [](std::string a, std::string b) {return a.length() < b.length(); }));
 	if (it == candidets.end()) {
 		return "";
+	}
+	if (*it == "") {
+		std::string line = data[0];
+		trim(line);
+		return line;
 	}
 	return *it;
 }
