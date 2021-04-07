@@ -26,7 +26,9 @@ std::string parse_title(std::vector<std::string> data) {
 				trim(current[j]);
 				append_line(candidet, current[j]);
 			}
-			candidets.push_back(candidet);
+			if (!candidet.empty()) {
+				candidets.push_back(candidet);
+			}
 			current.clear();
 			continue;
 		}
@@ -34,19 +36,34 @@ std::string parse_title(std::vector<std::string> data) {
 	}
 	for (size_t i = 0; i < candidets.size(); i++) {
 		std::vector<Column> temp = split_line_into_columns(candidets[i]);
+		//the empty part was creating issues before
+		//if(candidets[i].empty() || temp.size() > 1) {
 		if (temp.size() > 1) {
 			candidets.erase(candidets.begin() + i);
 			i--;
 		}
 	}
-	auto it = (std::max_element(candidets.begin(), candidets.end(), [](std::string a, std::string b) {return a.length() < b.length(); }));
+
+	for (size_t i = 0; i < candidets.size(); i++) {
+		std::cout << candidets[i] << ": " << candidets[i].length() << std::endl;
+	}
+
+	bool (*lambda)(std::string & a, std::string & b) = [](std::string &a, std::string &b) {return a.length() < b.length(); };
+
+	if (data[0].find("Rheinland Nederland B.V.") != std::string::npos) {
+		lambda = [](std::string &a, std::string &b) {return a.length() > b.length(); };
+	}
+
+	auto it = (std::max_element(candidets.begin(), candidets.end(), lambda));
 	if (it == candidets.end()) {
 		return "";
 	}
+	
 	if ((*it).empty()) {
 		std::string line = data[0];
 		trim(line);
 		return line;
 	}
+	
 	return *it;
 }
