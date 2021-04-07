@@ -26,9 +26,10 @@ std::string parse_title(std::vector<std::string> data) {
 				trim(current[j]);
 				append_line(candidet, current[j]);
 			}
-			if (!candidet.empty()) {
+			//breaking stuff
+			//if (!candidet.empty()) {
 				candidets.push_back(candidet);
-			}
+			//}
 			current.clear();
 			continue;
 		}
@@ -37,8 +38,8 @@ std::string parse_title(std::vector<std::string> data) {
 	for (size_t i = 0; i < candidets.size(); i++) {
 		std::vector<Column> temp = split_line_into_columns(candidets[i]);
 		//the empty part was creating issues before
-		//if(candidets[i].empty() || temp.size() > 1) {
-		if (temp.size() > 1) {
+		if(candidets[i].empty() || temp.size() > 1) {
+		//if (temp.size() > 1) {
 			candidets.erase(candidets.begin() + i);
 			i--;
 		}
