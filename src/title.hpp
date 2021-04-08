@@ -5,9 +5,19 @@
 
 std::string parse_title(std::vector<std::string> data) {
 	if (data[0].find("Rheinland Nederland B.V.") != std::string::npos) {
-		std::string line = data[11];
-		trim(line);
-		return line;
+		std::vector<std::string> lines = {};
+		for (size_t i = 11; i <= 16; i++) {
+			if (data[i].empty()) {
+				break;
+			}
+			lines.push_back(data[i]);
+			trim(lines[i - 11]);
+		}
+		std::string title = lines[0];
+		for (size_t i = 1; i < lines.size(); i++) {
+			append_line(title, lines[i]);
+		}
+		return title;
 	}
 	std::vector<std::string> candidets = {};
 	std::vector<std::string> current = {};
