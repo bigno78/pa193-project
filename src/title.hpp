@@ -48,7 +48,11 @@ std::string parse_security_target(std::vector<std::string>& data) {
 				return title;
 			}
 			else {
-				for (int j = i - 1; j > i - 5; j--) {
+				int from = 1;
+				if (data[i - 1].empty()) {
+					from++;
+				}
+				for (int j = i - from; j > i - 10; j--) {
 					if (j < 0 || data[j].empty()) {
 						break;
 					}
