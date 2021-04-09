@@ -41,6 +41,9 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					lines.push_back(data[j]);
 					trim(lines[lines.size() - 1]);
 				}
+				if (lines.empty()) {
+					return "";
+				}
 				std::string title = lines[0];
 				for (size_t j = 1; j < lines.size(); j++) {
 					append_line(title, lines[j]);
@@ -49,7 +52,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 			}
 			else {
 				int from = 1;
-				if (data[i - 1].empty()) {
+				if (data[(size_t)i - 1].empty()) {
 					from++;
 				}
 				for (int j = i - from; j > i - 10; j--) {
@@ -58,6 +61,9 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					}
 					lines.push_back(data[j]);
 					trim(lines[lines.size() - 1]);
+				}
+				if (lines.empty()) {
+					return "";
 				}
 				std::string title = lines[lines.size()-1];
 				for (int j = lines.size()-2; j >= 0; j--) {
