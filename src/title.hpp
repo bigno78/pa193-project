@@ -35,7 +35,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					from++;
 				}
 				for (size_t j = from; j < i + 6; j++) {
-					if (data[j].empty()) {
+					if (data[j].empty() || data[j].find(".....") != std::string::npos) {
 						break;
 					}
 					lines.push_back(data[j]);
@@ -56,7 +56,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					from++;
 				}
 				for (int j = i - from; j > i - 10; j--) {
-					if (j < 0 || data[j].empty()) {
+					if (j < 0 || data[j].empty() || data[j].find(".....") != std::string::npos) {
 						break;
 					}
 					lines.push_back(data[j]);
