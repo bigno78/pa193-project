@@ -48,7 +48,7 @@ jobs:
 
     - name: Parse the data set
       working-directory: ${{github.workspace}}
-      run: sh test/test.sh build/src/parser dataset/ out/
+      run: sh test/parse_all.sh build/src/parser dataset/ out/
 
     - name: Compare parsed data
       working-directory: ${{github.workspace}}

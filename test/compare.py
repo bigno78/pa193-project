@@ -1,8 +1,9 @@
-#!/bin/env python3
 import sys
 import json
 import math
+import os
 from difflib import SequenceMatcher
+
 
 def load_file(file):
     with open(file, "r") as f:
@@ -148,22 +149,34 @@ def check_bibliography(actual, expected):
 
     return 20 * score / max_score
 
+check_map = {
+    "--bibliography" : check_bibliography,
+    "--title"        : check_title,
+    "--revisions"    : check_revisions,
+    "--versions"     : check_versions,
+    "--toc"          : check_toc,
+}
 
 def main():
-    actual = load_file(sys.argv[1])
-    expected = load_file(sys.argv[2])
+    actual_path = sys.argv[1]
+    exppected_path = sys.argv[2]
+    check = sys.argv[3]
 
-    checks = (check_bibliography,)
-    points = 0
-    for check in checks:
-        points += check(actual, expected)
+    actual_directory = os.fsencode(actual_path)
+    for file in os.listdir(actual_directory):
+        filename = os.fsdecode(file)
+        if filename.endswith(".json") and os.path.isfile(exppected_path + "/" + filename):
+            actual = load_file(actual_path + "/" + filename)
+            expected = load_file(exppected_path + "/" + filename)
+            
+            score = check_map[check](actual, expected)
 
-    print(sys.argv[1]);
-    print(math.ceil(points))
+            if score < 20:
+                print(f"{filename}: {score}", file=sys.stderr)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print(f"USAGE: {sys.argv[0]} <reference_json_naopak> <output_json_naopak>", file=sys.stderr)
+        print(f"USAGE: {sys.argv[0]} <actual_path> <expected_path> <check_to_perform>", file=sys.stderr)
         sys.exit(1)
-
     main()

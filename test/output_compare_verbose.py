@@ -150,10 +150,10 @@ def check_bibliography(actual, expected):
         score += 1
         similarity = SequenceMatcher(None, actual[key], expected[key]).ratio()
         score += similarity
-        if similarity < 0.5:
+        if similarity < 1:
             print(f"ERROR: Key '{key}' is very different from expected!", file=sys.stderr)
-            # print(f"    - Reference: {actual[key]}", file=sys.stderr)
-            # print(f"    - Parser: {expected[key]}", file=sys.stderr)
+            #print(f"    - Reference: {actual[key]}", file=sys.stderr)
+            #print(f"    - Parser: {expected[key]}", file=sys.stderr)
     
     for key in expected:
         if key not in actual:

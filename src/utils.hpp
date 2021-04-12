@@ -30,7 +30,7 @@ inline bool is_alpha(char c) {
  * Counts the number of words in a line.
  * A word is a continues string of alphanumeric characters without any whitespace.
  */
-inline size_t count_words(const std::string& line) {
+inline size_t count_words_slow(const std::string& line) {
     std::stringstream s(line);
     std::string tok;
     size_t count = 0;
@@ -38,6 +38,25 @@ inline size_t count_words(const std::string& line) {
         count++;
     }
     return count;
+}
+
+inline size_t count_words(const std::string& line) {
+    if (line.empty()) {
+        return 0;
+    }
+    size_t i = 0;
+    size_t count = 0;
+    while(true) {
+        while(i < line.size() && is_space(line[i])) {
+            ++i;
+        }
+        if (i >= line.size()) return count;
+        count++;
+        while(i < line.size() && !is_space(line[i])) {
+            ++i;
+        }
+        if (i >= line.size()) return count;
+    }
 }
 
 /**

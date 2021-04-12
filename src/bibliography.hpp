@@ -28,7 +28,7 @@ inline bool is_entry(const std::string& line) {
         ++i;
     }
 
-    static const std::regex reg(R"(\s*\[\w+\]\s+\w.*)");
+    static const std::regex reg(R"(\s*\[.+?\].*)");
     std::smatch match;
     return std::regex_match(line, match, reg);
 }
@@ -38,7 +38,7 @@ inline bool is_entry(const std::string& line) {
  * Returns the key (the stuff in []) and the start of the citation following it.
  */
 inline std::pair<std::string, std::string> parse_entry(const std::string& line) {
-    static std::regex reg(R"(\s*(\[.+?\])\s*(.*))");
+    static std::regex reg(R"(\s*(\[.+?\])(.*))");
     std::smatch res;
     if (!std::regex_match(line, res, reg)) {
         throw std::runtime_error("Something bad happened");
@@ -46,21 +46,30 @@ inline std::pair<std::string, std::string> parse_entry(const std::string& line) 
     return { res[1], res[2] };
 }
 
+inline size_t count_columns(const std::string& line) {
+    return split_line_into_columns(line).size();
+}
+
 
 inline bool has_title(const std::vector<std::string>& data, size_t line_no) {
     static std::regex header_reg(R"(reference|bibliography)", std::regex_constants::icase);
     std::smatch match;
     
-    size_t max_dist = std::min(line_no, (size_t) 5);
+    size_t max_dist = std::min(line_no, (size_t) 7);
     for (size_t offset = 1; offset <= max_dist; ++offset) {
         size_t i = line_no - offset;
-        if (std::regex_search(data[i], match, header_reg) && count_words(data[i]) <= 3) {
+        if (std::regex_search(data[i], match, header_reg) && count_words(data[i]) <= 3 && count_columns(data[i]) == 1) {
             return true;
         }
     }
 
     return false;
 }
+
+/*struct bibliography_candidate {
+    std::vector< size_t > line_nos;
+    bool has_header = false;
+};*/
 
 /**
  * Find the place in the document where the bibliography is.
@@ -75,18 +84,20 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
     size_t cutoff_distance = 50;
     size_t current_distance = cutoff_distance + 1;
     std::vector< std::vector<size_t> > candidates; 
-    bool i_am_sure = false;
+    int last_header_candidate = -1;
 
     for (const auto& line : data) {
         // we finished a candidate and we are sure its him
-        if (current_distance > cutoff_distance && i_am_sure) {
-            return candidates.back();
-        }
+        // if (current_distance > cutoff_distance && i_am_sure) {
+        //    return candidates.back();
+        // }
 
         if (is_entry(line)) {
             if (current_distance > cutoff_distance) { // begin new candidate
                 // if there is header above we are sure this is it
-                i_am_sure = has_title(data, line_no);
+                if (has_title(data, line_no)) {
+                    last_header_candidate = candidates.size();
+                }
                 candidates.emplace_back();
             }
             candidates.back().push_back(line_no);
@@ -97,8 +108,8 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
         line_no++;
     }
 
-    if (i_am_sure) {
-        return candidates.back();
+    if (last_header_candidate != -1) {
+        return candidates[last_header_candidate];
     }
 
     // we didn't find candidate with header, pick the one with most entries
@@ -129,12 +140,26 @@ inline nlohmann::json parse_bibliography(const std::vector<std::string>& data) {
         citation = join_columns(citation);
 
         while(true) {
-            // first decide if we should end this citation
-            // we wanna end if we reached the next entry or an empty line
-            if (i+1 < entries.size()) { // there is one more entry
-                if (j >= entries[i+1] || is_empty_line(data[j])) break;
-            } else { // we are parsing last entry
-                if (j >= data.size() || is_empty_line(data[j])) break;
+            if (j >= data.size()) {
+                break;
+            }
+            if (is_empty_line(data[j])) {
+                if (i + 1 < entries.size() && entries[i + 1] - 1 > j) {
+                    size_t backtrack_line_no = entries[i + 1] - 1;
+                    std::string remainder;
+                    std::string temp;
+                    while (!is_empty_line(data[backtrack_line_no])) {
+                        temp = data[backtrack_line_no];
+                        std::swap(remainder, temp);
+                        append_line(remainder, temp);
+                        backtrack_line_no--;
+                    }
+                    append_line(citation, join_columns(remainder));
+                }
+                break;
+            }
+            if (i + 1 < entries.size() && j >= entries[i + 1]) {
+                break;
             }
 
             append_line(citation, join_columns(data[j]));

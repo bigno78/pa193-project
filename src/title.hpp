@@ -38,8 +38,8 @@ std::string parse_title(std::vector<std::string> data) {
 	for (size_t i = 0; i < candidets.size(); i++) {
 		std::vector<Column> temp = split_line_into_columns(candidets[i]);
 		//the empty part was creating issues before
-		if(candidets[i].empty() || temp.size() > 1) {
-		//if (temp.size() > 1) {
+		//if(candidets[i].empty() || temp.size() > 1) {
+		if (temp.size() > 1) {
 			candidets.erase(candidets.begin() + i);
 			i--;
 		}
@@ -54,7 +54,7 @@ std::string parse_title(std::vector<std::string> data) {
 	if (data[0].find("Rheinland Nederland B.V.") != std::string::npos) {
 		lambda = [](std::string &a, std::string &b) {return a.length() > b.length(); };
 	}
-
+	
 	auto it = (std::max_element(candidets.begin(), candidets.end(), lambda));
 	if (it == candidets.end()) {
 		return "";
