@@ -3,38 +3,20 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-
+#include <filesystem>
 
 #include "parser.hpp"
 #include "json.hpp"
 
+namespace fs = std::filesystem;
 namespace js = nlohmann;
 
-std::string get_filename_from_path(const std::string& path) {
-	auto n = path.rfind('/');
-	if (n != std::string::npos) {
-		return path.substr(n + 1, path.size() - n);
-	}
-	n = path.rfind('\\');
-	if (n != std::string::npos) {
-		return path.substr(n + 1, path.size() - n);
-	}
-	return path;
-}
 
-void replace_suffix(std::string& file, const std::string& new_suffix) {
-	auto n = file.rfind('.');
-	if (n != std::string::npos) {
-		file.erase(n);
-	}
-	file.append(new_suffix);
-}
-
-std::string get_output_filename(const std::string out_path, const std::string& in_filename) {
-	std::string path = out_path.empty() ? "" : out_path + "/";
-	auto file = get_filename_from_path(in_filename);
-	replace_suffix(file, ".json");
-	return path + file;
+fs::path get_output_filename(const fs::path& out_dir, const fs::path& in_file) {
+	fs::path out_file = out_dir;
+	out_file = out_file / in_file.filename();
+	out_file.replace_extension("json");
+	return out_file;
 }
 
 const std::string help = R"(Parser of security certificates
@@ -52,8 +34,8 @@ void print_usage(const char* executable_name) {
 }
 
 int main(int argc, char** argv) {
-	std::vector<std::string> input_files;
-	std::string out_path = "";
+	std::vector<fs::path> input_files;
+	fs::path out_path;
 
 	for (int i = 1; i < argc; ++i) {
 		std::string arg { argv[i] };
@@ -83,7 +65,7 @@ int main(int argc, char** argv) {
 				std::cerr << "Failed to open file: " << filename << "\n";
 				return 1;
 			}
-			std::string out_filename =  get_output_filename(out_path, filename); 
+			fs::path out_filename = get_output_filename(out_path, filename); 
 			std::ofstream out_file{ out_filename };
 			if (!out_file) {
 				std::cerr << "Failed to create file: " << out_filename << "\n";
