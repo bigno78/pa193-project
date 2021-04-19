@@ -19,131 +19,71 @@ struct RevisionsTable {
     void append_row(const std::vector<Column>& row) {
         data.emplace_back();
         for (const auto& col : row) {
-            data.back().push_back(col);
+            data.back().push_back(col.data);
         }
     }
 };
 
-inline Table parse_revisions_table(const std::vector<std::string>& data, size_t start_pos) {
-    size_t i = start_pos;
-    size_t n = data.size();
+inline bool infer_mapping(RevisionsTable& table) {
+    const auto& row = table.data.front();
+    std::vector<bool> taken(row.size(), false);
+    int infered = 0;
 
-    Table table;
-
-    std::vector<Column> last_row;
-    size_t max_search = 7;
-    size_t lines_searched = max_search;
-
-    while(true) {
-        if (lines_searched == 0) {
-            return table;
-        }
-        if (i >= n) {
-            return table;
-        }
-
-        auto cols = split_line_into_columns(data[i]);
-        
-        if (cols.size() >= 2) {
-            table.data.emplace_back();
-            for (auto col : cols) {
-                table.data.back().push_back(col.data);
-            }
-            lines_searched = 3;
-            last_row = cols;
-        } else if (cols.size() == 1) {
-            if (!last_row.empty() && last_row.back().start == cols[0].start) {
-                append_line(table.data.back().back(), cols[0].data);
-            } else {
-                std::cout << "skipping: " << data[i] << "\n";
-            }
-        }
-
-        i++;
-        lines_searched--;
+    size_t digit_count = std::count_if(row[0].begin(), row[0].end(), is_digit);
+    if (digit_count < 5 && row[0].size() < 10) {
+        table.mapping[RevisionsTable::VERSION] = 0;
+        taken[0] = true;
+        infered++;
     }
+
+    for (size_t i = 0; i < row.size(); ++i) {
+        if (std::count_if(row[i].begin(), row[i].end(), is_digit) >= 5) {
+            table.mapping[RevisionsTable::DATE] = i;
+            taken[i] = true;
+            infered++;
+            break;
+        }
+    }
+
+    for (size_t i = 0; i < row.size(); ++i) {
+        if (!taken[i]) {
+            if (table.mapping[RevisionsTable::DESCRIPTION] == -1) {
+                table.mapping[RevisionsTable::DESCRIPTION] = i;
+                infered++;
+            } else if (row[table.mapping[RevisionsTable::DESCRIPTION]].size() < row[i].size()) {
+                table.mapping[RevisionsTable::DESCRIPTION] = i;
+            }
+        }
+    }
+
+    return infered >= 2;
 }
 
-inline nlohmann::json read_revision_table(const Table& table) {
-    assert( !table.data.empty() );
 
-    // first check if all rows have the same length, otherwise this is probably wrong
-    size_t len = table.data[0].size();
-    if (std::any_of(table.data.begin(), table.data.end(), [len](const auto &row) {return row.size() != len; })) {
-        throw std::runtime_error("Rows of different size!");
-    }
-
-    // now check if the first row is the header
-    bool has_header = true;
-    
-    // the header probably contains no numbers and just a few word
-    for (const auto& caption : table.data[0]) {
-        if (count_words(caption) > 4) {
-            has_header = false;
-            break;
-        }
-        if (std::any_of(caption.begin(), caption.end(), is_digit)) {
-            has_header = false;
-            break;
-        }
-    } 
-
-    // if there is a header and its the only row its probably wrong
-    if (has_header && table.data.size() == 1) {
-         throw std::runtime_error("Header is the only row!");
-    } 
-
-     
-    
-    static std::regex version_reg(R"(ver|rev)", std::regex_constants::icase);
-    static std::regex date_reg(R"(date)", std::regex_constants::icase);
-    static std::regex description_reg(R"(description|changes|subject)", std::regex_constants::icase);
-    std::smatch match;
-
-    // now try to guess what data each column contains
-    enum { VERSION, DATE, DESCRIPTION };
-    std::array<int, 3> mapping { -1, -1, -1 };
-    
-    if (has_header) {
-        const auto& header = table.data[0]; 
-        for (size_t i = 0; i < len; ++i) {
-            if (std::regex_search(header[i], match, version_reg)) {
-                if (mapping[VERSION] == -1) {
-                    mapping[VERSION] = i;
-                }
-                
-            }
-            if (std::regex_search(header[i], match, date_reg)) {
-                if (mapping[DATE] == -1) {
-                    mapping[DATE] = i;
-                }
-            }
-            if (std::regex_search(header[i], match, description_reg)) {
-                if (mapping[DESCRIPTION] == -1) {
-                    mapping[DESCRIPTION] = i;
-                }
-            }
-        }
+inline nlohmann::json read_revision_table(RevisionsTable& table) {
+    if (table.header.empty() && !infer_mapping(table)) {
+        throw std::runtime_error("No mapping!");
     }
 
     nlohmann::json j = nlohmann::json::array({});
-    for (size_t i = has_header ? 1 : 0; i < table.data.size(); ++i) {
+    for (size_t i = 0; i < table.data.size(); ++i) {
         const auto& row = table.data[i];
         j.push_back( nlohmann::json{} );
-        if (mapping[VERSION] != -1) {
-            j.back()["version"] = row[mapping[VERSION]];
+
+        if (table.mapping[RevisionsTable::VERSION] != -1) {
+            j.back()["version"] = row[table.mapping[RevisionsTable::VERSION]];
         }
-        if (mapping[DATE] != -1) {
-            j.back()["date"] = row[mapping[DATE]];
+        if (table.mapping[RevisionsTable::DATE] != -1) {
+            j.back()["date"] = row[table.mapping[RevisionsTable::DATE]];
         }
-        if (mapping[DESCRIPTION] != -1) {
-            j.back()["decription"] = row[mapping[DESCRIPTION]];
+        if (table.mapping[RevisionsTable::DESCRIPTION] != -1) {
+            j.back()["decription"] = row[table.mapping[RevisionsTable::DESCRIPTION]];
         }
     }
 
     return j;
 }
-
+/*
 inline std::optional<std::string> parse_date(const std::string& date) {
     static std::regex date_reg(R"((\d{1,2})\W([a-zA-Z]+|\d{1,2})\W(\d{4}))");
     std::smatch match;
@@ -175,7 +115,7 @@ inline std::optional<std::string> parse_date(const std::string& date) {
     }
 
     return day + "-" + month + "-" + year;
-}
+}*/
 
 /**
  * Determines if the provided line contains a header of the revisions table
@@ -186,41 +126,55 @@ inline std::optional<std::string> parse_date(const std::string& date) {
  *    we have to succesfully find at least two of those
  *  - ??? the header probably contains no numbers ???
  */
-inline bool is_revisions_header(const std::string& line) {
-    std::vector<Column> cols = split_line_into_columns(line);
+inline bool parse_revisions_header(const std::vector<Column>& cols, RevisionsTable& table) {
     if (cols.size() < 2) {
         return false;
     }
 
-    static std::regex version_reg(R"(ver|rev)", std::regex_constants::icase);
-    static std::regex date_reg(R"(date)", std::regex_constants::icase);
-    static std::regex description_reg(R"(description|changes|subject)", std::regex_constants::icase);
+    table.header.clear();
+    table.mapping = { -1, -1, -1 };
+
+    const static std::regex ver_reg(R"(ver|rev)", std::regex_constants::icase);
+    const static std::regex date_reg(R"(date)", std::regex_constants::icase);
+    const static std::regex desc_reg(R"(description|changes|subject)", std::regex_constants::icase);
     std::smatch match;
 
     int matched = 0;
-    int ver = 1;
-    int date = 1;
-    int desc = 1;
-    for (const auto& caption : cols) {
+
+    for (size_t i = 0; i < cols.size(); ++i) {
+        const Column& caption = cols[i];
         if (count_words(caption.data) > 4) {
             continue;
         }
-        if (std::regex_search(caption.data, match, version_reg)) {
-            matched += ver;
-            ver = 0;
-        } else if (std::regex_search(caption.data, match, date_reg)) {
-            matched += date;
-            date = 0;
-        } else if (std::regex_search(caption.data, match, description_reg)) {
-            matched += desc;
-            desc = 0;
+
+        if (table.mapping[RevisionsTable::VERSION] == -1 && 
+            std::regex_search(caption.data, match, ver_reg))
+        {
+            matched++;
+            table.mapping[RevisionsTable::VERSION] = i;
+        } else if (table.mapping[RevisionsTable::DATE] == -1 &&
+                    std::regex_search(caption.data, match, date_reg))
+        {
+            matched++;
+            table.mapping[RevisionsTable::DATE] = i;
+        } else if (table.mapping[RevisionsTable::DESCRIPTION] == -1 &&
+                    std::regex_search(caption.data, match, desc_reg)) {
+            matched++;
+            table.mapping[RevisionsTable::DESCRIPTION] = i;
         }
+    }
+
+    for (const auto& caption : cols) {
+        table.header.push_back(caption.data);
     }
 
     return matched >= 2;
 }
 
-inline bool parse_revisions_table(const std::vector<std::string>& data, size_t start_pos, RevisionsTable& table) {
+inline bool parse_revisions_table(const std::vector<std::string>& data,
+                                  size_t start_pos,
+                                  RevisionsTable& table) 
+{
     size_t i = start_pos;
     size_t n = data.size();
 
@@ -228,10 +182,16 @@ inline bool parse_revisions_table(const std::vector<std::string>& data, size_t s
     size_t max_dist = 3;
     size_t dist = 0;
 
+    table.data.clear();
+
     while(true) {
         if (dist >= max_dist || i >= n) {
             // we want to return true if we find any rows at all
-            return !last_row.empty();
+            if (!last_row.empty()) {
+                table.append_row(last_row);
+                return true;
+            }
+            return false;
         }
 
         auto row = split_line_into_columns(data[i]);
@@ -248,23 +208,24 @@ inline bool parse_revisions_table(const std::vector<std::string>& data, size_t s
                     append_line(last_row.back().data, row.back().data);
                 } else {
                     std::cout << "skipping: " << data[i] << "\n";
-                    dist++;
                 }
             } else {
                 // we dont recognize this as a row
                 std::cout << "skipping: " << data[i] << "\n";
-                dist++;
             }
         } else {
             if (row.size() >= 2) {
+                if (!table.header.empty() && row.size() != table.header.size()) {
+                    return false;
+                }
                 last_row = row;
                 dist = 0;
             } else {
                 std::cout << "skipping: " << data[i] << "\n";
-                dist++;
             }
         }
-
+        
+        dist++;
         i++;
     }
 }
@@ -286,7 +247,8 @@ inline bool is_revisions_title(const std::string& line) {
  * Checks if above the line at index <line_index> there is a title of the revisions section.
  */
 inline bool has_revisions_title(const std::vector<std::string>& data, size_t line_index) {
-    size_t search_len = std::min(6, line_index);
+    size_t max_search_len = 6;
+    size_t search_len = std::min(max_search_len, line_index);
     for (size_t i = 1; i <= search_len; ++i) {
         if (is_revisions_title(data[line_index - i])) {
             return true;
@@ -295,46 +257,39 @@ inline bool has_revisions_title(const std::vector<std::string>& data, size_t lin
     return false;
 }
 
-inline std::optional<Table> try_parse_revisions(const std::vector<std::string>& data, size_t start_pos) {
-    std::vector<Column> cols = split_line_into_columns(data[i]);
+inline bool try_parse_revisions(const std::vector<std::string>& data,
+                                size_t start_pos,
+                                RevisionsTable& table)
+{
+    std::vector<Column> cols = split_line_into_columns(data[start_pos]);
+
+    // The first line of the table must have at least one column
     if (cols.size() < 2) {
-        return std::nullopt;
+        return false;
     }
 
-    Table table;
-    if (has_revisions_title(data, start_pos)) {
-        // parse_table_from_title();
-        // return table;
+    bool header_ok = parse_revisions_header(cols, table);
+    if (header_ok || has_revisions_title(data, start_pos)) {
+        std::cout << "found on [" << start_pos + 1 << "] with " << (header_ok ? "header" : "title") << "\n";
+        std::cout << data[start_pos] << "\n";
+        if (header_ok) {
+            start_pos++;
+        }
+        return parse_revisions_table(data, start_pos, table);
     }
 
-    // std::optional<header> header = parse_revisions_header(cols);
-    if (header) {
-        //
-    }
+    return false;
 }   
 
 inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
     size_t search_depth = data.size();
+    RevisionsTable table;
 
     for (size_t i = 0; i < search_depth; ++i) {
-        if (is_revisions_header(data[i])) {
-            std::cout << "found: " << data[i] << "\n";
-            Table table = parse_revisions_table(data, i);
-            if (table.data.empty()) {
-                continue;
-            }
-            /*for (auto& row : table.data) {
-                for (auto s : row) {
-                    std::cout << s << " | ";
-                }
-                std::cout << "\n";
-            }
-            break;*/
+        if (try_parse_revisions(data, i, table)) {
             try {
                 return read_revision_table(table);
-            } catch (std::runtime_error& e) {
-
-            }
+            } catch (std::runtime_error& e) {}
         }
     }
 
