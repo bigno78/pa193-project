@@ -26,39 +26,40 @@ bool is_in(char c, const std::string& str) {
     return false;
 }
 
-std::string_view read_next_word(const std::string& line, size_t pos) {
+std::size_t find_version_end(const std::string& line, size_t pos) {
     size_t n = line.size();
     while (pos < n && is_space(line[pos])) {
         ++pos;
     }
     if (pos == n)
-        return {};
+        return std::string::npos;
 
-    size_t start = pos;
     while (pos < n && !is_space(line[pos]) && line[pos] != '{') {
         ++pos;
     }
 
     if (pos == n || is_space(line[pos])) {
-        return {&line[start], pos - start};
+        return pos;
     }
 
     char closing_brace = '}';
     while (pos < n && line[pos] != closing_brace) {
         ++pos;
     }
+    return pos + 1;
 
-    if (pos == n) {
-        return {};
+    /*if (pos == n) {
+        return std::string::npos;
     }
-    return {&line[start], pos - start + 1};
+    return pos + 1;*/
 }
 
-void remove_junk_suffix(std::string_view& word) {
-    static std::string banned_chars = ".?!>),;'\"";
-    while (!word.empty() && is_in(word.back(), banned_chars)) {
-        word.remove_suffix(1);
+size_t remove_junk_suffix(const std::string& str, size_t start, size_t end) {
+    static std::string banned_chars = ".?!>),;'\"-]";
+    while (end > start && is_in(str[end - 1], banned_chars)) {
+        --end;
     }
+    return end;
 }
 
 void find_versions(const std::string& line,
@@ -73,32 +74,45 @@ void find_versions(const std::string& line,
         if (i == std::string::npos) {  // wasnt found
             break;
         }
+        j = i + searchee.size();
 
-        j = i + 3;
-
+        // must be the begining of a word
         if (i != 0 && !is_space(str[i - 1])) {
             continue;
         }
 
+        // there must be something more
         if (j == str.size()) {
             break;
         }
 
-        std::string_view word = read_next_word(str, j);
-        if (word.empty()) {
+        size_t pos = find_version_end(str, j);
+        if (pos == std::string::npos) {
             break;
         }
-        remove_junk_suffix(word);
-        j = i + word.end() - &str[i];
+        pos = remove_junk_suffix(str, j, pos);
+
+        if (pos == j || pos - j >= 15) {
+            continue;
+        }
+
+        if (is_in(str[pos-1], "=:")) {
+            continue;
+        }
 
         size_t num_count = 0;
-        for (auto c : word) {
-            if (is_digit(c))
+        size_t char_count = 0;
+        for (size_t idx = j; idx < pos; ++idx) {
+            if (is_digit(str[idx]))
                 num_count++;
+            if (!is_space(str[idx]))
+                char_count++;
         }
-        if (num_count != 0 && float(num_count) / word.size() >= 0.4) {
-            results.insert(line.substr(i, j - i));
+
+        if (num_count != 0 && float(num_count) / char_count >= 0.4) {
+            results.insert(line.substr(i, pos - i));
         }
+        j = pos;
     } while (i != std::string::npos);
 }
 
@@ -119,23 +133,24 @@ nlohmann::json parse_versions(const std::vector<std::string>& data) {
             str.push_back(to_lower(line[i]));
         }
 
-        find_versions(line, str, "eal", eal);
-        find_versions(line, str, "sha", sha);
-        find_versions(line, str, "rsa", rsa);
+        //find_versions(line, str, "eal", eal);
+        //find_versions(line, str, "sha", sha);
+       // find_versions(line, str, "rsa", rsa);
+       find_versions(line, str, "java card", java_card);
     }
 
     js::json js;
     js["eal"] = js::json(eal);
 
-    for (const auto& s : eal) {
+    for (const auto& s : java_card) {
         std::cout << s << "\n";
     }
-    for (const auto& s : rsa) {
+    /*for (const auto& s : rsa) {
         std::cout << s << "\n";
     }
     for (const auto& s : sha) {
         std::cout << s << "\n";
-    }
+    }*/
 
     return js;
 }
