@@ -174,7 +174,7 @@ def main():
             actual = load_file(actual_path + "/" + filename)
             expected = load_file(exppected_path + "/" + filename)
             
-            #print(f"{filename}:")
+            print(f"{filename}:")
             score = check_map[check](actual, expected)
             score = math.ceil(score)
 

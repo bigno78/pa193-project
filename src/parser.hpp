@@ -11,6 +11,7 @@
 #include "title.hpp"
 #include "toc.hpp"
 #include "versions.hpp"
+#include "contents.hpp"
 
 inline nlohmann::json parse_document(std::istream& in) {
     // load all the data
@@ -26,7 +27,7 @@ inline nlohmann::json parse_document(std::istream& in) {
     //out["revisions"] = parse_revisions(data);
     //out["title"] = parse_title(data);
     //out["toc"] = parse_toc(data);
-    out["versions"] = parse_versions(data);
+    out["table_of_contents"] = parse_contents(data);
 
     return out;
 }

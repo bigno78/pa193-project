@@ -153,12 +153,13 @@ def main():
     actual = load_file(sys.argv[1])
     expected = load_file(sys.argv[2])
 
-    checks = (check_bibliography,)
+    print(sys.argv[1]);
+    checks = (check_toc,)
     points = 0
     for check in checks:
         points += check(actual, expected)
 
-    #print(sys.argv[1]);
+    
     print(math.ceil(points))
 
 if __name__ == "__main__":
