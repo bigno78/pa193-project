@@ -2,12 +2,11 @@
 
 nlohmann::json parse_contents(std::vector<std::string>& data) {
     nlohmann::json toret = nlohmann::json::array({});
-    std::vector<std::tuple<std::string, std::string, std::string>> contents = {};
+    std::vector<std::tuple<std::string, std::string, int>> contents = {};
     size_t i = 0;
     
     for (; i < 150; i++) {
         if (data[i].find("Contents") != std::string::npos) {
-            std::cout << "here" << std::endl;
             i++;
             while (is_empty_line(data[i])) {
                 i++;
@@ -33,7 +32,6 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
                 // std::cout << "prvni" << std::endl;
                 break;
             }
-            std::cout << pos1 << std::endl;
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
         }
@@ -43,7 +41,6 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
             //std::cout << "druhy" << std::endl;
             break;
         }
-        std::cout << pos2 << std::endl;
         chapter_name = line.substr(pos1, pos2 - pos1);
         trim(chapter_name);
         auto pos3 = line.find_first_of("0123456789", pos2);
@@ -52,12 +49,12 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
         }
         page = line.substr(pos3, line.length()-1);
         trim(page);
-        contents.push_back(std::tuple<std::string, std::string, std::string>(chapter_num, chapter_name, page));
+        contents.push_back(std::tuple<std::string, std::string, int>(chapter_num, chapter_name, std::stoi(page)));
         i++;
     }
     for (size_t i = 0; i < contents.size(); i++) {
         //std::cout << std::get<1>(contents[i]) << std::endl;
-        toret.push_back(nlohmann::json::array({contents[i]}));
+        toret.push_back(nlohmann::json::array({std::get<0>(contents[i]), std::get<1>(contents[i]), std::get<2>(contents[i])}));
     }
     return toret;
 }
