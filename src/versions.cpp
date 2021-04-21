@@ -89,7 +89,7 @@ void find_versions(const std::string& line,
             break;
         }
         remove_junk_suffix(word);
-        j = i + word.end() - &str[i];
+        //j = i + word.end() - &str[i];
 
         size_t num_count = 0;
         for (auto c : word) {
