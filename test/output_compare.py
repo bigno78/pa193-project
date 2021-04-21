@@ -158,7 +158,7 @@ def main():
     for check in checks:
         points += check(actual, expected)
 
-    print(sys.argv[1]);
+    #print(sys.argv[1]);
     print(math.ceil(points))
 
 if __name__ == "__main__":

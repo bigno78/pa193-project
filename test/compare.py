@@ -92,6 +92,11 @@ def check_revisions(actual, expected):
             return 20
         return 0
 
+    if not "revisions" in expected:
+        if not "revisions" in actual or len(actual["revisions"]) == 0:
+            return 20
+        return 0
+
     actual = list(filter(lambda x: set(x) == {"version", "date", "description"}, actual["revisions"]))
     expected = expected["revisions"]
 
@@ -169,10 +174,12 @@ def main():
             actual = load_file(actual_path + "/" + filename)
             expected = load_file(exppected_path + "/" + filename)
             
+            #print(f"{filename}:")
             score = check_map[check](actual, expected)
+            score = math.ceil(score)
 
             if score < 20:
-                print(f"{filename}: {score}", file=sys.stderr)
+                print(f"{filename}: {score}")
 
 
 if __name__ == "__main__":

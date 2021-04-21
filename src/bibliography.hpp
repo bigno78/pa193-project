@@ -1,22 +1,19 @@
 #pragma once
 
-#include <string>
+#include <algorithm>
 #include <cctype>
-#include <vector>
+#include <codecvt>
 #include <iostream>
-#include <algorithm>
-#include <set>
-#include <regex>
+#include <locale>
 #include <map>
-#include <algorithm>
-
+#include <regex>
+#include <set>
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "json.hpp"
 #include "utils.hpp"
-#include <locale>
-#include <codecvt>
-
 
 inline bool is_entry(const std::string& line) {
     // regular expressions are slow so first do a quick test
@@ -24,7 +21,8 @@ inline bool is_entry(const std::string& line) {
     // for most lines this should fail fast
     size_t i = 0;
     while (i < line.size() && line[i] != '[') {
-        if (!is_space(line[i])) return false;
+        if (!is_space(line[i]))
+            return false;
         ++i;
     }
 
@@ -37,28 +35,30 @@ inline bool is_entry(const std::string& line) {
  * Parses the first line of a bibliography entry.
  * Returns the key (the stuff in []) and the start of the citation following it.
  */
-inline std::pair<std::string, std::string> parse_entry(const std::string& line) {
+inline std::pair<std::string, std::string> parse_entry(
+    const std::string& line) {
     static std::regex reg(R"(\s*(\[.+?\])(.*))");
     std::smatch res;
     if (!std::regex_match(line, res, reg)) {
         throw std::runtime_error("Something bad happened");
     }
-    return { res[1], res[2] };
+    return {res[1], res[2]};
 }
 
 inline size_t count_columns(const std::string& line) {
     return split_line_into_columns(line).size();
 }
 
-
 inline bool has_title(const std::vector<std::string>& data, size_t line_no) {
-    static std::regex header_reg(R"(reference|bibliography)", std::regex_constants::icase);
+    static std::regex header_reg(R"(reference|bibliography)",
+                                 std::regex_constants::icase);
     std::smatch match;
-    
-    size_t max_dist = std::min(line_no, (size_t) 7);
+
+    size_t max_dist = std::min(line_no, (size_t)7);
     for (size_t offset = 1; offset <= max_dist; ++offset) {
         size_t i = line_no - offset;
-        if (std::regex_search(data[i], match, header_reg) && count_words(data[i]) <= 3 && count_columns(data[i]) == 1) {
+        if (std::regex_search(data[i], match, header_reg) &&
+            count_words(data[i]) <= 3 && count_columns(data[i]) == 1) {
             return true;
         }
     }
@@ -73,17 +73,18 @@ inline bool has_title(const std::vector<std::string>& data, size_t line_no) {
 
 /**
  * Find the place in the document where the bibliography is.
- * 
+ *
  * It searches for lines starting with text in square brackets
- * and groups all such lines close to each other into one candidate bibliography.
- * Then the candidate with most lines is picked.
+ * and groups all such lines close to each other into one candidate
+ * bibliography. Then the candidate with most lines is picked.
  */
-inline std::vector<size_t> find_bibliography(const std::vector<std::string>& data) {
+inline std::vector<size_t> find_bibliography(
+    const std::vector<std::string>& data) {
     size_t line_no = 0;
-    
+
     size_t cutoff_distance = 50;
     size_t current_distance = cutoff_distance + 1;
-    std::vector< std::vector<size_t> > candidates; 
+    std::vector<std::vector<size_t>> candidates;
     int last_header_candidate = -1;
 
     for (const auto& line : data) {
@@ -93,7 +94,7 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
         // }
 
         if (is_entry(line)) {
-            if (current_distance > cutoff_distance) { // begin new candidate
+            if (current_distance > cutoff_distance) {  // begin new candidate
                 // if there is header above we are sure this is it
                 if (has_title(data, line_no)) {
                     last_header_candidate = candidates.size();
@@ -114,12 +115,12 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
 
     // we didn't find candidate with header, pick the one with most entries
     auto it = std::max_element(
-                candidates.begin(),
-                candidates.end(),
-                [](const auto& a, const auto& b) {return a.size() < b.size();} );
+        candidates.begin(), candidates.end(),
+        [](const auto& a, const auto& b) { return a.size() < b.size(); });
 
     if (it == candidates.end()) {
-        //std::wcout << " COULD NOT FIND ANY CANDIDATE FOR BIBLIOGRAPHY!!!!!\n";
+        // std::wcout << " COULD NOT FIND ANY CANDIDATE FOR
+        // BIBLIOGRAPHY!!!!!\n";
         return {};
     }
 
@@ -135,11 +136,11 @@ inline nlohmann::json parse_bibliography(const std::vector<std::string>& data) {
     nlohmann::json res;
     for (size_t i = 0; i < entries.size(); ++i) {
         size_t j = entries[i];
-        
-        auto [ key, citation ] = parse_entry(data[j++]);
+
+        auto [key, citation] = parse_entry(data[j++]);
         citation = join_columns(citation);
 
-        while(true) {
+        while (true) {
             if (j >= data.size()) {
                 break;
             }

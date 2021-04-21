@@ -89,6 +89,7 @@ def check_revisions(actual, expected):
     if not "revisions" in actual:
         if not "revisions" in expected:
             return 20
+        print("ERROR: Revisions key present but should't be!", file=sys.stderr)
         return 0
 
     actual = list(filter(lambda x: set(x) == {"version", "date", "description"}, actual["revisions"]))
@@ -97,6 +98,7 @@ def check_revisions(actual, expected):
     if len(expected) == 0:
         if len(actual) == 0:
             return 20
+        print("ERROR: Length should be 0!", file=sys.stderr)
         return 0
 
     max_score = 5 * len(expected)
@@ -104,19 +106,34 @@ def check_revisions(actual, expected):
 
     actual_versions = list(map(lambda x: x["version"], actual))
     expected_versions = list(map(lambda x: x["version"], expected))
-    score += len(expected) * SequenceMatcher(None, actual_versions, expected_versions).ratio()
+    s = len(expected) * SequenceMatcher(None, actual_versions, expected_versions).ratio()
+    if s < 1.5:
+        print(f"ERROR: Low scoring version: {s}", file=sys.stderr)
+    score += s
 
     actual_dates = list(map(lambda x: x["date"], actual))
     expected_dates = list(map(lambda x: x["date"], expected))
-    score += len(expected) * SequenceMatcher(None, actual_dates, expected_dates).ratio()
+    s = len(expected) * SequenceMatcher(None, actual_dates, expected_dates).ratio()
+    if s < 1.5:
+        print(f"ERROR: Low scoring date: {s}", file=sys.stderr)
+    score += s
 
     actual_descriptions = list(map(lambda x: x["description"], actual))
     expected_descriptions = list(map(lambda x: x["description"], expected))
-    score += len(expected) * SequenceMatcher(None, actual_descriptions, expected_descriptions).ratio()
+    s = len(expected) * SequenceMatcher(None, actual_descriptions, expected_descriptions).ratio()
+    if s < 1.5:
+        print(f"ERROR: Low scoring description: {s}", file=sys.stderr)
+    score += s
 
     for item in actual:
         if item in expected:
             score += 2
+        else:
+            print(f"ERROR: Extra item {item}!", file=sys.stderr)
+    
+    for item in expected:
+        if item not in actual:
+            print(f"ERROR: Missing item {item}!", file=sys.stderr)
 
     return 20 * score / max_score
 
@@ -166,7 +183,7 @@ def main():
     actual = load_file(sys.argv[1])
     expected = load_file(sys.argv[2])
 
-    checks = (check_bibliography,)
+    checks = (check_revisions,)
     points = 0
     for check in checks:
         points += check(actual, expected)
@@ -175,7 +192,7 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print(f"USAGE: {sys.argv[0]} <reference_json> <output_json>", file=sys.stderr)
+        print(f"USAGE: {sys.argv[0]} <output_json> <reference_json>", file=sys.stderr)
         sys.exit(1)
 
     main()
