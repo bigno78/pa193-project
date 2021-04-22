@@ -165,7 +165,21 @@ check_map = {
 def main():
     actual_path = sys.argv[1]
     exppected_path = sys.argv[2]
-    check = sys.argv[3]
+
+    checks = []
+    errors = False
+
+    if len(sys.argv) == 3:
+        checks = check_map.values()
+    else:
+        for i in range(3, len(sys.argv)):
+            if sys.argv[i] == "--errors" or sys.argv[i] == "-e":
+                errors = True
+            elif sys.argv[i] not in check_map:
+                print(f"unrecognized check: {sys.argv[i]}", file=sys.stderr)
+                sys.exit(1)
+            else:
+                checks.append(check_map[sys.argv[i]])
 
     actual_directory = os.fsencode(actual_path)
     for file in os.listdir(actual_directory):
@@ -174,16 +188,20 @@ def main():
             actual = load_file(actual_path + "/" + filename)
             expected = load_file(exppected_path + "/" + filename)
             
-            print(f"{filename}:")
-            score = check_map[check](actual, expected)
-            score = math.ceil(score)
+            score = 0
+            for check in checks:
+                s = check(actual, expected)
+                score += s
 
-            if score < 20:
-                print(f"{filename}: {score}")
+            if errors:
+                if score < len(checks)*20:
+                    print(f"{filename}: {score}")
+            else:
+                print(math.ceil(score))
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print(f"USAGE: {sys.argv[0]} <actual_path> <expected_path> <check_to_perform>", file=sys.stderr)
+    if len(sys.argv) == 1:
+        print(f"USAGE: {sys.argv[0]} <actual_path> <expected_path> <checks_to_perform>", file=sys.stderr)
         sys.exit(1)
     main()
