@@ -4,9 +4,21 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
     nlohmann::json toret = nlohmann::json::array({});
     std::vector<std::tuple<std::string, std::string, int>> contents = {};
     size_t i = 0;
+    std::string line = "";
     
     for (; i < 150; i++) {
-        if (data[i].find("Contents") != std::string::npos) {
+        //maybe do content - 1022b
+        //also the weird ones with introduction
+        //and do line to lower
+        //investigate 1107b (it should work?)
+        //1126b - the second contents kills it
+        //contents with no dots inbetween (NSCIB)
+        //investigate anssi
+        line = data[i];
+        std::transform(line.begin(), line.end(), line.begin(),
+                       [](unsigned char c) { return std::tolower(c); });
+        //if (line.find("content") != std::string::npos) {
+        if (line.find("contents") != std::string::npos) {
             i++;
             while (is_empty_line(data[i])) {
                 i++;
@@ -17,7 +29,6 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
     std::string chapter_num = "";
     std::string chapter_name = "";
     std::string page = "";
-    std::string line = "";
     while (1) {
         if (is_empty_line(data[i])) {
             i++;
@@ -39,7 +50,23 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
         auto pos2 = line.find('.', pos1);
         if (pos2 == std::string::npos) {
             //std::cout << "druhy" << std::endl;
-            break;
+            pos2 = line.find_first_of(" \n\t\r\v\f", pos1);
+            std::cout << line << std::endl;
+            std::cout << pos1 << std::endl;
+            std::cout << pos2 << " " << line[pos2] << std::endl;
+            auto postemp =
+                line.find_first_of("abcdefghijklmnopqrstuvwxyz", pos2);
+            while (postemp != std::string::npos) {
+                pos2 = postemp+1;
+                while (isalnum(line[pos2])) {
+                    pos2++;
+                }
+                postemp =
+                    line.find_first_of("abcdefghijklmnopqrstuvwxyz", pos2);
+            }
+            if (pos2 == std::string::npos) {
+                break;
+            }
         }
         chapter_name = line.substr(pos1, pos2 - pos1);
         trim(chapter_name);
