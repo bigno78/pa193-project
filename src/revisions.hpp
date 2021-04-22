@@ -69,7 +69,11 @@ inline std::string parse_version(const std::string& version_str) {
     if (i + 1 < version_str.size() && version_str[i + 1] == 'v') {
         i++;
     }
-    return version_str.substr(i + 1);
+    std::string ver = version_str.substr(i + 1);
+    /*if (ver.size() != 1 && !std::any_of(ver.begin(), ver.end(), is_digit)) {
+        throw std::runtime_error("Invalid version string!");
+    }*/
+    return ver;
 }
 
 inline std::smatch extract_date_string(const std::string& str) {
@@ -77,7 +81,7 @@ inline std::smatch extract_date_string(const std::string& str) {
     const static std::regex date_reg_1(
         R"((\d{1,2})\W([a-zA-Z]+|\d{1,2})\W(\d{4}))");
     
-    // match date with year at the beginning, dont allow the mont to be textual
+    // match date with year at the beginning, dont allow the month to be textual
     // in this case
     const static std::regex date_reg_2(R"((\d{4})\W(\d{1,2})\W(\d{1,2}))");
     
@@ -93,7 +97,7 @@ inline std::smatch extract_date_string(const std::string& str) {
 
 inline std::string parse_date_from_match(const std::smatch& match) {
     static std::map<std::string, std::string> months{
-        {"janunary", "01"},  {"jan", "01"},  {"february", "02"}, {"feb", "02"},
+        {"january", "01"},  {"jan", "01"},  {"february", "02"}, {"feb", "02"},
         {"march", "03"},     {"mar", "03"},  {"april", "04"},    {"apr", "04"},
         {"may", "05"},       {"may", "05"},  {"june", "06"},     {"jun", "06"},
         {"july", "07"},      {"jul", "07"},  {"august", "08"},   {"aug", "08"},
@@ -228,14 +232,14 @@ inline nlohmann::json read_revision_table(RevisionsTable& table) {
  */
 inline bool parse_revisions_header(const std::vector<Column>& cols,
                                    RevisionsTable& table) {
-    if (cols.size() < 2) {
+    if (cols.size() < 2 || cols.size() > 4) {
         return false;
     }
 
     table.header.clear();
     table.mapping = {-1, -1, -1};
 
-    const static std::regex ver_reg(R"(ver|rev)", std::regex_constants::icase);
+    const static std::regex ver_reg(R"(version|revision|ver|rev)", std::regex_constants::icase);
     const static std::regex date_reg(R"(date)", std::regex_constants::icase);
     const static std::regex desc_reg(R"(description|change|subject)",
                                      std::regex_constants::icase);
@@ -250,20 +254,28 @@ inline bool parse_revisions_header(const std::vector<Column>& cols,
         }
 
         if (table.mapping[RevisionsTable::VERSION] == -1 &&
-            std::regex_search(caption.data, match, ver_reg)) {
+            std::regex_search(caption.data, match, ver_reg) &&
+            (match.length() > 3 || caption.data.size() == 3)) 
+        {
+            // the last condition makes sure that if we match only "rev" or "ver"
+            // then its not part of a bigger word
             matched++;
             table.mapping[RevisionsTable::VERSION] = i;
         } else if (table.mapping[RevisionsTable::DATE] == -1 &&
-                   std::regex_search(caption.data, match, date_reg)) {
+                   std::regex_search(caption.data, match, date_reg)) 
+        {
             matched++;
             table.mapping[RevisionsTable::DATE] = i;
         } else if (table.mapping[RevisionsTable::DESCRIPTION] == -1 &&
-                   std::regex_search(caption.data, match, desc_reg)) {
+                   std::regex_search(caption.data, match, desc_reg))
+        {
             matched++;
             table.mapping[RevisionsTable::DESCRIPTION] = i;
         }
     }
 
+    // we didn't match enough :(
+    // let's rollback
     if (matched < 2) {
         table.mapping = {-1, -1, -1};
         return false;
@@ -312,15 +324,15 @@ inline bool parse_revisions_table(const std::vector<std::string>& data,
                     append_line(last_row.back().data, row.back().data);
                 } else {
                     dist++;
-                    std::cout << "skipping: " << data[i] << "\n";
+                    //std::cout << "skipping: " << data[i] << "\n";
                 }
             } else {
                 // we dont recognize this as a row
                 dist++;
-                std::cout << "skipping: " << data[i] << "\n";
+                //std::cout << "skipping: " << data[i] << "\n";
             }
         } else {
-            if (row.size() >= 2) {
+            if (row.size() >= 2 && row.size() <= 4) {
                 if (!table.header.empty() &&
                     row.size() != table.header.size()) {
                     return false;
@@ -329,7 +341,7 @@ inline bool parse_revisions_table(const std::vector<std::string>& data,
                 dist = 0;
             } else {
                 dist++;
-                std::cout << "skipping: " << data[i] << "\n";
+                //std::cout << "skipping: " << data[i] << "\n";
             }
         }
 
@@ -356,13 +368,23 @@ inline bool is_revisions_title(const std::string& line) {
         return false;
     }
 
-    const std::string& title_col =
-        cols.size() == 1 ? cols[0].data : cols[1].data;
+    std::string* title = nullptr;
+    if (cols.size() == 2) { // there is a section number
+        // validate that it really is a section number
+        if (count_words(cols[0].data) != 1 || 
+            !std::any_of(cols[0].data.begin(), cols[0].data.end(), is_digit))
+        {
+            return false;
+        }
+        title = &cols[1].data;
+    } else {
+        title = &cols[0].data;
+    }
 
-    return count_words(title_col) <= 3 &&
-           std::regex_search(title_col, match, title_reg) &&
-           title_col.back() !=
-               '.';  // it is not last couple words of some paragraph
+    return count_words(*title) <= 3 &&
+           std::regex_search(*title, match, title_reg) &&
+           std::all_of(title->begin(), title->end(), 
+                       [](char c){ return is_alpha(c) || is_space(c); });
 }
 
 /**
@@ -409,9 +431,11 @@ inline bool parse_revisions_table_from_title(
 
 inline bool try_find_revisions(const std::vector<std::string>& data,
                                size_t start_pos,
-                               RevisionsTable& table) {
+                               RevisionsTable& table)
+{
     size_t max_search_len = 15;
     size_t search_len = std::min(max_search_len, data.size() - start_pos);
+
     for (size_t i = 0; i < search_len; ++i) {
         size_t idx = start_pos + i;
         if (is_revisions_title(data[idx])) {
@@ -420,7 +444,7 @@ inline bool try_find_revisions(const std::vector<std::string>& data,
             return parse_revisions_table_from_title(data, idx + 1, table);
         }
         if (parse_revisions_header(data[idx], table)) {
-            std::cout << "Found title [" << idx + 1 << "]: " << data[idx]
+            std::cout << "Found header [" << idx + 1 << "]: " << data[idx]
                       << "\n";
             return parse_revisions_table(data, idx + 1, table);
         }
@@ -430,12 +454,34 @@ inline bool try_find_revisions(const std::vector<std::string>& data,
 }
 
 inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
-    size_t search_depth = data.size();
     RevisionsTable table;
 
-    for (size_t i = 0; i < search_depth; ++i) {
-        if (is_pagebreak(data[i]) && try_find_revisions(data, i + 1, table)) {
-            return read_revision_table(table);
+    size_t first_pages_count = 7;
+    size_t last_pages_count = 7;
+
+    for (size_t i = 0; i < data.size(); ++i) {
+        if (is_pagebreak(data[i])) {
+            if (first_pages_count-- == 0) {
+                break;
+            }
+            if (try_find_revisions(data, i + 1, table)) {
+                try {
+                    return read_revision_table(table);
+                } catch (std::runtime_error& e) {}
+            }
+        }
+    }
+
+    for (size_t i = data.size() - 1; i != static_cast<size_t>(-1); --i) {
+        if (is_pagebreak(data[i])) {
+            if (last_pages_count-- == 0) {
+                break;
+            }
+            if (try_find_revisions(data, i + 1, table)) {
+                try {
+                    return read_revision_table(table);
+                } catch (std::runtime_error& e) {}
+            }
         }
     }
 
