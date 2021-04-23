@@ -37,7 +37,34 @@ size_t print_wrapped(const std::string& str, size_t start_pos, size_t max_width)
 }
 
 void pprint_title(const nlohmann::json& js, size_t max_width) {
+    if (!js.is_string() || js.empty()) {
+        return;
+    }
 
+    std::string title = js;
+
+    size_t margin = 0.1*max_width;
+    size_t text_width = max_width - 2*margin;
+
+    size_t i = 0;
+    while (i + text_width < title.size()) {
+        std::cout << std::setw(margin) << "";
+        for (size_t j = i; j < i + text_width; ++j) {
+            std::cout << title[j];
+        }
+        std::cout << std::setw(margin) << "" << "\n";
+        i += text_width;
+    }
+
+    size_t remaining = title.size() - i;
+    size_t left = (text_width - remaining + 1)/2;
+    size_t right = (text_width - remaining)/2;
+
+    std::cout << std::setw(margin + left) << "";
+    for (size_t j = i; j < title.size(); ++j) {
+        std::cout << title[j];
+    }
+    std::cout << std::setw(margin + right) << "" << "\n\n\n";
 }
 
 void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
@@ -167,7 +194,40 @@ void pprint_revisions(const nlohmann::json& js, size_t max_width) {
 }
 
 void pprint_versions(const nlohmann::json& js, size_t max_width) {
+    if (!js.is_object()) {
+        return;
+    }
 
+    std::cout << "VERSIONS\n\n";
+
+    if (js.empty()) {
+        return;
+    }
+
+    for (const auto& [ key, vals ] : js.items()) {
+        if (!vals.is_array()) {
+            return;
+        }
+        std::cout << "  - " << key << ": ";
+        size_t indent = 6 + key.size(); 
+        size_t w = indent;
+        const char* sep = "";
+        for (const auto& v : vals) {
+            std::string val = v;
+            if (w + val.size() + 1 > max_width) {
+                std::cout << ",\n" << std::setw(indent) << "";
+                w = indent;
+            } else {
+                std::cout << sep;
+            }
+            std::cout << std::string(val);
+            w += val.size();
+            sep = ", ";
+        }
+        std::cout << "\n\n";
+    }
+
+    std::cout << "\n\n";
 }
 
 void pprint_contents(const nlohmann::json& js, size_t max_width) {
