@@ -17,7 +17,7 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
     nlohmann::json toret = nlohmann::json::array({});
     std::vector<TocItem> contents;
     size_t i = 0;
-    static const std::regex reg(R"(content)", std::regex_constants::icase);
+    static const std::regex reg(R"(content|index)", std::regex_constants::icase);
 tryagain:
     
     for (; i < data.size(); i++) {
@@ -28,7 +28,9 @@ tryagain:
         //1126b - the second contents kills it - DONE
         //contents with no dots inbetween (NSCIB) - DONE
         //investigate anssi
-        if (is_title(data[i], reg)) {
+        if (is_title(data[i], reg) ||
+            std::count_if(data[i].begin(), data[i].end(),
+                          [](char c) { return c == '.'; }) >= 10) {
             i++;
             while (i < data.size() && (is_empty_line(data[i]) || is_title(data[i], reg))) {
                 i++;
@@ -159,7 +161,8 @@ tryagain:
         tolerance = max_tolerance;
         i++;
     }
-    if (contents.size() < 5) {
+    
+    if (i < line.size() && contents.size() < 5) {
         contents.clear();
         goto tryagain;
     }
