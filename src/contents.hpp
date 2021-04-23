@@ -1,13 +1,24 @@
 #include <string>
 
+struct TocItem {
+    std::string chapter_num;
+    std::string chapter_name;
+    int page;
+};
+
+size_t ignore_whitespace(const std::string& line, size_t i) {
+    while (i < line.size() && is_space(line[i])) {
+        ++i;
+    }
+    return i;
+}
+
 nlohmann::json parse_contents(std::vector<std::string>& data) {
     nlohmann::json toret = nlohmann::json::array({});
-    std::vector<std::tuple<std::string, std::string, int>> contents = {};
+    std::vector<TocItem> contents;
     size_t i = 0;
-    int tolerance = 10;
     static const std::regex reg(R"(content)", std::regex_constants::icase);
 tryagain:
-    std::string line = "";
     
     for (; i < data.size(); i++) {
         //maybe do content - 1022b - DONE
@@ -17,44 +28,85 @@ tryagain:
         //1126b - the second contents kills it - DONE
         //contents with no dots inbetween (NSCIB) - DONE
         //investigate anssi
-        line = data[i];
-        if (is_title(line, reg)) {
+        if (is_title(data[i], reg)) {
             i++;
-            while (is_empty_line(data[i]) || is_title(data[i], reg)) {
+            while (i < data.size() && (is_empty_line(data[i]) || is_title(data[i], reg))) {
                 i++;
             }
             break;
         }
     }
-    std::string chapter_num = "";
-    std::string chapter_name = "";
-    std::string page = "";
-    while (1) {
-        if (i >= data.size()) {
+
+    /*if (i >= data.size()) {
+        return {};
+    }*/
+
+    constexpr int max_tolerance = 10;
+    int tolerance = max_tolerance;
+
+    std::string chapter_num;
+    std::string chapter_name;
+    std::string page;
+    
+    std::string line;
+    while (2) {
+        chapter_num.clear();
+        chapter_name.clear();
+        page.clear();
+        line = data[i];
+
+        if (is_pagebreak(line)) {
+            ++i;
+            tolerance = max_tolerance;
+            continue;
+        }
+
+        if (i >= data.size() || tolerance <= 0) {
             break;
         }
         if (is_empty_line(data[i])) {
             i++;
             continue;
         }
-        line = data[i];
+        
         trim(line);
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
             if (pos1 == std::string::npos) {
-                if (tolerance > 0) {
-                    i++;
-                    tolerance--;
-                    continue;
-                }
-                break;
+                i++;
+                tolerance--;
+                continue;
             }
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
         }
+
+        pos1 = ignore_whitespace(line, pos1);
+        if (pos1 >= line.size() || line[pos1] == '.') {
+            i++;
+            tolerance--;
+            continue;
+        }
         
-        auto pos2 = line.find('.', pos1);
+        size_t pos2 = pos1;
+        size_t mezera_count = 0;
+        while (pos2 < line.size() && line[pos2] != '.' && mezera_count < 2) {
+            if (is_space(line[pos2])) {
+                ++mezera_count;
+            } else {
+                mezera_count = 0;
+            }
+            ++pos2;
+        }
+
+        if (pos1 >= line.size()) {
+            i++;
+            tolerance--;
+            continue;
+        }
+
+        /*auto pos2 = line.find('.', pos1);
         if (pos2 == std::string::npos) {
             //std::cout << "druhy" << std::endl;
             pos2 = line.find_first_of(" \n\t\r\v\f", pos1);
@@ -78,31 +130,49 @@ tryagain:
                 }
                 break;
             }
-        }
+        }*/
+
         chapter_name = line.substr(pos1, pos2 - pos1);
         trim(chapter_name);
-        auto pos3 = line.find_first_of("0123456789", pos2);
-        if (pos3 == std::string::npos) {
-            if (tolerance > 0) {
-                tolerance--;
-                i++;
-                continue;
-            }
-            break;
+
+        while (pos2 < line.size() &&
+               (line[pos2] == '.' || is_space(line[pos2]))) {
+            ++pos2;    
         }
-        page = line.substr(pos3, line.length()-1);
-        trim(page);
-        contents.push_back(std::tuple<std::string, std::string, int>(chapter_num, chapter_name, std::stoi(page)));
-        tolerance = 10;
+
+        size_t pos3 = pos2;
+        while (pos3 < line.size() && is_digit(line[pos3])) {
+            ++pos3;
+        }
+        page = line.substr(pos2, pos3 - pos2);
+        if (chapter_name.empty() || page.empty()) {
+            i++;
+            tolerance--;
+            continue;
+        }
+
+        try {
+            contents.push_back( {chapter_num, chapter_name, std::stoi(page)});
+        } catch (...) {
+            assert(false);
+        }
+        
+        tolerance = max_tolerance;
         i++;
     }
    /* if (contents.size() < 10) {
         tolerance = 10;
         goto tryagain;
     }*/
+    
     for (size_t i = 0; i < contents.size(); i++) {
         //std::cout << std::get<1>(contents[i]) << std::endl;
-        toret.push_back(nlohmann::json::array({std::get<0>(contents[i]), std::get<1>(contents[i]), std::get<2>(contents[i])}));
+        toret.push_back(nlohmann::json::array({ 
+            contents[i].chapter_num, 
+            contents[i].chapter_name, 
+            contents[i].page 
+        }));
     }
+
     return toret;
 }
