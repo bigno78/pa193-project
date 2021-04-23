@@ -2,20 +2,24 @@
 
 project (parse CXX)
 
-option(USE_SANITIZERS OFF)
-option(USE_FUZZING OFF)
+option(SANITIZERS OFF)
+option(FUZZ OFF)
 
-if(USE_FUZZING)
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(FUZZ)
+    #if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         add_subdirectory("fuzzing/")
-    else()
-        message(WARNING "Fuzzing can be used only with clang!")
-    endif()
+    #else()
+    #    message(WARNING "Fuzzing can be used only with clang!")
+    #endif()
 endif()
 
 set(SANITIZERS "")
-if(USE_SANITIZERS)
-    set(SANITIZERS "-fsanitize=address,undefined")
+if(SANITIZERS)
+    if (FUZZ)
+        message(WARNING "Sanitizers cant be enabled globally for fuzzing! Use ASAN_FUZZING=ON.")
+    else()
+        set(SANITIZERS "-fsanitize=address,undefined")
+    endif()
 endif()
 
 if(MSVC)

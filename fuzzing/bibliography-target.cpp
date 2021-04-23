@@ -3,7 +3,6 @@
 
 #include "../src/bibliography.hpp"
 
-
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
     std::string s( (const char*) Data, Size);
     std::stringstream ss(s);

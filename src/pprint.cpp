@@ -2,6 +2,7 @@
 #include <iomanip>
 
 #include "pprint.hpp"
+#include "utils.hpp"
 
 void pprint(const nlohmann::json& js, const std::set<SectionType>& sections, size_t max_width) {
     for (auto sect : sections) {
@@ -25,19 +26,63 @@ void pprint(const nlohmann::json& js, const std::set<SectionType>& sections, siz
     }
 }
 
+size_t print_wrapped(const std::string& str, size_t start_pos, size_t max_width) {
+    for (size_t i = 0; i < max_width; ++i) {
+        if (start_pos + i >= str.size()) {
+            return std::string::npos;
+        }
+        std::cout << str[start_pos + i];
+    }
+    return start_pos + max_width;
+}
+
 void pprint_title(const nlohmann::json& js, size_t max_width) {
 
 }
 
 void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
+    if (js.empty()) {
+        return;
+    } 
 
+    std::vector<std::pair<std::string, std::string>> entries(js.size());
+    size_t i = 0;
+    bool all_numbers = true;
+    for (const auto& item : js.items()) {
+        assert((item.key().size() >= 3 &&  item.key().front() == '[' && item.key().back() == ']'));
+        std::string k = item.key().substr(1, item.key().size() - 2);
+        if (!std::all_of(k.begin(), k.end(), is_digit)) {
+            all_numbers = false;
+        }
+        entries[i++] = { k, item.value() };
+    }
+
+    auto cmp_function = [all_numbers] (const auto& a, const auto& b) {
+        if (all_numbers) {
+            return std::stoi(a.first) < std::stoi(b.first);
+        }
+        return a.first < b.first;
+    };
+
+    std::sort(entries.begin(), entries.end(), cmp_function);
+
+    std::cout << "BIBLIOGRAPHY\n\n";
+
+    for (const auto& [ key, value ] : entries) {
+        std::cout << "  [" << key << "]  ";
+        size_t indent_size = 6   + key.size();
+        size_t i = 0;
+        while (i != std::string::npos) {
+            if (i != 0) {
+                std::cout << std::setw(indent_size) << "";
+            }
+            i = print_wrapped(value, i, max_width - indent_size);
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }
 }
 
-auto a = R"(
-+---------+
-| Version |
-+---------+
-)";
 
 void print_hline(const std::array<size_t, 3>& widths) {
     std::cout << "+";
