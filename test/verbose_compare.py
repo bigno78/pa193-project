@@ -12,6 +12,7 @@ def check_title(actual, expected):
     if not "title" in actual.keys():
         if not "title" in expected:
             return 20
+        print("ERROR: Title key missing!", file=sys.stderr)
         return 0
 
     similarity = SequenceMatcher(None, actual["title"], expected["title"]).ratio()
@@ -21,6 +22,7 @@ def check_versions(actual, expected):
     if not "versions" in actual:
         if not "versions" in expected:
             return 20
+        print("ERROR: Versions key missing!", file=sys.stderr)
         return 0
 
     actual = actual["versions"]
@@ -29,6 +31,7 @@ def check_versions(actual, expected):
     if len(expected) == 0:
         if len(actual) == 0:
             return 20
+        print("ERROR: Should be empty!", file=sys.stderr)
         return 0
 
     max_score = len(expected) * 4
@@ -36,17 +39,33 @@ def check_versions(actual, expected):
 
     for key in expected:
         if not key in actual:
+            print(f"ERROR: Missing key {key}!", file=sys.stderr)
             continue
 
         score += 1
 
         if len(expected[key]) == len(actual[key]):
             score += 1
+        else:
+            print(f"ERROR: {key} lengths differ!", file=sys.stderr)
 
         set_e = set(expected[key])
         set_a = set(actual[key])
 
-        score += 2 * len(set_e.intersection(set_a)) / len(set_e)
+        for ver in actual[key]:
+            if ver not in expected[key]:
+                print(f"ERROR: Extra version {ver}!", file=sys.stderr)
+
+        for ver in expected[key]:
+            if ver not in actual[key]:
+                print(f"ERROR: Missing version {ver}!", file=sys.stderr)
+
+        s = 2 * len(set_e.intersection(set_a)) / len(set_e)
+        score += s
+        if s < 2:
+            print(f"ERROR: Low socre on {key}!", file=sys.stderr)
+
+    print(f"{score}/{max_score}")
 
     return 20 * score / max_score
 
@@ -183,7 +202,7 @@ def main():
     actual = load_file(sys.argv[1])
     expected = load_file(sys.argv[2])
 
-    checks = (check_revisions,)
+    checks = (check_versions,)
     points = 0
     for check in checks:
         points += check(actual, expected)

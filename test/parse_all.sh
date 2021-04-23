@@ -17,6 +17,7 @@ fi
 
 for f in `ls $in_path/*.txt`
 do
+    echo `basename $f`
     ./$par $f -o $out_path
     if [ $? -ne 0 ]
     then
