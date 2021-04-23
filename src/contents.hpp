@@ -5,6 +5,7 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
     std::vector<std::tuple<std::string, std::string, int>> contents = {};
     size_t i = 0;
     int tolerance = 10;
+    static const std::regex reg(R"(content)", std::regex_constants::icase);
 tryagain:
     std::string line = "";
     
@@ -17,11 +18,9 @@ tryagain:
         //contents with no dots inbetween (NSCIB) - DONE
         //investigate anssi
         line = data[i];
-        std::transform(line.begin(), line.end(), line.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-        if (line.find("content") != std::string::npos) {
+        if (is_title(line, reg)) {
             i++;
-            while (is_empty_line(data[i])) {
+            while (is_empty_line(data[i]) || is_title(data[i], reg)) {
                 i++;
             }
             break;
@@ -31,6 +30,9 @@ tryagain:
     std::string chapter_name = "";
     std::string page = "";
     while (1) {
+        if (i >= data.size()) {
+            break;
+        }
         if (is_empty_line(data[i])) {
             i++;
             continue;
@@ -59,8 +61,7 @@ tryagain:
             //std::cout << line << std::endl;
             //std::cout << pos1 << std::endl;
             //std::cout << pos2 << " " << line[pos2] << std::endl;
-            auto postemp =
-                line.find_first_of("abcdefghijklmnopqrstuvwxyz", pos2);
+            auto postemp = line.find_first_of("abcdefghijklmnopqrstuvwxyz", pos2);
             while (postemp != std::string::npos) {
                 pos2 = postemp+1;
                 while (isalnum(line[pos2])) {
@@ -95,10 +96,10 @@ tryagain:
         tolerance = 10;
         i++;
     }
-    if (contents.size() < 10) {
+   /* if (contents.size() < 10) {
         tolerance = 10;
         goto tryagain;
-    }
+    }*/
     for (size_t i = 0; i < contents.size(); i++) {
         //std::cout << std::get<1>(contents[i]) << std::endl;
         toret.push_back(nlohmann::json::array({std::get<0>(contents[i]), std::get<1>(contents[i]), std::get<2>(contents[i])}));
