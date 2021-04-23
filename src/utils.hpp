@@ -6,14 +6,9 @@
 #include <string_view>
 #include <sstream>
 
-/**
- * Wrapper function for std::isspace.
- * Used since std::isspace is valid only for unsigned char.
- */
-inline bool is_space(char c) {
-    return std::isspace(static_cast<unsigned char>(c));
-}
 
+// Wrapper functions since the std functions need unsigned char.
+inline bool is_space(char c) { return std::isspace(static_cast<unsigned char>(c)); }
 inline bool is_digit(char c) { return std::isdigit(static_cast<unsigned char>(c)); }
 inline bool is_alpha(char c) { return std::isalpha(static_cast<unsigned char>(c)); }
 inline bool is_alnum(char c) { return std::isalnum(static_cast<unsigned char>(c)); }
@@ -25,23 +20,11 @@ inline void to_lower(std::string& str) {
                     [](unsigned char c){ return std::tolower(c); });
 }
 
+
 inline bool is_pagebreak(const std::string& line) {
     return std::any_of(line.begin(), line.end(), [](char c){ return c == '\f'; });
 }
 
-/**
- * Counts the number of words in a line.
- * A word is a continues string of alphanumeric characters without any whitespace.
- */
-inline size_t count_words_slow(const std::string& line) {
-    std::stringstream s(line);
-    std::string tok;
-    size_t count = 0;
-    while (s >> tok) {
-        count++;
-    }
-    return count;
-}
 
 inline size_t count_words(const std::string& line) {
     if (line.empty()) {
@@ -174,3 +157,29 @@ inline std::vector<Column> split_line_into_columns(const std::string& line) {
 
     assert(false);
 }
+
+
+inline bool is_title(const std::string& line, const std::regex& reg) {
+    std::vector<Column> cols = split_line_into_columns(line);
+    if (cols.size() > 2 || cols.size() == 0) {
+        return false;
+    }
+
+    std::string* title = nullptr;
+    if (cols.size() == 2) { // there is a section number
+        // validate that it really is a section number
+        if (count_words(cols[0].data) != 1 || 
+            !std::any_of(cols[0].data.begin(), cols[0].data.end(), is_digit))
+        {
+            return false;
+        }
+        title = &cols[1].data;
+    } else {
+        title = &cols[0].data;
+    }
+
+    std::smatch match;
+    return count_words(*title) <= 3 &&
+           std::regex_search(*title, match, reg);
+}
+
