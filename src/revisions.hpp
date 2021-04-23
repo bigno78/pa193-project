@@ -467,7 +467,7 @@ inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
             if (try_find_revisions(data, i + 1, table)) {
                 try {
                     return read_revision_table(table);
-                } catch (std::runtime_error& e) {}
+                } catch (std::runtime_error& /*e*/) {}
             }
         }
     }

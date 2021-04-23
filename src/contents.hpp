@@ -21,16 +21,8 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
 tryagain:
     
     for (; i < data.size(); i++) {
-        //maybe do content - 1022b - DONE
-        //also the weird ones with introduction
-        //and do line to lower - DONE
-        //investigate 1107b (it should work?) - DONE
-        //1126b - the second contents kills it - DONE
-        //contents with no dots inbetween (NSCIB) - DONE
-        //investigate anssi
-        if (is_title(data[i], reg) ||
-            std::count_if(data[i].begin(), data[i].end(),
-                          [](char c) { return c == '.'; }) >= 10) {
+        if (is_title(data[i], reg)) {
+            std::cout << data[i] << std::endl;
             i++;
             while (i < data.size() && (is_empty_line(data[i]) || is_title(data[i], reg))) {
                 i++;
@@ -51,7 +43,7 @@ tryagain:
     std::string page;
     
     std::string line;
-    while (2) {
+    while (1) {
         chapter_num.clear();
         chapter_name.clear();
         page.clear();
@@ -71,6 +63,7 @@ tryagain:
 
         line = data[i];
         trim(line);
+        std::cout << tolerance << " " << line << std::endl;
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
@@ -101,7 +94,7 @@ tryagain:
             ++pos2;
         }
 
-        if (pos1 >= line.size()) {
+        if (pos2 >= line.size()) {
             i++;
             tolerance--;
             continue;
@@ -145,6 +138,11 @@ tryagain:
         while (pos3 < line.size() && is_digit(line[pos3])) {
             ++pos3;
         }
+        if (pos3 > line.size()) {
+            i++;
+            tolerance--;
+            continue;
+        }
         page = line.substr(pos2, pos3 - pos2);
         if (chapter_name.empty() || page.empty()) {
             i++;
@@ -157,12 +155,12 @@ tryagain:
         } catch (...) {
             assert(false);
         }
-        
         tolerance = max_tolerance;
         i++;
     }
     
-    if (i < line.size() && contents.size() < 5) {
+    if (i < data.size() && contents.size() < 5) {
+        std::cout << "here" << std::endl;
         contents.clear();
         goto tryagain;
     }
