@@ -53,13 +53,6 @@ tryagain:
         chapter_num.clear();
         chapter_name.clear();
         page.clear();
-        line = data[i];
-
-        if (is_pagebreak(line)) {
-            ++i;
-            tolerance = max_tolerance;
-            continue;
-        }
 
         if (i >= data.size() || tolerance <= 0) {
             break;
@@ -68,7 +61,13 @@ tryagain:
             i++;
             continue;
         }
-        
+        if (is_pagebreak(data[i])) {
+            ++i;
+            tolerance = max_tolerance;
+            continue;
+        }
+
+        line = data[i];
         trim(line);
         size_t pos1 = 0;
         if (is_digit(line[0])) {
@@ -160,10 +159,10 @@ tryagain:
         tolerance = max_tolerance;
         i++;
     }
-   /* if (contents.size() < 10) {
-        tolerance = 10;
+    if (contents.size() < 5) {
+        contents.clear();
         goto tryagain;
-    }*/
+    }
     
     for (size_t i = 0; i < contents.size(); i++) {
         //std::cout << std::get<1>(contents[i]) << std::endl;
