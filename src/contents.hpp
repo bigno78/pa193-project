@@ -22,7 +22,7 @@ tryagain:
     
     for (; i < data.size(); i++) {
         if (is_title(data[i], reg)) {
-            std::cout << data[i] << std::endl;
+            //std::cout << data[i] << std::endl;
             i++;
             while (i < data.size() && (is_empty_line(data[i]) || is_title(data[i], reg))) {
                 i++;
@@ -63,7 +63,7 @@ tryagain:
 
         line = data[i];
         trim(line);
-        std::cout << tolerance << " " << line << std::endl;
+        //std::cout << tolerance << " " << line << std::endl;
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
