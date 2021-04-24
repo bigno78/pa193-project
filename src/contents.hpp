@@ -63,7 +63,7 @@ tryagain:
 
         line = data[i];
         trim(line);
-        //std::cout << tolerance << " " << line << std::endl;
+        std::cout << tolerance << " " << line << std::endl;
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
@@ -74,7 +74,7 @@ tryagain:
             }
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
-        } else if (isupper(line[0]) && line.size() >= 2 && line[1] == '.' && isspace(line[2])) {
+        } else if (is_upper(line[0]) && line.size() >= 3 && line[1] == '.' && is_space(line[2])) {
             pos1 = 2;
             chapter_num = line.substr(0, pos1);
         }
@@ -153,32 +153,38 @@ tryagain:
             tolerance--;
             continue;
         }
-        if (pos3 <= line.size()-1 && !isspace(line[pos3 + 1])) {
+        if (pos3 <= line.size()-1 && !is_space(line[pos3 + 1])) {
             i++;
             tolerance--;
             continue;
-        }
+        } /**
         mezera_count = 0;
         dot_count = 0;
-        size_t poscheck = pos3;
-        size_t count = 0;
-        while (poscheck > 0 && mezera_count < 2 && dot_count < 2) {
-            if (count > 5) {
-                i++;
-                tolerance--;
-                continue;
-            }
+        size_t poscheck = pos3-1;
+        bool die = false;
+        while (poscheck > pos3 - 10 && mezera_count < 2 && dot_count < 2) {
+            std::cout << line[poscheck] << std::endl;
             if (isspace(line[poscheck])) {
                 mezera_count++;
             } else if (line[poscheck] == '.') {
                 dot_count++;
-            } else {
+            } else if (is_digit(line[poscheck])){
                 mezera_count = 0;
                 dot_count = 0;
+            } else {
+                std::cout << "im breaking everything" << std::endl;
+                die = true;
             }
             poscheck--;
-            count++;
         }
+        if (die || poscheck <= pos3 - 10) {
+            std::cout << die << std::endl;
+            std::cout << "heuheuehuheuheuehueh" << std::endl;
+            i++;
+            tolerance--;
+            continue;
+        }
+        **/
         page = line.substr(pos2, pos3 - pos2);
         if (chapter_name.empty() || page.empty()) {
             i++;
@@ -196,7 +202,6 @@ tryagain:
     }
     
     if (i < data.size() && contents.size() < 5) {
-        std::cout << "here" << std::endl;
         contents.clear();
         goto tryagain;
     }
