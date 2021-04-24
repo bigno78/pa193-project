@@ -74,6 +74,9 @@ tryagain:
             }
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
+        } else if (isupper(line[0]) && line.size() >= 2 && line[1] == '.' && isspace(line[2])) {
+            pos1 = 2;
+            chapter_num = line.substr(0, pos1);
         }
 
         pos1 = ignore_whitespace(line, pos1);
@@ -85,13 +88,20 @@ tryagain:
         
         size_t pos2 = pos1;
         size_t mezera_count = 0;
-        while (pos2 < line.size() && line[pos2] != '.' && mezera_count < 2) {
+        size_t dot_count = 0;
+        while (pos2 < line.size() && dot_count < 2 && mezera_count < 2) {
             if (is_space(line[pos2])) {
                 ++mezera_count;
+            } else if (line[pos2] == '.') {
+                dot_count++;
             } else {
                 mezera_count = 0;
+                dot_count = 0;
             }
             ++pos2;
+        }
+        if (dot_count == 2) {
+            pos2 -= 2;
         }
 
         if (pos2 >= line.size()) {
@@ -142,6 +152,32 @@ tryagain:
             i++;
             tolerance--;
             continue;
+        }
+        if (pos3 <= line.size()-1 && !isspace(line[pos3 + 1])) {
+            i++;
+            tolerance--;
+            continue;
+        }
+        mezera_count = 0;
+        dot_count = 0;
+        size_t poscheck = pos3;
+        size_t count = 0;
+        while (poscheck > 0 && mezera_count < 2 && dot_count < 2) {
+            if (count > 5) {
+                i++;
+                tolerance--;
+                continue;
+            }
+            if (isspace(line[poscheck])) {
+                mezera_count++;
+            } else if (line[poscheck] == '.') {
+                dot_count++;
+            } else {
+                mezera_count = 0;
+                dot_count = 0;
+            }
+            poscheck--;
+            count++;
         }
         page = line.substr(pos2, pos3 - pos2);
         if (chapter_name.empty() || page.empty()) {
