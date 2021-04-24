@@ -63,7 +63,8 @@ tryagain:
 
         line = data[i];
         trim(line);
-        std::cout << tolerance << " " << line << std::endl;
+        std::cout << "tolerance: " << tolerance << std::endl;
+        std::cout << line << std::endl;
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
@@ -74,13 +75,14 @@ tryagain:
             }
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
-        } else if (is_upper(line[0]) && line.size() >= 3 && line[1] == '.' && is_space(line[2])) {
+        } else if ( line.size() >= 3 && is_upper(line[0]) && line[1] == '.' && is_space(line[2])) {
             pos1 = 2;
             chapter_num = line.substr(0, pos1);
         }
 
         pos1 = ignore_whitespace(line, pos1);
         if (pos1 >= line.size() || line[pos1] == '.') {
+            std::cout << "1" << std::endl;
             i++;
             tolerance--;
             continue;
@@ -105,6 +107,7 @@ tryagain:
         }
 
         if (pos2 >= line.size()) {
+            std::cout << "2" << std::endl;
             i++;
             tolerance--;
             continue;
@@ -149,11 +152,13 @@ tryagain:
             ++pos3;
         }
         if (pos3 > line.size()) {
+            std::cout << "3" << std::endl;
             i++;
             tolerance--;
             continue;
         }
-        if (pos3 <= line.size()-1 && !is_space(line[pos3 + 1])) {
+        if (pos3 <= line.size()-1 && !is_space(line[pos3])) {
+            std::cout << "4" << std::endl;
             i++;
             tolerance--;
             continue;
