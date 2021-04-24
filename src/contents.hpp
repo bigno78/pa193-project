@@ -21,16 +21,8 @@ nlohmann::json parse_contents(std::vector<std::string>& data) {
 tryagain:
     
     for (; i < data.size(); i++) {
-        //maybe do content - 1022b - DONE
-        //also the weird ones with introduction
-        //and do line to lower - DONE
-        //investigate 1107b (it should work?) - DONE
-        //1126b - the second contents kills it - DONE
-        //contents with no dots inbetween (NSCIB) - DONE
-        //investigate anssi
-        if (is_title(data[i], reg) ||
-            std::count_if(data[i].begin(), data[i].end(),
-                          [](char c) { return c == '.'; }) >= 10) {
+        if (is_title(data[i], reg)) {
+            //std::cout << data[i] << std::endl;
             i++;
             while (i < data.size() && (is_empty_line(data[i]) || is_title(data[i], reg))) {
                 i++;
@@ -51,7 +43,7 @@ tryagain:
     std::string page;
     
     std::string line;
-    while (2) {
+    while (1) {
         chapter_num.clear();
         chapter_name.clear();
         page.clear();
@@ -71,6 +63,8 @@ tryagain:
 
         line = data[i];
         trim(line);
+        std::cout << "tolerance: " << tolerance << std::endl;
+        std::cout << line << std::endl;
         size_t pos1 = 0;
         if (is_digit(line[0])) {
             pos1 = line.find(' ');
@@ -81,10 +75,14 @@ tryagain:
             }
             chapter_num = line.substr(0, pos1);
             trim(chapter_num);
+        } else if ( line.size() >= 3 && is_upper(line[0]) && line[1] == '.' && is_space(line[2])) {
+            pos1 = 2;
+            chapter_num = line.substr(0, pos1);
         }
 
         pos1 = ignore_whitespace(line, pos1);
         if (pos1 >= line.size() || line[pos1] == '.') {
+            std::cout << "1" << std::endl;
             i++;
             tolerance--;
             continue;
@@ -92,16 +90,24 @@ tryagain:
         
         size_t pos2 = pos1;
         size_t mezera_count = 0;
-        while (pos2 < line.size() && line[pos2] != '.' && mezera_count < 2) {
+        size_t dot_count = 0;
+        while (pos2 < line.size() && dot_count < 2 && mezera_count < 2) {
             if (is_space(line[pos2])) {
                 ++mezera_count;
+            } else if (line[pos2] == '.') {
+                dot_count++;
             } else {
                 mezera_count = 0;
+                dot_count = 0;
             }
             ++pos2;
         }
+        if (dot_count == 2) {
+            pos2 -= 2;
+        }
 
-        if (pos1 >= line.size()) {
+        if (pos2 >= line.size()) {
+            std::cout << "2" << std::endl;
             i++;
             tolerance--;
             continue;
@@ -145,6 +151,45 @@ tryagain:
         while (pos3 < line.size() && is_digit(line[pos3])) {
             ++pos3;
         }
+        if (pos3 > line.size()) {
+            std::cout << "3" << std::endl;
+            i++;
+            tolerance--;
+            continue;
+        }
+        if (pos3 <= line.size()-1 && !is_space(line[pos3])) {
+            std::cout << "4" << std::endl;
+            i++;
+            tolerance--;
+            continue;
+        } /**
+        mezera_count = 0;
+        dot_count = 0;
+        size_t poscheck = pos3-1;
+        bool die = false;
+        while (poscheck > pos3 - 10 && mezera_count < 2 && dot_count < 2) {
+            std::cout << line[poscheck] << std::endl;
+            if (isspace(line[poscheck])) {
+                mezera_count++;
+            } else if (line[poscheck] == '.') {
+                dot_count++;
+            } else if (is_digit(line[poscheck])){
+                mezera_count = 0;
+                dot_count = 0;
+            } else {
+                std::cout << "im breaking everything" << std::endl;
+                die = true;
+            }
+            poscheck--;
+        }
+        if (die || poscheck <= pos3 - 10) {
+            std::cout << die << std::endl;
+            std::cout << "heuheuehuheuheuehueh" << std::endl;
+            i++;
+            tolerance--;
+            continue;
+        }
+        **/
         page = line.substr(pos2, pos3 - pos2);
         if (chapter_name.empty() || page.empty()) {
             i++;
@@ -157,12 +202,11 @@ tryagain:
         } catch (...) {
             assert(false);
         }
-        
         tolerance = max_tolerance;
         i++;
     }
     
-    if (i < line.size() && contents.size() < 5) {
+    if (i < data.size() && contents.size() < 5) {
         contents.clear();
         goto tryagain;
     }

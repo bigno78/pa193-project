@@ -12,6 +12,7 @@ inline bool is_space(char c) { return std::isspace(static_cast<unsigned char>(c)
 inline bool is_digit(char c) { return std::isdigit(static_cast<unsigned char>(c)); }
 inline bool is_alpha(char c) { return std::isalpha(static_cast<unsigned char>(c)); }
 inline bool is_alnum(char c) { return std::isalnum(static_cast<unsigned char>(c)); }
+inline bool is_upper(char c) { return std::isupper(static_cast<unsigned char>(c)); }
 
 inline char to_lower(char c) { return std::tolower(static_cast<unsigned char>(c)); }
 
