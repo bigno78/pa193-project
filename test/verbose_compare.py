@@ -73,6 +73,13 @@ def check_toc(actual, expected):
     if not "table_of_contents" in actual:
         if not "table_of_contents" in expected:
             return 20
+        print("ERROR: Toc key missing!", file=sys.stderr)
+        return 0
+
+    if not "table_of_contents" in expected:
+        if not "table_of_contents" in actual:
+            return 0
+        print("ERROR: Toc key present but shud not be!", file=sys.stderr)
         return 0
 
     actual = list(filter(lambda x: len(x) == 3, actual["table_of_contents"]))
@@ -81,6 +88,7 @@ def check_toc(actual, expected):
     if len(expected) == 0:
         if len(actual) == 0:
             return 20
+        print("ERROR: Different lengths!", file=sys.stderr)
         return 0
 
     max_score = 5 * len(expected)
@@ -101,6 +109,14 @@ def check_toc(actual, expected):
     for item in actual:
         if item in expected:
             score += 2
+        else:
+            print(f"ERROR: Extra item {item}!", file=sys.stderr)
+
+    for item in expected:
+        if item in actual:
+            pass
+        else:
+            print(f"ERROR: Missing item {item}!", file=sys.stderr)
 
     return 20 * score / max_score
 

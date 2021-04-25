@@ -57,6 +57,9 @@ def check_toc(actual, expected):
             return 20
         return 0
 
+    if not "table_of_contents" in expected:
+        return 0
+
     actual = list(filter(lambda x: len(x) == 3, actual["table_of_contents"]))
     expected = expected["table_of_contents"]
 
