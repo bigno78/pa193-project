@@ -61,7 +61,7 @@ std::string parse_NSCIB(const std::vector<std::string>& data) {
 
 //function for parsing certificates which have security target somewhere in the first 10 lines
 std::string parse_security_target(const std::vector<std::string>& data) {
-    if (data.size() <= 10) {
+    if (data.size() < 10) {
         return "";
 	}
 	for (size_t i = 0; i < 10; i++) {
@@ -95,7 +95,7 @@ std::string parse_security_target(const std::vector<std::string>& data) {
 					from++;
 				}
 				//lets assume title does not have more than 10 lines
-				for (int j = static_cast<int>(i - from); j > i - 10; j--) {
+				for (int j = static_cast<int>(i - from); j > static_cast<int>(i - 10); j--) {
 					if (j < 0 || data[j].empty() || data[j].find(".....") != std::string::npos) {
 						break;
 					}
