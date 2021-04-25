@@ -1,10 +1,12 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+
 #include "utils.hpp"
 
 
-std::string parse_NSCIB(std::vector<std::string>& data) {
+std::string parse_NSCIB(const std::vector<std::string>& data) {
 	if (data[0].find("Rheinland Nederland B.V.") != std::string::npos) {
 		std::vector<std::string> lines = {};
 		for (size_t i = 11; i <= 16; i++) {
@@ -23,7 +25,7 @@ std::string parse_NSCIB(std::vector<std::string>& data) {
 	return "";
 }
 
-std::string parse_security_target(std::vector<std::string>& data) {
+std::string parse_security_target(const std::vector<std::string>& data) {
 	for (size_t i = 0; i < 10; i++) {
 		std::string line = data[i];
 		//std::transform(line.begin(), line.end(), line.begin(), [](unsigned char c) { return std::tolower(c); });
@@ -77,7 +79,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 	return "";
 }
 
-std::string parse_title(std::vector<std::string> &data) {
+std::string parse_title(const std::vector<std::string> &data) {
 	if (std::string title = parse_NSCIB(data); !title.empty()) {
 		return title;
 	}

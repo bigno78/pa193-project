@@ -5,6 +5,7 @@
 #include <regex>
 #include <string_view>
 #include <sstream>
+#include <cassert>
 
 
 // Wrapper functions since the std functions need unsigned char.
