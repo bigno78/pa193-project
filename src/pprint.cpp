@@ -42,7 +42,7 @@ void pprint_title(const nlohmann::json& js, size_t max_width) {
 
     std::string title = js;
 
-    size_t margin = 0.1*max_width;
+    size_t margin = static_cast<size_t>(0.1*max_width);
     size_t text_width = max_width - 2*margin;
 
     size_t i = 0;
@@ -106,10 +106,10 @@ void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
     for (const auto& [ key, value ] : entries) {
         std::cout << "  " << key << "  ";
         size_t indent_size = 4 + key.size();
-        size_t i = print_wrapped(value, 0, max_width - indent_size);
-        while (i != value.size()) {
+        size_t j = print_wrapped(value, 0, max_width - indent_size);
+        while (j != value.size()) {
             std::cout << "\n" << std::setw(indent_size) << "";
-            i = print_wrapped(value, i, max_width - indent_size);
+            j = print_wrapped(value, j, max_width - indent_size);
         }
         std::cout << "\n\n";
     }
@@ -295,7 +295,7 @@ void pprint_contents(const nlohmann::json& js, size_t max_width) {
     }
 
     size_t middle_width = max_width - section_width - page_width - 2 - 1;
-    size_t min_dots = 0.3*middle_width;
+    size_t min_dots = static_cast<size_t>(0.3*middle_width);
     size_t max_name = middle_width - min_dots;
 
     for (const auto& [ sec, name, page ] : data) {

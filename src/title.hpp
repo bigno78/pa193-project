@@ -24,9 +24,10 @@ std::string parse_NSCIB(std::vector<std::string>& data) {
 }
 
 std::string parse_security_target(std::vector<std::string>& data) {
-	for (int i = 0; i < 10; i++) {
+	for (size_t i = 0; i < 10; i++) {
 		std::string line = data[i];
-		std::transform(line.begin(), line.end(), line.begin(), [](unsigned char c) { return std::tolower(c); });
+		//std::transform(line.begin(), line.end(), line.begin(), [](unsigned char c) { return std::tolower(c); });
+        to_lower(line);
 		std::vector<std::string> lines = {};
 		if (line.find("security target") != std::string::npos) {
 			if (i == 0) {
@@ -55,7 +56,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 				if (data[(size_t)i - 1].empty()) {
 					from++;
 				}
-				for (int j = i - from; j > i - 10; j--) {
+				for (int j = static_cast<int>(i - from); j > i - 10; j--) {
 					if (j < 0 || data[j].empty() || data[j].find(".....") != std::string::npos) {
 						break;
 					}
@@ -66,7 +67,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					return "";
 				}
 				std::string title = lines[lines.size()-1];
-				for (int j = lines.size()-2; j >= 0; j--) {
+				for (size_t j = lines.size()-2; j >= 0; j--) {
 					append_line(title, lines[j]);
 				}
 				return title;

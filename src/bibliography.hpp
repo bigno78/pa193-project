@@ -86,7 +86,7 @@ inline std::vector<size_t> find_bibliography(const std::vector<std::string>& dat
             if (current_distance > cutoff_distance) {  // begin new candidate
                 // if there is header above we are sure this is it
                 if (has_title(data, line_no)) {
-                    last_candidate_with_title = candidates.size();
+                    last_candidate_with_title = static_cast<int>(candidates.size());
                 }
                 candidates.emplace_back();
             }

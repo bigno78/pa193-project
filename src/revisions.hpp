@@ -11,7 +11,7 @@
 #include "utils.hpp"
 
 struct RevisionsTable {
-    enum { VERSION, DATE, DESCRIPTION };
+    enum type{ VERSION, DATE, DESCRIPTION };
     std::array<int, 3> mapping{-1, -1, -1};
     std::vector<std::string> header;
     std::vector<std::vector<std::string> > data;
@@ -39,7 +39,7 @@ inline bool infer_mapping(RevisionsTable& table) {
     for (size_t i = 0; i < row.size(); ++i) {
         if (std::count_if(row[i].begin(), row[i].end(), is_digit) >= 5 &&
             row[i].size() < 20) {
-            table.mapping[RevisionsTable::DATE] = i;
+            table.mapping[RevisionsTable::DATE] = static_cast<RevisionsTable::type>(i);
             taken[i] = true;
             infered++;
             break;
@@ -49,11 +49,11 @@ inline bool infer_mapping(RevisionsTable& table) {
     for (size_t i = 0; i < row.size(); ++i) {
         if (!taken[i]) {
             if (table.mapping[RevisionsTable::DESCRIPTION] == -1) {
-                table.mapping[RevisionsTable::DESCRIPTION] = i;
+                table.mapping[RevisionsTable::DESCRIPTION] = static_cast<RevisionsTable::type> (i);
                 infered++;
             } else if (row[table.mapping[RevisionsTable::DESCRIPTION]].size() <
                        row[i].size()) {
-                table.mapping[RevisionsTable::DESCRIPTION] = i;
+                table.mapping[RevisionsTable::DESCRIPTION] = static_cast<RevisionsTable::type> (i);
             }
         }
     }
@@ -62,8 +62,9 @@ inline bool infer_mapping(RevisionsTable& table) {
 }
 
 inline std::string parse_version(const std::string& version_str) {
-    int i = version_str.size() - 1;
-    while (i >= 0 && !is_space(version_str[i])) {
+    size_t i = version_str.size() - 1;
+    size_t max = static_cast<size_t>(-1);
+    while (i != max && !is_space(version_str[i])) {
         --i;
     }
     if (i + 1 < version_str.size() && version_str[i + 1] == 'v') {
@@ -143,7 +144,7 @@ inline std::string extract_date_from_description(std::string& desc) {
     std::smatch match;
     try {
         match = extract_date_string(desc);
-    } catch (std::runtime_error& ex) {
+    } catch (std::runtime_error&) {
         return "";
     }
 
@@ -260,17 +261,17 @@ inline bool parse_revisions_header(const std::vector<Column>& cols,
             // the last condition makes sure that if we match only "rev" or "ver"
             // then its not part of a bigger word
             matched++;
-            table.mapping[RevisionsTable::VERSION] = i;
+            table.mapping[RevisionsTable::VERSION] = static_cast<RevisionsTable::type>(i);
         } else if (table.mapping[RevisionsTable::DATE] == -1 &&
                    std::regex_search(caption.data, match, date_reg)) 
         {
             matched++;
-            table.mapping[RevisionsTable::DATE] = i;
+            table.mapping[RevisionsTable::DATE] = static_cast<RevisionsTable::type>(i);
         } else if (table.mapping[RevisionsTable::DESCRIPTION] == -1 &&
                    std::regex_search(caption.data, match, desc_reg))
         {
             matched++;
-            table.mapping[RevisionsTable::DESCRIPTION] = i;
+            table.mapping[RevisionsTable::DESCRIPTION] = static_cast<RevisionsTable::type>(i);
         }
     }
 
@@ -480,7 +481,7 @@ inline nlohmann::json parse_revisions(const std::vector<std::string>& data) {
             if (try_find_revisions(data, i + 1, table)) {
                 try {
                     return read_revision_table(table);
-                } catch (std::runtime_error& e) {}
+                } catch (std::runtime_error&) {}
             }
         }
     }

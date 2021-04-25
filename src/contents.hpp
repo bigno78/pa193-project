@@ -291,12 +291,12 @@ tryagain:
         goto tryagain;
     }
     
-    for (size_t i = 0; i < contents.size(); i++) {
+    for (size_t j = 0; j < contents.size(); j++) {
         //std::cout << std::get<1>(contents[i]) << std::endl;
         toret.push_back(nlohmann::json::array({ 
-            contents[i].chapter_num, 
-            contents[i].chapter_name, 
-            contents[i].page 
+            contents[j].chapter_num, 
+            contents[j].chapter_name, 
+            contents[j].page 
         }));
     }
 

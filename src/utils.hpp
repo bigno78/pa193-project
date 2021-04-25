@@ -14,11 +14,11 @@ inline bool is_alpha(char c) { return std::isalpha(static_cast<unsigned char>(c)
 inline bool is_alnum(char c) { return std::isalnum(static_cast<unsigned char>(c)); }
 inline bool is_upper(char c) { return std::isupper(static_cast<unsigned char>(c)); }
 
-inline char to_lower(char c) { return std::tolower(static_cast<unsigned char>(c)); }
+inline char to_lower(char c) { return static_cast<char>(std::tolower(static_cast<unsigned char>(c))); }
 
 inline void to_lower(std::string& str) {
     std::transform(str.begin(), str.end(), str.begin(),
-                    [](unsigned char c){ return std::tolower(c); });
+                    [](unsigned char c){ return to_lower(c); });
 }
 
 
