@@ -11,12 +11,17 @@ if(ASAN_FUZZ)
     set(FLAGS "-fsanitize=address" "-m32")
 endif()
 
+add_library(fuzz INTERFACE)
+target_link_libraries(fuzz INTERFACE project_options)
+target_compile_options(fuzz INTERFACE ${FLAGS})
+target_link_options(fuzz INTERFACE ${FLAGS})
+
 add_executable(fuzz-bib "biblio-afl.cpp")
+target_link_libraries(fuzz-bib PRIVATE fuzz)
 
-target_link_libraries(fuzz-bib PRIVATE project_options)
+add_executable(fuzz-title "title-afl.cpp")
+target_link_libraries(fuzz-title PRIVATE fuzz)
 
-target_compile_options(fuzz-bib PRIVATE ${FLAGS})
-target_link_options(fuzz-bib PRIVATE ${FLAGS})
 
 # copy the test cases to the build directory
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testcases DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

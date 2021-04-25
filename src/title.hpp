@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+
 #include "utils.hpp"
 
 
@@ -37,7 +39,7 @@ void add_new_candidate(std::vector<std::string>& candidates, std::vector<std::st
 }
 
 //function for parsing the type of certificate which has Rheinland Nederland B.V. in the first line
-std::string parse_NSCIB(std::vector<std::string>& data) {
+std::string parse_NSCIB(const std::vector<std::string>& data) {
 	if (data[0].find("Rheinland Nederland B.V.") != std::string::npos) {
 		std::vector<std::string> lines = {};
         if (data.size() <= 17) {
@@ -58,7 +60,7 @@ std::string parse_NSCIB(std::vector<std::string>& data) {
 }
 
 //function for parsing certificates which have security target somewhere in the first 10 lines
-std::string parse_security_target(std::vector<std::string>& data) {
+std::string parse_security_target(const std::vector<std::string>& data) {
     if (data.size() <= 10) {
         return "";
 	}
@@ -110,7 +112,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 	return "";
 }
 
-std::string parse_title(std::vector<std::string> &data) {
+std::string parse_title(const std::vector<std::string> &data) {
     if (data.size() == 0) {
         return "";
 	}
