@@ -19,11 +19,7 @@ matched in text, e.g., ["Java Card 3.0.1", "JavaCard 3.1.0"]
 */
 
 bool is_in(char c, const std::string& str) {
-    for (char a : str) {
-        if (c == a)
-            return true;
-    }
-    return false;
+    return std::any_of(str.begin(), str.end(), [c](char a) { return a == c; });
 }
 
 bool is_suffix_char(char c) {
@@ -170,10 +166,9 @@ void find_des(const std::string& line,
               const std::string& searchee,
               std::set<std::string>& results)
 {
-    size_t i = 0;
     size_t j = 0;
     while (j < str.size()) {
-        i = str.find(searchee, j);
+        size_t i = str.find(searchee, j);
         if (i == std::string::npos) {  // wasnt found
             break;
         }
@@ -206,10 +201,9 @@ void find_versions(const std::string& line,
                    const std::string& searchee,
                    std::set<std::string>& results) 
 {
-    size_t i = 0;  // begining of the matched string
     size_t j = 0;  // one ofter the end of the last match
     while(j < str.size()) {
-        i = str.find(searchee, j);
+        size_t i = str.find(searchee, j); // begining of the matched string
         if (i == std::string::npos) {  // wasnt found
             break;
         }

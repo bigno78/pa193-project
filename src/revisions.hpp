@@ -204,13 +204,8 @@ inline nlohmann::json read_revision_table(RevisionsTable& table) {
     }
 
     if (table.mapping[RevisionsTable::DATE] == -1) {
-        bool found = false;
-        for (const auto& obj : j) {
-            if (obj["date"] == "") {
-                found = true;
-                break;
-            }
-        }
+        bool found = std::any_of(j.begin(), j.end(),
+                    [](const auto& obj) { return obj["date"] == ""; });
         if (found) {
             for (auto& obj : j) {
                 obj["date"] = "";

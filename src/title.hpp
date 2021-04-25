@@ -67,7 +67,7 @@ std::string parse_security_target(std::vector<std::string>& data) {
 					return "";
 				}
 				std::string title = lines[lines.size()-1];
-				for (size_t j = lines.size()-2; j >= 0; j--) {
+				for (int j = static_cast<int>(lines.size()-2); j >= 0; j--) {
 					append_line(title, lines[j]);
 				}
 				return title;

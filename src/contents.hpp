@@ -239,9 +239,8 @@ tryagain:
         if (is_pagebreak(data[i])) {
             ++i;
             tolerance = max_tolerance;
-            for (const auto& item : contents_right) {
-                contents.push_back(item);
-            }
+            std::copy(contents_right.begin(), contents_right.end(),
+                      std::back_inserter(contents));
             contents_right.clear();
             continue;
         }
@@ -281,9 +280,8 @@ tryagain:
         i++;
     }
 
-    for (const auto& item : contents_right) {
-        contents.push_back(item);
-    }
+    std::copy(contents_right.begin(), contents_right.end(),
+              std::back_inserter(contents));
     contents_right.clear();
     
     if (i < data.size() && contents.size() < 5) {

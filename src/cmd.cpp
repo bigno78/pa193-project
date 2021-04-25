@@ -7,7 +7,12 @@ bool starts_with(const std::string& str, const std::string& prefix) {
     if (prefix.size() > str.size()) {
         return false;
     }
-    return std::equal(prefix.begin(), prefix.end(), str.begin());
+    for (size_t i = 0; i < prefix.size(); i++) {
+        if (str[i] != prefix[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::map<std::string, SectionType> switch_to_section {
@@ -18,7 +23,7 @@ std::map<std::string, SectionType> switch_to_section {
     { "-v", SectionType::versions }, { "--versions", SectionType::versions },
 };
 
-const std::string help = R"(Parser of security certificates
+const char* help = R"(Parser of security certificates
 
 usage: %s [ options ] [ file ... ]
 
@@ -36,7 +41,7 @@ Options:
 )";
 
 void print_usage(const char* executable_name) {
-	printf(help.c_str(), executable_name);
+	printf(help, executable_name);
 }
 
 CmdOptions process_args(int arg_count, char **args) {
