@@ -154,7 +154,7 @@ def main():
     expected = load_file(sys.argv[2])
 
     print(sys.argv[1]);
-    checks = (check_toc,)
+    checks = (check_title,)
     points = 0
     for check in checks:
         points += check(actual, expected)
