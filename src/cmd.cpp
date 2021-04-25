@@ -25,7 +25,7 @@ std::map<std::string, SectionType> switch_to_section {
 
 const char* help = R"(Parser of security certificates
 
-usage: %s [ options ] [ file ... ]
+usage: ./parser [ options ] [ file ... ]
 
 Options:
     -o <path>           - if no files are provided the name of the output file, otherwise 
@@ -40,8 +40,8 @@ Options:
 
 )";
 
-void print_usage(const char* executable_name) {
-	printf(help, executable_name);
+void print_usage() {
+	std::cerr << help;
 }
 
 CmdOptions process_args(int arg_count, char **args) {
@@ -50,7 +50,7 @@ CmdOptions process_args(int arg_count, char **args) {
         std::string arg = args[i];
         if (starts_with(arg, "-")) {
             if (arg == "-h" || arg == "--help") {
-                print_usage(args[0]);
+                print_usage();
                 std::exit(0);
             } else if (arg == "-o") {
                 if (i + 1 >= arg_count) {
