@@ -58,12 +58,18 @@ CmdOptions process_args(int arg_count, char **args) {
                     std::cerr << "-w requires an argument\n";
                     std::exit(1);    
                 }
+                int w;
                 try {
-                    opts.max_width = std::stol(args[++i]);
+                    w = std::stol(args[++i]);
                 } catch (...) {
                     std::cerr << "Invalid width\n";
                     std::exit(1);    
                 }
+                if (w <= 0) {
+                    std::cerr << "Width must be positive!\n";
+                    std::exit(1);
+                }
+                opts.max_width = w;
             } else if (arg == "-p" || arg == "--pprint") {
                 opts.prety_print = true;
             } else if (switch_to_section.count(arg) > 0) {

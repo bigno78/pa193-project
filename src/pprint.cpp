@@ -5,31 +5,28 @@
 #include "utils.hpp"
 
 void pprint(const nlohmann::json& js, const std::set<SectionType>& sections, size_t max_width) {
-    for (auto sect : sections) {
-        switch (sect) {
-            case SectionType::bibliography:
-                pprint_bibliography(js["bibliography"], max_width);
-                break;
-            case SectionType::contents:
-                pprint_contents(js["contents"], max_width);
-                break;
-            case SectionType::revisions:
-                pprint_revisions(js["revisions"], max_width);
-                break;
-            case SectionType::title:
-                pprint_title(js["title"], max_width);
-                break;
-            case SectionType::versions:
-                pprint_versions(js["versions"], max_width);
-                break;
-        }
+    if (sections.count(SectionType::title) > 0 && js.contains("title")) {
+        pprint_title(js["title"], max_width);
+    }
+    if (sections.count(SectionType::revisions) > 0 && js.contains("revisions")) {
+        pprint_revisions(js["revisions"], max_width);
+    }
+    if (sections.count(SectionType::versions) > 0 && js.contains("versions")) {
+        pprint_versions(js["versions"], max_width);
+    }
+    if (sections.count(SectionType::contents) > 0 && js.contains("table_of_contents")) {
+        pprint_contents(js["table_of_contents"], max_width);
+    }
+    if (sections.count(SectionType::bibliography) > 0 && js.contains("bibliography")) {
+        pprint_bibliography(js["bibliography"], max_width);
     }
 }
 
 size_t print_wrapped(const std::string& str, size_t start_pos, size_t max_width) {
-    for (size_t i = 0; i < max_width; ++i) {
+    size_t i = 0;
+    for (; i < max_width; ++i) {
         if (start_pos + i >= str.size()) {
-            return std::string::npos;
+            return str.size();
         }
         std::cout << str[start_pos + i];
     }
@@ -40,6 +37,8 @@ void pprint_title(const nlohmann::json& js, size_t max_width) {
     if (!js.is_string() || js.empty()) {
         return;
     }
+
+    std::cout << "\n";
 
     std::string title = js;
 
@@ -68,20 +67,31 @@ void pprint_title(const nlohmann::json& js, size_t max_width) {
 }
 
 void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
-    if (js.empty()) {
+    if (!js.is_object() || js.empty()) {
         return;
     } 
 
     std::vector<std::pair<std::string, std::string>> entries(js.size());
     size_t i = 0;
     bool all_numbers = true;
+    size_t key_width = 0;
     for (const auto& item : js.items()) {
-        assert((item.key().size() >= 3 &&  item.key().front() == '[' && item.key().back() == ']'));
+        if (!item.value().is_string() || item.key().size() < 3) {
+            return;
+        }
         std::string k = item.key().substr(1, item.key().size() - 2);
         if (!std::all_of(k.begin(), k.end(), is_digit)) {
             all_numbers = false;
         }
-        entries[i++] = { k, item.value() };
+        key_width = std::max(key_width, item.key().size());
+        entries[i++] = { item.key(), item.value() };
+    }
+
+    std::cout << "BIBLIOGRAPHY\n\n";
+
+    if (key_width + 4 + 5 > max_width) {
+        std::cerr << "The width is too small to print this bibliography!\n\n";
+        return;
     }
 
     auto cmp_function = [all_numbers] (const auto& a, const auto& b) {
@@ -91,22 +101,17 @@ void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
         return a.first < b.first;
     };
 
-    std::sort(entries.begin(), entries.end(), cmp_function);
-
-    std::cout << "BIBLIOGRAPHY\n\n";
+    std::sort(entries.begin(), entries.end(), cmp_function); 
 
     for (const auto& [ key, value ] : entries) {
-        std::cout << "  [" << key << "]  ";
-        size_t indent_size = 6   + key.size();
-        size_t i = 0;
-        while (i != std::string::npos) {
-            if (i != 0) {
-                std::cout << std::setw(indent_size) << "";
-            }
+        std::cout << "  " << key << "  ";
+        size_t indent_size = 4 + key.size();
+        size_t i = print_wrapped(value, 0, max_width - indent_size);
+        while (i != value.size()) {
+            std::cout << "\n" << std::setw(indent_size) << "";
             i = print_wrapped(value, i, max_width - indent_size);
-            std::cout << "\n";
         }
-        std::cout << "\n";
+        std::cout << "\n\n";
     }
 }
 
@@ -159,12 +164,40 @@ void print_cell_wrapped(const std::string& str, size_t w, const std::array<size_
 }
 
 void pprint_revisions(const nlohmann::json& js, size_t max_width) {
-    if (js.empty()|| !js.is_array()) {
+    if (!js.is_array()) {
         return;
     }
 
-    std::array<size_t, 3> widths = { 9, 12, 0 };
-    widths[2] = max_width - widths[0] - widths[1];
+    std::vector<std::array<std::string, 3>> data;
+    std::array<size_t, 3> widths = { 9, 4, 0 };
+    size_t margin = 1;
+
+    for (const auto& rev : js) {
+        if (!rev.is_object() || !rev.contains("version") ||
+            !rev.contains("date") || !rev.contains("description"))
+        {
+            return;
+        }
+        if (!rev["date"].is_string() || !rev["version"].is_string() || 
+            !rev["description"].is_string())
+        {
+            return;
+        }
+        data.push_back({ rev["version"], rev["date"], rev["description"] });
+        widths[0] = std::max(widths[0], data.back()[0].size());
+        widths[1] = std::max(widths[1], data.back()[1].size());
+    }
+    widths[0] += 2;
+    widths[1] += 2;
+
+    std::cout << "REVISIONS\n\n";
+
+    if (widths[0] + widths[1] + 2*margin + 4 + 11 > max_width) {
+        std::cerr << "Max width too small to print the revisions!\n\n";
+        return;
+    }
+
+    widths[2] = max_width - widths[0] - widths[1] - 4;
 
     print_hline(widths);
     std::cout << "|";
@@ -200,10 +233,6 @@ void pprint_versions(const nlohmann::json& js, size_t max_width) {
 
     std::cout << "VERSIONS\n\n";
 
-    if (js.empty()) {
-        return;
-    }
-
     for (const auto& [ key, vals ] : js.items()) {
         if (!vals.is_array()) {
             return;
@@ -211,18 +240,22 @@ void pprint_versions(const nlohmann::json& js, size_t max_width) {
         std::cout << "  - " << key << ": ";
         size_t indent = 6 + key.size(); 
         size_t w = indent;
-        const char* sep = "";
+        bool first = true;
         for (const auto& v : vals) {
             std::string val = v;
-            if (w + val.size() + 1 > max_width) {
-                std::cout << ",\n" << std::setw(indent) << "";
+            size_t item_width = val.size() + 1;
+            if (!first) item_width += 2;
+            if (w + item_width > max_width) {
+                std::cout << (first ? "" : ",");
+                std::cout << "\n" << std::setw(indent) << "";
                 w = indent;
-            } else {
-                std::cout << sep;
+            } else if (!first){
+                std::cout << ", ";
+                w += 2;
             }
-            std::cout << std::string(val);
+            std::cout << val;
             w += val.size();
-            sep = ", ";
+            first = false;
         }
         std::cout << "\n\n";
     }
@@ -231,5 +264,56 @@ void pprint_versions(const nlohmann::json& js, size_t max_width) {
 }
 
 void pprint_contents(const nlohmann::json& js, size_t max_width) {
+    if (!js.is_array()) {
+        return;
+    }
 
+    std::vector<std::array<std::string, 3>> data;
+    size_t section_width = 0;
+    size_t page_width = 0;
+    for (const auto& item : js) {
+        if (!item.is_array()) return;
+        if (!item[0].is_string() || !item[1].is_string() || !item[2].is_number()) {
+            return;
+        }
+
+        std::string section = item[0];
+        std::string name = item[1];
+        std::string page = std::to_string(size_t(item[2]));
+
+        section_width = std::max(section.size(), section_width);
+        page_width = std::max(page.size(), page_width);
+
+        data.push_back({ section, name, page });
+    }
+
+    std::cout << "TABLE OF CONTENTS\n\n";
+
+    if (section_width + page_width + 2 + 10 + 1 > max_width) {
+        std::cerr << "Sorry, the width is too small for printing contents.\n\n";
+        return;
+    }
+
+    size_t middle_width = max_width - section_width - page_width - 2 - 1;
+    size_t min_dots = 0.3*middle_width;
+    size_t max_name = middle_width - min_dots;
+
+    for (const auto& [ sec, name, page ] : data) {
+        std::cout << std::setw(section_width + 2) << std::left << sec;
+
+        size_t i = 0;
+        size_t j = print_wrapped(name, i, max_name);
+        while (j != name.size()) {
+            std::cout << "\n" << std::setw(section_width + 2) << "";
+            i = j;
+            j = print_wrapped(name, i, max_name);
+        }
+
+        size_t needed = middle_width - (j - i);
+        std::cout << std::setw(needed) << std::setfill('.') << "";
+        std::cout << " " << page;
+        std::cout << std::setfill(' ') << "\n";
+    }
+
+    std::cout << "\n\n";
 }
