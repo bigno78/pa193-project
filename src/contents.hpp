@@ -1,4 +1,8 @@
 #include <string>
+#include <vector>
+
+#include "utils.hpp"
+#include "json.hpp"
 
 struct TocItem {
     std::string chapter_num;
@@ -188,7 +192,7 @@ size_t parse_contents_entry(const std::string& line, size_t i, TocItem& item) {
 
 
 
-nlohmann::json parse_contents(std::vector<std::string>& data) {
+nlohmann::json parse_contents(const std::vector<std::string>& data) {
     nlohmann::json toret = nlohmann::json::array({});
     std::vector<TocItem> contents;
     std::vector<TocItem> contents_right;
