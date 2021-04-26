@@ -2,6 +2,5 @@
 #include "helper.hpp"
 
 int main() {
-    parse_title(load_data());
-    
+    parse_title(load_data());   
 }
