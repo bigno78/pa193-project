@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "json.hpp"
 #include "utils.hpp"
@@ -118,8 +119,8 @@ inline std::string parse_date_from_match(const std::smatch& match) {
         day = match[3];
         month = match[2];
     } else {
-        std::cout << "SIZE: " << match.size() << "\n";
-        std::cout << match[1] << "|" << match[2] << "|" << match[3] << "\n";
+        //std::cout << "SIZE: " << match.size() << "\n";
+        //std::cout << match[1] << "|" << match[2] << "|" << match[3] << "\n";
         throw std::runtime_error("Date: can't find year " + match[0].str());
     }
 
@@ -435,13 +436,13 @@ inline bool try_find_revisions(const std::vector<std::string>& data,
     for (size_t i = 0; i < search_len; ++i) {
         size_t idx = start_pos + i;
         if (is_revisions_title(data[idx])) {
-            std::cout << "Found title [" << idx + 1 << "]: " << data[idx]
-                      << "\n";
+            //std::cout << "Found title [" << idx + 1 << "]: " << data[idx]
+            //          << "\n";
             return parse_revisions_table_from_title(data, idx + 1, table);
         }
         if (parse_revisions_header(data[idx], table)) {
-            std::cout << "Found header [" << idx + 1 << "]: " << data[idx]
-                      << "\n";
+            //std::cout << "Found header [" << idx + 1 << "]: " << data[idx]
+            //          << "\n";
             return parse_revisions_table(data, idx + 1, table);
         }
     }
