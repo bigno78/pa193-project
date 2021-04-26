@@ -1,0 +1,63 @@
+ its bibliography
+
+[1]   Common Criteria for Information Technology Security Evaluation,
+      Part 1: Introduction and general model, Revision 5, April 2017
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[2]   Common Methodology for Information Technology
+      Evaluation Methodology, Version 3.1
