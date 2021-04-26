@@ -84,7 +84,7 @@ void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
             all_numbers = false;
         }
         key_width = std::max(key_width, item.key().size());
-        entries[i++] = { item.key(), item.value() };
+        entries[i++] = { k, item.value() };
     }
 
     std::cout << "BIBLIOGRAPHY\n\n";
@@ -104,8 +104,8 @@ void pprint_bibliography(const nlohmann::json& js, size_t max_width) {
     std::sort(entries.begin(), entries.end(), cmp_function); 
 
     for (const auto& [ key, value ] : entries) {
-        std::cout << "  " << key << "  ";
-        size_t indent_size = 4 + key.size();
+        std::cout << "  [" << key << "]  ";
+        size_t indent_size = 6 + key.size();
         size_t j = print_wrapped(value, 0, max_width - indent_size);
         while (j != value.size()) {
             std::cout << "\n" << std::setw(indent_size) << "";
@@ -223,7 +223,7 @@ void pprint_revisions(const nlohmann::json& js, size_t max_width) {
         print_cell_wrapped(rev["description"], widths[2], widths);
         print_hline(widths);
     }
-
+    std::cout << "\n\n";
 }
 
 void pprint_versions(const nlohmann::json& js, size_t max_width) {

@@ -11,7 +11,7 @@ struct CmdOptions {
     std::filesystem::path output_path;
     std::set<SectionType> sections;
     bool prety_print = false;
-    size_t max_width = 80;
+    size_t max_width = 70;
 };
 
 CmdOptions process_args(int arg_count, char **args);
