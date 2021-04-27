@@ -3,7 +3,7 @@
 struct TocItem {
     std::string chapter_num;
     std::string chapter_name;
-    int page;
+    int page = 0;
 };
 
 /**

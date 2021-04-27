@@ -37,7 +37,13 @@ int main(int argc, char** argv) {
 				return 1;
 			}
 			auto j = parse_document(in_file, opts.sections);
-			out_file << std::setw(4) << j << std::endl;
+			try {
+				out_file << std::setw(4) << j << std::endl;
+			}
+			catch (js::json::type_error&) {
+				std::cout << "An exception occured - non UTF8 characters cannot be parsed" << std::endl;
+				out_file.clear();
+			}
 			if (opts.prety_print) {
 				pprint(j, opts.sections, opts.max_width);
 			}
@@ -50,7 +56,13 @@ int main(int argc, char** argv) {
 			std::cerr << "Failed to create file: " << opts.output_path << "\n";
 			return 1;
 		} 
-		out_file << std::setw(4) << j << std::endl;
+		try {
+			out_file << std::setw(4) << j << std::endl;
+		}
+		catch (js::json::type_error&) {
+			std::cout << "An exception occured - non UTF8 characters cannot be parsed" << std::endl;
+			out_file.clear();
+		}
 		if (opts.prety_print) {
 				pprint(j, opts.sections, opts.max_width);
 			}

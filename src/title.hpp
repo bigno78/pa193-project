@@ -143,6 +143,10 @@ std::string parse_title(const std::vector<std::string> &data) {
 				break;
 			}
 		}
+		if (i >= data.size()) {
+			break;
+		}
+		std::cout << data.size() << " " << i << std::endl;
 		if (is_empty_line(data[i]) && !current.empty()) {
             add_new_candidate(candidates, current);
 			continue;
