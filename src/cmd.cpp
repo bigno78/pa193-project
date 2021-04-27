@@ -37,6 +37,7 @@ Options:
     -b, --bibliography  - parse only bibliography
     -c, --contents      - parse only table of contents
     -v, --versions      - parse only versions
+    -h, --help          - view this help message
 
 )";
 
