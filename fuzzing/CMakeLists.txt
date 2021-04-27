@@ -22,6 +22,9 @@ target_link_libraries(fuzz-bib PRIVATE fuzz)
 add_executable(fuzz-title "title-afl.cpp")
 target_link_libraries(fuzz-title PRIVATE fuzz)
 
+add_executable(fuzz-rev "revisions-afl.cpp")
+target_link_libraries(fuzz-rev PRIVATE fuzz)
+
 
 # copy the test cases to the build directory
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testcases DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

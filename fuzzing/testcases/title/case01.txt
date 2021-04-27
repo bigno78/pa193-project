@@ -1,0 +1,14 @@
+        BSI-DSZ-CC-0977-V2-2019
+
+                   for
+
+NXP Secure Smart Card Controller N7021 VA
+     including IC Dedicated Software
+
+                  from
+
+   NXP Semiconductors Germany GmbH
+                     BSI - Bundesamt für Sicherheit in der Informationstechnik, Postfach 20 03 63, D-53133 Bonn
+                      Phone +49 (0)228 99 9582-0, Fax +49 (0)228 9582-5477, Infoline +49 (0)228 99 9582-111
+
+
