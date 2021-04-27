@@ -10,7 +10,6 @@
 #include "bibliography.hpp"
 #include "revisions.hpp"
 #include "title.hpp"
-#include "toc.hpp"
 #include "versions.hpp"
 #include "contents.hpp"
 #include "types.hpp"
