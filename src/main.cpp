@@ -4,6 +4,7 @@
 #include <string>
 #include <iomanip>
 #include <filesystem>
+#include <stdexcept>
 
 #include "parser.hpp"
 #include "json.hpp"
@@ -23,6 +24,7 @@ fs::path get_output_filename(const fs::path& out_dir, const fs::path& in_file) {
 int main(int argc, char** argv) {
 	CmdOptions opts = process_args(argc, argv);
 	
+	
 	if (opts.input_files.size() > 0) {
 		for (const auto& filename : opts.input_files) {
 			std::ifstream in_file{ filename };
@@ -39,15 +41,14 @@ int main(int argc, char** argv) {
 			auto j = parse_document(in_file, opts.sections);
 			try {
 				out_file << std::setw(4) << j << std::endl;
-			}
-			catch (js::json::type_error&) {
-				std::cout << "An exception occured - non UTF8 characters cannot be parsed" << std::endl;
-				out_file.clear();
+			} catch (std::exception& /*unused*/) {
+				std::cout << "An exception occured when writing data!\n";
+				std::cout << "The input data was most likely non-UTF8 chracters.\n";
+				return 1;
 			}
 			if (opts.prety_print) {
 				pprint(j, opts.sections, opts.max_width);
 			}
-			//std::cout << j.dump(4) << "\n";
 		}
 	} else { // no input files -> take input from std::cin
 		auto j = parse_document(std::cin, opts.sections);
@@ -58,14 +59,13 @@ int main(int argc, char** argv) {
 		} 
 		try {
 			out_file << std::setw(4) << j << std::endl;
-		}
-		catch (js::json::type_error&) {
-			std::cout << "An exception occured - non UTF8 characters cannot be parsed" << std::endl;
-			out_file.clear();
+		} catch (std::exception& /*unused*/) {
+			std::cout << "An exception occured when writing data!\n";
+			std::cout << "The input data was most likely contains non-UTF8 chracters.\n";
+			return 1;
 		}
 		if (opts.prety_print) {
 				pprint(j, opts.sections, opts.max_width);
 			}
-		//std::cout << j.dump(4) << "\n";
 	}
 }
