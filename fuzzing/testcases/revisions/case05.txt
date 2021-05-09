@@ -1,4 +1,0 @@
-   
-Version history
-Version          Date           Description
-1.3          september-5-2222   Initial version.

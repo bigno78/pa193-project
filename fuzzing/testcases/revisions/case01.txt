@@ -1,20 +1,0 @@
- Security Target Lite                                   3                                              2020-10-21
-    
-   
-one col              1. two coll           20-20-2020
-
-1=a.56       Revision History
-
-     Date          Version                          Change Description
-
-  2017-01-27-January           1.0   Initial version.....
-
-  2020-10-21           4.1   final version
-  aaaaa
-                       bbbbb
-                              cccccc
-
-Security Target Lite                            4                                  2020-10-21
-                         
-Version      Subject
-aaaaaaaaaaaaaaaaaaaa      20.3.4.5

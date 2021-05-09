@@ -1,4 +1,0 @@
-   
-Version history
-Version          Date           Description
-A          25-Juli-2020   Initial version.
