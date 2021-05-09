@@ -1,0 +1,47 @@
+{
+    "title": "jePASS EAC V.1.1.4",
+    "versions": {
+        "eal": ["EAL2+", "EAL4", "EAL4+", "EAL 4"]
+    },
+    "table_of_contents": [
+        ["", "Foreword", 3],
+        ["","Recognition of the certificate", 4],
+        ["", "International recognition", 4],
+        ["", "European recognition", 4],
+        ["1", "Executive Summary", 5],
+        ["2", "Certification Results", 6],
+        ["2.1", "Identification of Target of Evaluation", 6],
+        ["2.2", "Security Policy", 6],
+        ["2.3", "Assumptions and Clarification of Scope", 6],
+        ["2.4", "Architectural Information", 7],
+        ["2.5", "Documentation", 7],
+        ["2.6", "IT Product Testing", 7],
+        ["2.7", "Re-used evaluation results", 8],
+        ["2.8", "Evaluated Configuration", 8],
+        ["2.9", "Results of the Evaluatio", 8],
+        ["2.10", "Comments/Recommendations", 9],
+        ["3", "Security Target", 10],
+        ["4", "Definitions", 10],
+        ["5", "Bibliography", 11]
+    ],
+    "revisions": [],
+    "bibliography": {
+        "[CC]": "Common Criteria for Information Technology Security Evaluation, Parts I, II and III, Version 3.1 Revision 5, April 2017.",
+        "[CEM]": "Common Methodology for Information Technology Security Evaluation, Version 3.1 Revision 5, April 2017.",
+        "[ETR]": "Evaluation Technical Report STM jePASS V1.1.3 – EAL4+, 20-RPT-378, version 5.0, 11 November 2020.",
+        "[HW-CERT]": "Rapport de certification ANSSI-CC-2019/12, ST31G480 D01 including optional cryptographic library NESLIB v6.2.1, and optional technologies MIFARE DESFire EV1 v4.8.12 and MIFARE Plus X v2.4.6.",
+        "[HW-ETRfC]": "ETR for composition ST31G480, Revision 1.3.",
+        "[HW-ST]": "ST31G480 D01 Security Target, Revision D01.3.",
+        "[HW-SUR]": "Rapport de surveillance, ANSSI-CC-2019/12-S01, ST31G480 D02, 23 July 2020.",
+        "[ICAO_9303]": "ICAO Doc 9303, Machine Readable Travel Documents, Part 11 Security Mechanisms for MRTDs and Part 12 Public Key Infrastructure for MRTDs , Seventh Edition, 2015, International Civil Aviation Organization.",
+        "[NSCIB]": "Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28 March 2019.",
+        "[PP]": "Protection Profile Machine Readable Travel Document with “ICAO Application”,   Extended Access Control with PACE Version 1.3.2, 05 December 2012, registered under the reference BSI-CC-PP-0056-V2-2012-MA-02.",
+        "[ST]": "jePASS EAC Security Target, Rev F, 27 October 2020.",
+        "[ST-lite]": "jePASS EAC Security Target Lite, Rev C, 27 October 2020.",
+        "[ST-SAN]": "ST sanitising for publication, CC Supporting Document CCDB-2006-04-004, April 2006."
+
+    },
+    "other": {
+        "certid": "NSCIB-CC-0145427-CR"
+    }
+}

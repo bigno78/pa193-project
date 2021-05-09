@@ -1,0 +1,42 @@
+{
+    "title": "MF3D(H)x3",
+    "versions": {
+        "eal": ["EAL2+", "EAL4", "EAL5", "EAL5+", "EAL 5"],
+        "des": ["3DES", "Triple-DES"]
+    },
+    "table_of_contents": [
+        ["", "Foreword", 3],
+        ["", "Recognition of the certificate", 4],
+        ["", "International recognition", 4],
+        ["", "European recognition", 4],
+        ["1", "Executive Summary", 5],
+        ["2", "Certification Results", 6],
+        ["2.1", "Identification of Target of Evaluation", 6],
+        ["2.2", "Security Policy", 6],
+        ["2.3", "Assumptions and Clarification of Scope", 6],
+        ["2.4", "Architectural Information", 7],
+        ["2.5", "Documentation", 7],
+        ["2.6", "IT Product Testing", 7],
+        ["2.7", "Re-used evaluation results", 8],
+        ["2.8", "Evaluated Configuration", 9],
+        ["2.9", "Results of the Evaluation", 9],
+        ["2.10", "Comments/Recommendations", 9],
+        ["3", "Security Target", 10],
+        ["4", "Definitions", 10],
+        ["5", "Bibliography", 11]
+    ],
+    "revisions": [],
+    "bibliography": {
+        "[CC]": "Common Criteria for Information Technology Security Evaluation, Parts I, II and III, Version 3.1 Revision 5, April 2017.",
+        "[CEM]": "Common Methodology for Information Technology Security Evaluation, Version 3.1 Revision 5, April 2017.",
+        "[ETR]": "Evaluation Technical Report MF3D(H)x3, 20-RPT-082, Version 1.0, 09 April 2020.",
+        "[NSCIB]": "Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28 March 2019.", 
+        "[PP]" : "Security IC Platform Protection Profile with Augmentation Packages, Registered and Certified by Bundesamt für Sicherheit in der Informationstechnik (BSI) under the reference BSI-CC-PP-0084-2014, Version 1.0, 13 January 2014",
+        "[ST]": "MF3D(H)x3 Security Target, Rev. 1.3, 17 March 2020.",
+        "[ST-lite]": "MF3D(H)x3 Security Target Lite, Rev. 1.0, 17 March 2020",
+        "[ST-SAN]": "ST sanitising for publication, CC Supporting Document CCDB-2006-04-004, April 2006."
+    },
+    "other": {
+        "certid": "NSCIB-CC-0011955-CR"
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "title": "Infineon Technologies Security Controller IFX_CCI_001Fh, IFX_CCI_002Fh, IFX_CCI_0030h, IFX_CCI_0033h, IFX_CCI_0035h, IFX_CCI_0036h, IFX_CCI_0038h design step S11 and M11 with optional HSL v2.62.7626, optional SCL version v2.04.003, UMSLC lib v01.00.0234 with specific ICdedicated firmware identifier 80.304.01.0 and user guidance",
+    "versions": {
+        "eal": ["EAL 5", "EAL5+", "EAL 2", "EAL 1", "EAL 4", "EAL6", "EAL 2+"],
+        "des": ["TDES", "Triple-DES"]
+    },
+    "table_of_contents": [
+        ["A", "Certification", 6],
+        ["1", "Preliminary Remarks", 6],
+        ["2", "Specifications of the Certification Procedure", 6],
+        ["3", "Recognition Agreements", 7],
+        ["4", "Performance of Evaluation and Certification", 8],
+        ["5", "Validity of the Certification Result", 8],
+        ["6", "Publication", 9],
+        ["B", "Certification Results", 10],
+        ["1", "Executive Summary", 11],
+        ["2", "Identification of the TOE", 12],
+        ["3", "Security Policy", 14],
+        ["4", "Assumptions and Clarification of Scope", 15],
+        ["5", "Architectural Information", 16],
+        ["6", "Documentation", 16],
+        ["7", "IT Product Testing", 16],
+        ["8", "Evaluated Configuration", 17],
+        ["9", "Results of the Evaluation", 18],
+        ["10", "Obligations and Notes for the Usage of the TOE", 21],
+        ["11", "Security Target", 22],
+        ["12", "Definitions", 22],
+        ["13", "Bibliography", 23],
+        ["C", "Excerpts from the Criteria", 26],
+        ["D", "Annexes", 27]
+    ],
+    "revisions": [],
+    "bibliography": {
+        "[1]": "Common Criteria for Information Technology Security Evaluation, Version 3.1, Part 1: Introduction and general model, Revision 5, April 2017 Part 2: Security functional components, Revision 5, April 2017 Part 3: Security assurance components, Revision 5, April 2017 https://www.commoncriteriaportal.org",
+        "[2]": "Common Methodology for Information Technology Security Evaluation (CEM), Evaluation Methodology, Version 3.1, Rev. 5, April 2017, https://www.commoncriteriaportal.org",
+        "[3]": "BSI certification: Scheme documentation describing the certification process (CCProdukte) and Scheme documentation on requirements for the Evaluation Facility, approval and licencing (CC-Stellen), https://www.bsi.bund.de/zertifizierung",
+        "[4]": "Application Notes and Interpretations of the Scheme (AIS) as relevant for the TOE7 https://www.bsi.bund.de/AIS",
+        "[5]": "German IT Security Certificates (BSI 7148), periodically updated list published also on the BSI Website, https://www.bsi.bund.de/zertifizierungsreporte",
+        "[6]": "Security Target BSI-DSZ-CC-1102-2019, Version 1.7, 2018-12-12, “IFX_CCI_001Fh, IFX_CCI_002Fh, IFX_CCI_0030h, IFX_CCI_0033h, IFX_CCI_0035h, IFX_CCI_0036h, IFX_CCI_0038h S11 and M11 Security Target”, Infineon Technologies AG (confidential document)",
+        "[7]": "Evaluation Technical Report, Version, v3, 2019-02-04, “EVALUATION TECHNICAL REPORT SUMMARY (ETR SUMMARY)”, TÜV Informationstechnik GmbH, (confidential document)",
+        "[8]": "Security IC Platform Protection Profile with Augmentation Packages Version 1.0, 13 January 2014, BSI-CC-PP-0084-2014",
+        "[9]": "Security Target for BSI-DSZ-CC-1102-2019, Version 1.7, 2018-12-12, “IFX_CCI_001Fh, IFX_CCI_002Fh, IFX_CCI_0030h, IFX_CCI_0033h, IFX_CCI_0035h, IFX_CCI_0036h, IFX_CCI_0038h S11 and M11 Security Target Lite”, Infineon Technologies AG (sanitised public document)",
+        "[10]": "ETR for composite evaluation according to AIS 36 for BSI-DSZ-CC-1102-2019, Version 3, 2019-02-04, “EVALUATION TECHNICAL REPORT FOR COMPOSITE EVALUATION (ETR COMP)”, TÜV Informationstechnik GmbH (confidentialdocument)",
+        "[11]": "Configuration list for the TOE, Version 1.1, 2018-10-12, “Configuration Management Scope” (confidential document)",
+        "[12]": "“32-bit ARM-based Securtity Controller, SLC 37/40-nm Technology, Programmer’s Reference Manual”, v4.1, 2018-08-08, Infineon Technologies AG",
+        "[13]": "“32-bit Security Controller – V15, Security Guidelines”, v1.00-1792, 2018-04-24, Infineon Technologies AG",
+        "[14]": "“Production and personalization 32-bit ARM-based security controller”, v3.4, 2018- 05-14, Infineon Technologies AG",
+        "[15]": "“HSL library for SLCx7 in 40nm”, v02.62.7626, 2017-12-13, Infineon Technologies AG",
+        "[16]": "“UMSLC library for SLCx7 in 40nm, Version 01.00.0234”, V1.1, 2018-05-23, Infineon Technologies AG",
+        "[17]": "“SCL37-uSCP-v3-C40 Symmetric Crypto Library for uSCP-v3 DES/AES”, v2.04.003, 2018-05-22, Infineon Technologies AG",
+        "[18]": "“32-bit Security Controller –V15 Controller, Hardware Reference Manual”, v3.2, 2018-09-03, Infineon Technologies AG"
+    },
+    "other": {
+        "certid": "BSI-DSZ-CC-1102-2019"
+    }
+}

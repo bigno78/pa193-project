@@ -1,0 +1,582 @@
+                                                                                                 TÜV Rheinland Nederland B.V.
+
+
+
+
+                                                                                                                                                          Certification Report
+Version 2020-2
+
+
+
+
+                                                                                                                            JCOP 4.x on P73N2M0B0.2C2/2C6 Secure Element
+
+
+
+
+                                                                                                                  Sponsor and developer:           NXP Semiconductors GmbH
+                                                                                                                                                   Business Unit Security & Connectivity
+                                                                                                                                                   Troplowitzstrasse 20
+                                                                                                                                                   22529 Hamburg
+                                                                                                                                                   Germany
+
+                                                                                                                  Evaluation facility:             Brightsight
+                                                                                                                                                   Brassersplein 2
+                                                                                                                                                   2612 CT Delft
+                                                                                                                                                   The Netherlands
+                                                                                                                  Report number:                   NSCIB-CC-156530-CR3
+
+                                                                                                                  Report version:                  3
+
+                                                                                                                  Project number:                  156530
+
+                                                                                                                  Author(s):                       Andy Brown
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                                  Date:                            24 September 2020
+
+                                                                                                                  Number of pages:                 12
+
+                                                                                                                  Number of appendices:            0
+
+
+
+
+                                                                                                                  Reproduction of this report is authorized provided the report is reproduced in its entirety.
+
+
+
+
+                                                                                                 Headoffice:                        Location Leek:                   info@nl.tuv.com                   TÜV Rheinland Nederland B.V. is a
+                                                                                                 Westervoortsedijk 73               Eiberkamp 10                     www.tuv.com/nl                    registered company at the Dutch
+                                                                                                 NL-6827 AV Arnhem                  NL-9351 VT Leek                                                    Chamber of Commerce under
+                                                                                                                                                                     Tel. +31 (0)88 888 7 888          number 27288788
+                                                                                                 P.O. Box 2220                      P.O. Box 37                      Fax +31 (0)88 888 7 879
+                                                                                                 NL-6802 CE Arnhem                  NL-9350 AA Leek                                                    VAT number: NL815820380B01
+                                                                                                 The Netherlands                    The Netherlands                                                    IBAN: NL61DEUT0265155096
+                                                                                                 Page: 2/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 CONTENTS:
+
+                                                                                                 Foreword                                                                     3
+
+                                                                                                 Recognition of the certificate                                               4
+                                                                                                 International recognition                                                    4
+                                                                                                 European recognition                                                         4
+
+                                                                                                 1 Executive Summary                                                          5
+
+                                                                                                 2 Certification Results                                                      6
+                                                                                                 2.1      Identification of Target of Evaluation                              6
+                                                                                                 2.2      Security Policy                                                     6
+                                                                                                 2.3      Assumptions and Clarification of Scope                              7
+                                                                                                 2.4      Architectural Information                                           7
+                                                                                                 2.5      Documentation                                                       8
+                                                                                                 2.6      IT Product Testing                                                  8
+                                                                                                 2.7      Re-used evaluation results                                         10
+                                                                                                 2.8      Evaluated Configuration                                            10
+                                                                                                 2.9      Results of the Evaluation                                          10
+                                                                                                 2.10     Comments/Recommendations                                           10
+
+                                                                                                 3 Security Target                                                           11
+
+                                                                                                 4 Definitions                                                               11
+
+                                                                                                 5 Bibliography                                                              12
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+                                                                                                 Page: 3/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 Foreword
+                                                                                                 The Netherlands Scheme for Certification in the Area of IT Security (NSCIB) provides a third-party
+                                                                                                 evaluation and certification service for determining the trustworthiness of Information Technology (IT)
+                                                                                                 security products. Under this NSCIB, TÜV Rheinland Nederland B.V. has the task of issuing
+                                                                                                 certificates for IT security products, as well as for protection profiles and sites.
+                                                                                                 Part of the procedure is the technical examination (evaluation) of the product, protection profile or site
+                                                                                                 according to the Common Criteria assessment guidelines published by the NSCIB. Evaluations are
+                                                                                                 performed by an IT Security Evaluation Facility (ITSEF) under the oversight of the NSCIB Certification
+                                                                                                 Body, which is operated by TÜV Rheinland Nederland B.V. in cooperation with the Ministry of the
+                                                                                                 Interior and Kingdom Relations.
+                                                                                                 An ITSEF in the Netherlands is a commercial facility that has been licensed by TÜV Rheinland
+                                                                                                 Nederland B.V. to perform Common Criteria evaluations; a significant requirement for such a license is
+                                                                                                 accreditation to the requirements of ISO Standard 17025 “General requirements for the accreditation
+                                                                                                 of calibration and testing laboratories”.
+                                                                                                 By awarding a Common Criteria certificate, TÜV Rheinland Nederland B.V. asserts that the product or
+                                                                                                 site complies with the security requirements specified in the associated (site) security target, or that
+                                                                                                 the protection profile (PP) complies with the requirements for PP evaluation specified in the Common
+                                                                                                 Criteria for Information Security Evaluation. A (site) security target is a requirements specification
+                                                                                                 document that defines the scope of the evaluation activities.
+                                                                                                 The consumer should review the (site) security target or protection profile, in addition to this
+                                                                                                 certification report, in order to gain an understanding of any assumptions made during the evaluation,
+                                                                                                 the IT product's intended environment, its security requirements, and the level of confidence (i.e., the
+                                                                                                 evaluation assurance level) that the product or site satisfies the security requirements stated in the
+                                                                                                 (site) security target.
+                                                                                                 Reproduction of this report is authorized provided the report is reproduced in its entirety.
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+                                                                                                 Page: 4/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 Recognition of the certificate
+                                                                                                 Presence of the Common Criteria Recognition Arrangement and SOG-IS logos on the certificate
+                                                                                                 indicates that this certificate is issued in accordance with the provisions of the CCRA and the SOG-IS
+                                                                                                 agreement and will be recognised by the participating nations.
+
+                                                                                                 International recognition
+                                                                                                 The CCRA has been signed by the Netherlands in May 2000 and provides mutual recognition of
+                                                                                                 certificates based on the CC. Starting September 2014 the CCRA has been updated to provide mutual
+                                                                                                 recognition of certificates based on cPPs (exact use) or STs with evaluation assurance components
+                                                                                                 up to and including EAL2+ALC_FLR. The current list of signatory nations and approved certification
+                                                                                                 schemes can be found on: http://www.commoncriteriaportal.org.
+
+                                                                                                 European recognition
+                                                                                                 The European SOGIS-Mutual Recognition Agreement (SOGIS-MRA) version 3 effective from April
+                                                                                                 2010 provides mutual recognition of Common Criteria and ITSEC certificates at a basic evaluation
+                                                                                                 level for all products. A higher recognition level for evaluation levels beyond EAL4 (resp. E3-basic) is
+                                                                                                 provided for products related to specific technical domains. This agreement was initially signed by
+                                                                                                 Finland, France, Germany, The Netherlands, Norway, Spain, Sweden and the United Kingdom. Italy
+                                                                                                 joined the SOGIS-MRA in December 2010. The current list of signatory nations, approved certification
+                                                                                                 schemes and the list of technical domains for which the higher recognition applies can be found on:
+                                                                                                 http://www.sogisportal.eu.
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+                                                                                                 Page: 5/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 1 Executive Summary
+                                                                                                 This Certification Report states the outcome of the Common Criteria security evaluation of the JCOP
+                                                                                                 4.x on P73N2M0B0.2C2/2C6 Secure Element. The developer of the JCOP 4.x on
+                                                                                                 P73N2M0B0.2C2/2C6 Secure Element is NXP Semiconductors GmbH located in Hamburg, Germany
+                                                                                                 and they also act as the sponsor of the evaluation and certification. A Certification Report is intended
+                                                                                                 to assist prospective consumers when judging the suitability of the IT security properties of the product
+                                                                                                 for their particular requirements.
+                                                                                                 The TOE is a composite TOE, consisting of a Java Card smart card operating system and an
+                                                                                                 underlying platform, which is a secure micro controller. The TOE provides Java Card 3.0.4
+                                                                                                 functionality with post-issuance applet loading, card content management and secure channel
+                                                                                                 features as specified in Global Platform 2.2.1.
+                                                                                                 It includes also NXP Proprietary Functionality: Config Applet, OS Update Component, Applet
+                                                                                                 Migration, Restricted Mode and Error Detection Code (EDC) API.
+                                                                                                 Cryptographic functionality includes 3DES, AES, RSA and RSA CRT; SHA-1, SHA-224, SHA-256,
+                                                                                                 SHA-384, SHA-512 hash algorithms, HMAC, ECC over GF(p). Furthermore, the TOE provides random
+                                                                                                 number generation according to class DRG.4 of AIS 20.
+                                                                                                 Note that proprietary applications have been included in the TOE, but as there are no security claims
+                                                                                                 on these applications in this certificate, these applications have not been assessed, only the self-
+                                                                                                 protection of the TSF.
+                                                                                                 The TOE has been originally evaluated by Brightsight B.V. located in Delft, The Netherlands and was
+                                                                                                 certified on 04-04-2019. The re-evaluation also took place by Brightsight B.V. and was completed on
+                                                                                                 24-09-2020 with the approval of the ETR. The re-certification procedure has been conducted in
+                                                                                                 accordance with the provisions of the Netherlands Scheme for Certification in the Area of IT Security
+                                                                                                 [NSCIB].
+                                                                                                 This third issue of the Certification Report is a result of a “recertification with major changes”.
+                                                                                                 The major changes are the addition of variant JCOP 4.8 and a renaming of the TOE to “JCOP 4.x on
+                                                                                                 P73N2M0B0.2C2/2C6 Secure Element".
+                                                                                                 The security evaluation re-used the evaluation results of previously performed evaluations. A full, up to
+                                                                                                 date vulnerability analysis has been made, as well as renewed testing.
+                                                                                                 The scope of the evaluation is defined by the security target [ST], which identifies assumptions made
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                 during the evaluation, the intended environment for the JCOP 4.x on P73N2M0B0.2C2/2C6 Secure
+                                                                                                 Element, the security requirements, and the level of confidence (evaluation assurance level) at which
+                                                                                                 the product is intended to satisfy the security requirements. Consumers of the JCOP 4.x on
+                                                                                                 P73N2M0B0.2C2/2C6 Secure Element are advised to verify that their own environment is consistent
+                                                                                                 with the security target, and to give due consideration to the comments, observations and
+                                                                                                 recommendations in this certification report.
+                                                                                                                                                                        1
+                                                                                                 The results documented in the evaluation technical report [ETR] for this product provides sufficient
+                                                                                                 evidence that the TOE meets the EAL5 augmented (EAL5+) assurance requirements for the evaluated
+                                                                                                 security functionality. This assurance level is augmented with ALC_DVS.2 (Sufficiency of security
+                                                                                                 measures), ASE_TSS.2 (“TOE summary specification with architectural design summary”),
+                                                                                                 ALC_FLR.1 (Basic flaw remediation) and AVA_VAN.5 (Advanced methodical vulnerability analysis).
+                                                                                                 The evaluation was conducted using the Common Methodology for Information Technology Security
+                                                                                                 Evaluation, Version 3.1 Revision 5 [CEM] for conformance to the Common Criteria for Information
+                                                                                                 Technology Security Evaluation, version 3.1 Revision 5 [CC].
+                                                                                                 TÜV Rheinland Nederland B.V., as the NSCIB Certification Body, declares that the evaluation meets
+                                                                                                 all the conditions for international recognition of Common Criteria Certificates and that the product will
+                                                                                                 be listed on the NSCIB Certified Products list. It should be noted that the certification results only apply
+                                                                                                 to the specific version of the product as evaluated.
+
+
+                                                                                                 1
+                                                                                                  The Evaluation Technical Report contains information proprietary to the developer and/or the
+                                                                                                 evaluator, and is not releasable for public review.
+                                                                                                 Page: 6/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 2 Certification Results
+                                                                                                 2.1       Identification of Target of Evaluation
+                                                                                                 The Target of Evaluation (TOE) for this evaluation is the JCOP 4.x on P73N2M0B0.2C2/2C6 Secure
+                                                                                                 Element from NXP Semiconductors GmbH located in Hamburg, Germany.
+                                                                                                 The TOE is comprised of the following main components:
+
+                                                                                                  Delivery item      Identifier
+                                                                                                                                                                                    Version
+                                                                                                  type
+
+                                                                                                  Hardware
+                                                                                                                     NXP High-Performance secure controller
+                                                                                                  (Part of P73                                                                      B.02
+                                                                                                                     “P73N2M0B0.202”
+                                                                                                  certificates)
+
+                                                                                                                     Factory OS                                                     1.4.4
+
+                                                                                                                     Boot OS                                                        1.2.3 PL2 v8
+
+                                                                                                  Software /         Flash Driver Support                                           1.5.2
+                                                                                                  Firmware
+                                                                                                                     “P73N2M0B0.2C2” Service Software                               1.9.14
+                                                                                                  (Part of SN73
+                                                                                                  certificates)      “P73N2M0B0.2C2” Crypto Library                                 1.0.8
+
+                                                                                                                     “P732N2M0B0.2C6” Service Software                              1.9.18
+
+                                                                                                                     “P732N2M0B0.2C6” Crypto Library                                1.0.8
+
+                                                                                                                     “JCOP 4.2 R1.10.0” OS, Native applications and OS Update
+                                                                                                                                                                                    JCOP 4.2 R1.10.0
+                                                                                                                     Component
+                                                                                                                     “JCOP 4.5 R1.07.0”
+                                                                                                                                                                                    JCOP 4.5 R1.07.0
+                                                                                                                     OS, Native applications and OS Update
+                                                                                                  Software
+                                                                                                                     Configuration “JCOP 4.6 R1.04.0”
+                                                                                                                                                                                    JCOP 4.6 R1.04.0
+                                                                                                                     OS, Native applications and OS Update
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                                     Configuration “JCOP 4.8 R1.01.0”
+                                                                                                                                                                                    JCOP 4.8 R1.01.0
+                                                                                                                     OS, Native applications and OS Update
+
+                                                                                                 To ensure secure usage a set of guidance documents is provided together with the JCOP 4.x on
+                                                                                                 P73N2M0B0.2C2/2C6 Secure Element. Details can be found in section 2.5 of this report.
+                                                                                                 For a detailed and precise description of the TOE lifecycle refer to the [ST], chapter 1.3.2.
+
+                                                                                                 2.2       Security Policy
+                                                                                                 This TOE is a composite TOE, consisting of a Java Card smart card operating system, an OS updater,
+                                                                                                 an applet migration feature, a restricted mode and an underlying platform, which is composed of a
+                                                                                                 library which provides cryptographic functions and a secure micro controller. The TOE provides Java
+                                                                                                 Card 3.0.4 functionality with post-issuance applet loading, card content management and secure
+                                                                                                 channel features as specified in Global Platform 2.2.1 including SCP03. It includes also NXP
+                                                                                                 proprietary functionalities:
+                                                                                                           Config Applet: JCOP OS includes a Config Applet that can be used for configuration of the
+                                                                                                            TOE.
+                                                                                                           OS Update Component: Proprietary functionality that can update JCOP OS or UpdaterOS.
+                                                                                                           Applet Migration: Keep User Data, Key Data or PIN Data after updating an applet.
+                                                                                                           Restricted Mode: In Restricted Mode only very limited functionality of the TOE is available
+                                                                                                            such as, e.g.: reading logging information or resetting the Attack Counter.
+                                                                                                 Page: 7/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                           Error Detection Code (EDC) API.
+
+                                                                                                 Cryptographic functionality includes 3DES, AES, RSA and RSA CRT ; SHA-1, SHA-224, SHA-256,
+                                                                                                 SHA-384, SHA-512 hash algorithms, HMAC, ECC over GF(p). Furthermore, the TOE provides random
+                                                                                                 number generation according to class DRG.4 of AIS 20.
+
+                                                                                                 2.3       Assumptions and Clarification of Scope
+
+                                                                                                 2.3.1      Assumptions
+                                                                                                 The assumptions defined in the Security Target are not covered by the TOE itself. These aspects lead
+                                                                                                 to specific Security Objectives to be fulfilled by the TOE-Environment. Detailed information on these
+                                                                                                 security objectives that must be fulfilled by the TOE environment can be found in section 4.4of the
+                                                                                                 [ST].
+
+                                                                                                 2.3.2      Clarification of scope
+                                                                                                 The evaluation did not reveal any threats to the TOE that are not countered by the evaluated security
+                                                                                                 functions of the product.
+                                                                                                 Note that proprietary applications have been included in the TOE, but as there are no security claims
+                                                                                                 on these applications in this certificate, these applications have not been assessed, only the self-
+                                                                                                 protection of the TSF.
+
+                                                                                                 2.4       Architectural Information
+                                                                                                 The logical architecture, originating from the Security Target [ST], of the TOE can be depicted as
+                                                                                                 follows:
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+                                                                                                 Page: 8/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 2.5     Documentation
+                                                                                                 The following documentation is provided with the product by the developer to the customer:
+
+                                                                                                 Name                                                                        Version     Date
+                                                                                                 Common Criteria Requirements for PN8xy products                             v1.1       14-09-2017
+                                                                                                 JCOP 4.2 R1.10.0 specific documents
+                                                                                                 JCOP 4.2 R1.10.0 User Guidance Manual                                       Rev 1.33   04-09-2020
+                                                                                                 JCOP 4.2 R1.10.0 User guidance Manual Addendum                              Rev 1.23   02-02-2018
+                                                                                                 JCOP 4.2 R1.10.0 User Anomaly Sheet                                         Rev 1.8    20-03-2017
+                                                                                                 JCOP 4.5 R1.07.0 specific documents
+                                                                                                 JCOP 4.5 R1.07.0 User Guidance Manual                                       Rev 3.12   20-08-2020
+                                                                                                 JCOP 4.5 R1.07.0 User guidance Manual Addendum                              Rev 3.8    20-04-2018
+                                                                                                 JCOP 4.5 R1.07.0 User Anomaly Sheet                                         Rev 3.10   30-08-2018
+                                                                                                 JCOP 4.6 R1.04.0 specific documents
+                                                                                                 JCOP 4.6 R1.04.0 User Guidance Manual                                       Rev 5.8    20-08-2020
+                                                                                                 JCOP 4.6 R1.04.0User guidance Manual Addendum                               Rev 5.5    17-04-2019
+                                                                                                 JCOP 4.6 R1.04.0User Anomaly Sheet                                          Rev 5.6    17-04-2019
+                                                                                                 JCOP 4.8 R1.01.0 specific documents
+                                                                                                 JCOP 4.8 R1.01.0 User Guidance Manual                                       Rev 7.3    20-08-2020
+                                                                                                 JCOP 4.8 R1.01.0 User Guidance Addendum                                     Rev 7.2    26-02-2020
+                                                                                                 JCOP 4.8 R1.01.0 Anomaly SheetError! Reference source not found.            Rev 7.2    24-02-2020
+
+
+                                                                                                 2.6     IT Product Testing
+                                                                                                 Testing (depth, coverage, functional tests, independent testing): The evaluators examined the
+                                                                                                 developer’s testing activities documentation and verified that the developer has met their testing
+                                                                                                 responsibilities.
+
+                                                                                                 2.6.1    Testing approach and depth
+
+
+                                                                                                 The developer used a set of test suites (industry standard and proprietary ones) and tools to test the
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                 TOE as well as an emulator, PC Platform and FPGA tool as some tests could only be performed in
+                                                                                                 such environment. The identification was checked based on the SVN number. The developer uses a
+                                                                                                 distributed test environment to allow usage of a vast amount of simultaneously driven testing
+                                                                                                 equipment.
+                                                                                                 The developer has performed extensive testing on FSP, subsystem, module and module interface
+                                                                                                 level.
+                                                                                                 Code coverage analysis is used by NXP to verify overall test completeness. The evaluator used an
+                                                                                                 agreed approach for evaluating ATE based on code coverage analysis. The evaluator also used an
+                                                                                                 acceptable alternative approach (as described in the application notes, Section 14.2.2 in [CEM]) and
+                                                                                                 used analysis of the implementation representation (i.e. inspection of source code) to validate the
+                                                                                                 rationales provided by the developer.
+                                                                                                 The developer has performed extensive testing on functional specification, subsystem and SFR-
+                                                                                                 enforcing module level. All parameter choices have been addressed at least once. All boundary cases
+                                                                                                 identified have been tested explicitly, and additionally the near-boundary conditions have been
+                                                                                                 covered probabilistically. The testing was largely automated using industry standard and proprietary
+                                                                                                 test suites. Test scripts were extensively used to verify that the functions return the expected values.
+                                                                                                 The underlying hardware and crypto-library test results are extendable to composite evaluations, as
+                                                                                                 the underlying platform is operated according to its guidance and the composite evaluation
+                                                                                                 requirements are met.
+                                                                                                 Page: 9/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 For the testing performed by the evaluators, the developer has provided samples and a test
+                                                                                                 environment. The evaluators have reproduced a selection of the developer tests, as well as a small
+                                                                                                 number of test cases designed by the evaluator.
+
+                                                                                                 2.6.2    Independent Penetration Testing
+                                                                                                 The methodical analysis performed was conducted along the following steps:
+                                                                                                         When evaluating the evidence in the classes ASE, ADV and AGD potential vulnerabilities
+                                                                                                          were identified from generating questions to the type of TOE and the specified behaviour.
+                                                                                                         For ADV_IMP a thorough implementation representation review was performed on the TOE.
+                                                                                                          During this attack oriented analysis, the protection of the TOE was analysed using the
+                                                                                                          knowledge gained from all previous evaluation classes. This resulted in the identification of
+                                                                                                          additional potential vulnerabilities. This analysis was performed taking into account the attack
+                                                                                                          methods in [JIL-AM] and attack potential in [JIL-AP]. An important source for assurance in this
+                                                                                                          step is the technical report [HW-ETRfC] of the underlying platform.
+                                                                                                         All potential vulnerabilities were analysed using the knowledge gained from all evaluation
+                                                                                                          classes and information from the public domain. A judgment was made on how to assure that
+                                                                                                          these potential vulnerabilities are not exploitable by using [JIL-AP]. For most of the potential
+                                                                                                          vulnerabilities a penetration test was defined. Several potential vulnerabilities were found to be
+                                                                                                          not exploitable due to an impractical attack path.
+                                                                                                 In the previous re-certification, 4 complementary tests were performed against a test effort of 6 weeks.
+                                                                                                 In this second re-certification 4 perturbation tests, 1 side channel test and 1 logical test were
+                                                                                                 performed with a test effort of 8 weeks.
+                                                                                                 See details in [ETRfC].
+
+                                                                                                 2.6.3    Test Configuration
+                                                                                                 The TOE was tested (Unit Tests, System Tests and Acceptance Tests) in the following configurations:
+                                                                                                             FPGA Emulator and PC Platform
+                                                                                                             TOE (SO28 package and PN80T package)
+                                                                                                             Using DWP interface
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                 2.6.4    Testing Results
+                                                                                                 The testing activities, including configurations, procedures, test cases, expected results and observed
+                                                                                                 results are summarised in the [ETR], with references to the documents containing the full details.
+                                                                                                 The developer’s tests and the independent functional tests produced the expected results, giving
+                                                                                                 assurance that the TOE behaves as specified in its [ST] and functional specification.
+                                                                                                 No exploitable vulnerabilities were found with the independent penetration tests.
+                                                                                                 The algorithmic security level of cryptographic functionality has not been rated in this certification
+                                                                                                 process, but the current consensus on the algorithmic security level in the open domain, i.e. from the
+                                                                                                 current best cryptanalytic attacks published, has been taken into account. The TOE supports a wide
+                                                                                                 range of key sizes (see [ST]), including those with a sufficient algorithmic security level to exceed 100
+                                                                                                 bits as required for high attack potential (AVA_VAN.5).
+                                                                                                 The strength of the implementation of the cryptographic functionality has been assessed in the
+                                                                                                 evaluation, as part of the AVA_VAN activities. These activities revealed that for some cryptographic
+                                                                                                 functionality the security level could be reduced. As the remaining security level still exceeds 80 bits,
+                                                                                                 this is considered sufficient. So no exploitable vulnerabilities were found with the independent
+                                                                                                 penetration tests.
+                                                                                                 For composite evaluations, please consult the [ETRfC] for details.
+                                                                                                 Page: 10/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 2.7    Re-used evaluation results
+                                                                                                 There has been extensive re-use of the ALC aspects for the sites involved in the development and
+                                                                                                 production of the TOE, by use of 7 Site Technical Audit Re-use reports.
+                                                                                                 Sites involved in the development and production of the hardware platform were re-used by
+                                                                                                 composition.
+                                                                                                 No sites have been visited as part of this evaluation.
+
+                                                                                                 2.8    Evaluated Configuration
+                                                                                                 The TOE is defined uniquely by its name and version number JCOP 4.x on P73N2M0B0.2C2/2C6
+                                                                                                 Secure Element.
+                                                                                                 The TOE can only be in a single evaluated configuration. Changes that can be made using the Config
+                                                                                                 Applet are within this configuration.
+
+                                                                                                 2.9    Results of the Evaluation
+                                                                                                 The evaluation lab documented their evaluation results in the [ETR] which references a ASE
+                                                                                                 Intermediate Report and other evaluator documents. To support composite evaluations according to
+                                                                                                 [CCDB-2007-09-01] a derived document [ETRfC] was provided and approved. This document
+                                                                                                 provides details of the TOE evaluation that have to be considered when this TOE is used as platform
+                                                                                                 in a composite evaluation.
+                                                                                                 The verdict of each claimed assurance requirement is “Pass”.
+                                                                                                 Based on the above evaluation results the evaluation lab concluded the JCOP 4.x on
+                                                                                                 P73N2M0B0.2C2/2C6 Secure Element, to be CC Part 2 extended, CC Part 3 conformant, and to
+                                                                                                 meet the requirements of EAL 5 augmented with AVA_VAN.5, ASE_TSS.2, ALC_DVS.2 and
+                                                                                                 ALC_FLR.1. This implies that the product satisfies the security requirements specified in Security
+                                                                                                 Target [ST].
+                                                                                                 The Security Target claims ‘demonstrable’ conformance to the Protection Profile [JC PP].
+
+                                                                                                 2.10 Comments/Recommendations
+                                                                                                 The user guidance as outlined in section 2.5 contains necessary information about the usage of the
+                                                                                                 TOE. Certain aspects of the TOE’s security functionality, in particular the countermeasures against
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                 attacks, depend on accurate conformance to the user guidance of both the software and the hardware
+                                                                                                 part of the TOE. There are no particular obligations or recommendations for the user apart from
+                                                                                                 following the user guidance. Please note that the documents contain relevant details with respect to
+                                                                                                 the resistance against certain attacks.
+                                                                                                 In addition all aspects of assumptions, threats and policies as outlined in the Security Target not
+                                                                                                 covered by the TOE itself need to be fulfilled by the operational environment of the TOE.
+                                                                                                 The customer or user of the product shall consider the results of the certification within his system risk
+                                                                                                 management process. In order for the evolution of attack methods and techniques to be covered, he
+                                                                                                 should define the period of time until a re-assessment for the TOE is required and thus requested from
+                                                                                                 the sponsor of the certificate.
+                                                                                                 The strength of the implemented cryptographic algorithms and protocols was not rated in the course of
+                                                                                                 this evaluation.
+                                                                                                 Not all key sizes specified in the [ST] have sufficient cryptographic strength for satisfying the
+                                                                                                 AVA_VAN.5 “high attack potential”. In order to be protected against attackers with a “high attack
+                                                                                                 potential”, appropriate cryptographic algorithms with sufficiently large cryptographic key sizes shall be
+                                                                                                 used (references can be found in national and international documents and standards).
+                                                                                                 Page: 11/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 3 Security Target
+
+                                                                                                 The Security Target, NXP JCOP 4.x on P73N2M0B0.2C2/2C6 Secure Element, Rev 3.5, 4 September
+                                                                                                 2020, NXP Semiconductors GmbH [ST] is included here by reference.
+                                                                                                 Please note that for the need of publication a public version [ST-lite] has been created and verified
+                                                                                                 according to [ST-SAN].
+
+
+
+                                                                                                 4 Definitions
+
+                                                                                                 This list of Acronyms and the glossary of terms contains elements that are not already defined by the
+                                                                                                 CC or CEM:
+                                                                                                 ACL                  Access Control List
+                                                                                                 AES                  Advanced Encryption Standard
+                                                                                                 CBC                  Cipher Block Chaining (a block cipher mode of operation)
+                                                                                                 CBC-MAC              Cipher Block Chaining Message Authentication Code
+                                                                                                 DES                  Data Encryption Standard
+                                                                                                 DFA                  Differential Fault Analysis
+                                                                                                 ECB                  Electronic Code Book (a block cipher mode of operation)
+                                                                                                 ECC                  Elliptic Curve Cryptography
+                                                                                                 ECDH                 Elliptic Curve Diffie-Hellman algorithm
+                                                                                                 ECDSA                Elliptic Curve Digital Signature Algorithm
+                                                                                                 EMA                  Electromagnetic Analysis
+                                                                                                 IC                   Integrated Circuit
+                                                                                                 IT                   Information Technology
+                                                                                                 ITSEF                IT Security Evaluation Facility
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                 JIL                  Joint Interpretation Library
+                                                                                                 MAC                  Message Authentication Code
+                                                                                                 NSCIB                Netherlands scheme for certification in the area of IT security
+                                                                                                 PKI                  Public Key Infrastructure
+                                                                                                 PP                   Protection Profile
+                                                                                                 RNG                  Random Number Generator
+                                                                                                 RMI                  Remote Method Invocation
+                                                                                                 RSA                  Rivest-Shamir-Adleman Algorithm
+                                                                                                 SHA                  Secure Hash Algorithm
+                                                                                                 SPA/DPA              Simple/Differential Power Analysis
+                                                                                                 TOE                  Target of Evaluation
+                                                                                                 TRNG                 True Random Number Generator
+                                                                                                 Page: 12/12 of report number: NSCIB-CC-156530-CR3, dated 24 September 2020
+
+
+
+
+                                                                                                 5 Bibliography
+
+                                                                                                 This section lists all referenced documentation used as source material in the compilation of this
+                                                                                                 report:
+                                                                                                 [CC]                 Common Criteria for Information Technology Security Evaluation, Parts I, II and III,
+                                                                                                                      Version 3.1 Revision 5, April 2017.
+                                                                                                 [CEM]                Common Methodology for Information Technology Security Evaluation, Version 3.1
+                                                                                                                      Revision 5, April 2017.
+                                                                                                 [ETR]                Evaluation Technical Report “NXP JCOP 4.x on P73N2M0B0.2C2/2C6 Secure
+                                                                                                                      Element” – EAL5+, 19-RPT-977, Version 3.0, 4 September 2020.
+                                                                                                 [ETRfC]              Evaluation Technical Report for Composition “JCOP 4.x on P73N2M0B0.2C2/2C6
+                                                                                                                      Secure Element” – EAL5+,19-RPT-978, Version 4.0, 04 September 2020.
+                                                                                                 [HW-CERT1]           Certification Report, ANSSI-CC-2018/52, P73N2M0B0.202, 16 November 2018.
+                                                                                                 [HW-CERT2]           Certification Report, ANSSI-CC-2019/62, P73N2M0B0.2C2/2C6, 24 December
+                                                                                                                      2019.
+                                                                                                 [JC PP]              Java Card Protection Profile – Open Configuration, Version 3.0, May 2012
+                                                                                                                      (certified with reference ANSSI-CC-PP-2010/03-M01).
+                                                                                                 [JIL-AP]             JIL, (Mandatory) Application of Attack Potential to Smartcards, Version 3.0, April
+                                                                                                                      2019.
+                                                                                                 [JIL-AM]             JIL, Attack Methods for Smartcards and Similar Devices (controlled distribution),
+                                                                                                                      Version 2.3, April 2019.
+                                                                                                 [NSCIB]              Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28
+                                                                                                                      March 2019.
+                                                                                                 [NSCIB]              Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28
+                                                                                                                      March 2019.
+                                                                                                 [ST]                 Security Target, NXP JCOP 4.x on P73N2M0B0.2C2/2C6 Secure Element, Rev
+                                                                                                                      3.5, 4 September 2020, NXP Semiconductors GmbH.
+                                                                                                 [ST-lite]            Security Target Lite, “Company Public”, NXP JCOP 4.x on P73N2M0B0.2C2/2C6
+® TÜV, TUEV and TUV are registered trademarks. Any use or application requires prior approval.
+
+
+
+
+                                                                                                                      Secure Element , Rev 3.2, 4 September 2020, NXP Semiconductors GmbH.
+                                                                                                 [ST-SAN]             ST sanitising for publication, CC Supporting Document CCDB-2006-04-004, April
+                                                                                                                      2006.
+
+
+                                                                                                 (This is the end of this report).
+

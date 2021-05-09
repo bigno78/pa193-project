@@ -1,0 +1,50 @@
+{
+    "title": "JCOP 4 P71",
+    "versions": {
+        "eal": ["EAL2+", "EAL6", "EAL6+", "EAL 6"],
+        "des": ["3DES"],
+        "java_card": ["Java Card 3"]
+    },
+    "table_of_contents": [
+        ["", "Foreword", 3],
+        ["", "Recognition of the certificate", 4],
+        ["", "International recognition", 4],
+        ["", "European recognition", 4],
+        ["1", "Executive Summary", 5],
+        ["2", "Certification Results", 7],
+        ["2.1", "Identification of Target of Evaluation", 7],
+        ["2.2", "Security Policy", 7],
+        ["2.3", "Assumptions and Clarification of Scope", 8],
+        ["2.4", "Architectural Information", 8],
+        ["2.5", "Documentation", 9],
+        ["2.6", "IT Product Testing", 9],
+        ["2.7", "Re-used evaluation results", 10],
+        ["2.8", "Evaluated Configuration", 11],
+        ["2.9", "Results of the Evaluation", 11],
+        ["2.10", "Comments/Recommendations", 11], 
+        ["3", "Security Target", 12],
+        ["4", "Definitions", 12],
+        ["5", "Bibliography", 13]
+    ],
+    "revisions": [],
+    "bibliography": {
+        "[CC]": "Common Criteria for Information Technology Security Evaluation, Parts I, II and III, Version 3.1 Revision 5, April 2017.",
+        "[CEM]": "Common Methodology for Information Technology Security Evaluation, Version 3.1 Revision 5, April 2017.",
+        "[CR-N7121]": "BSI-DSZ-CC-1040-2019, NXP Smart Card Controller N7121 with IC Dedicated Software and Crypto Library from NXP Semiconductors Germany GmbH, v1.0, 14- 06-2019, BSI",
+        "[N7121-ETRfC]": "ETR for Composition, NXP Secure Smart Card Controller N7121 with IC Dedicated Software and Crypto Library (N7121) according to AIS36, 18-RPT-788 v8.0, 31 May 2019, Brightsight",
+        "[N7121-ST]": "NXP Secure Smart Card Controller N7121 with IC Dedicated Software and Crypto Library Security Target, Rev. 1.5, 31 May 2019",
+        "[ETR]": "Evaluation Technical Report JCOP 4 P71, 19-RPT-542, Version 5.0, 19 March 2020.",
+        "[ETRfC]": "ETR for Composite Evaluation JCOP 4 P71, 19-RPT-177, Version 7.0, 19 March 2020.",
+        "[GP]": "GlobalPlatform Card Specification, v2.3, GlobalPlatform Inc., October 2015",
+        "[JCAPI]": "Java Card 3 Platform, Application Programming Interface, Classic Edition, Version 3.0.5, May 2015, Published by Oracle",
+        "[JCRE]": "Java Card 3 Platform, Runtime Environment Specification, Classic Edition, Version 3.0.5, May 2015, Published by Oracle",
+        "[JCVM]": "Java Card 3 Platform, Virtual Machine Specification, Classic Edition, Version 3.0.5, May 2015, Published by Oracle.",
+        "[JIL-AM]": "JIL, Attack Methods for Smartcards and Similar Devices (controlled distribution), Version 2.2, January 2013", 
+        "[NSCIB]": "Netherlands Scheme for Certification in the Area of IT Security, Version 2.5, 28 March 2019.",
+        "[PP]": "Java Card System - Open Configuration Protection Profile, December 2017, Version 3.0.5, certified by Bundesamt für Sicherheit in der Informationstechnik (BSI, BSI-CC-PP-0099-2017)",
+        "[RFC-5869]": "RFC 5869, HMAC-based Extract-and-Expand Key Derivation Function (HKDF), May 2010.",
+        "[ST]": "JCOP 4 P71, Security Target for JCOP 4 P71 / SE050, Rev. 3.7, 17-03-2020.",
+        "[ST-lite]": "JCOP 4 P71, Security Target Lite for JCOP 4 P71 / SE050, Rev. 3.7, 17-03-2020",
+        "[ST-SAN]": "ST sanitising for publication, CC Supporting Document CCDB-2006-04-004, April 2006."
+    }
+}
