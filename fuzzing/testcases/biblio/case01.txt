@@ -1,0 +1,12 @@
+  • [this] is some bibliography stuff
+
+[a tex[t with ] some []]][] brackets
+
+[
+[
+]
+[]
+[aaaaaa aaaaaaa]
+aaaaaaaaa [ 
+[oooooo
+
