@@ -66,7 +66,10 @@ CmdOptions process_args(int arg_count, char **args) {
                 }
                 int w;
                 try {
-                    w = std::stol(args[++i]);
+                    w = std::stoi(args[++i]);
+                } catch (std::out_of_range&) {
+                    std::cerr << "Outside of range of int\n";
+                    std::exit(1);
                 } catch (...) {
                     std::cerr << "Invalid width\n";
                     std::exit(1);    
