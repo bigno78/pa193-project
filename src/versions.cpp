@@ -247,7 +247,7 @@ nlohmann::json parse_versions(const std::vector<std::string>& data) {
         find_versions(line, str, "eal", eal);
         find_versions(line, str, "sha", sha);
         find_versions(line, str, "rsa", rsa);
-        find_versions(line, str, "ecc", rsa);
+        find_versions(line, str, "ecc", ecc);
         find_versions(line, str, "java card", java_card);
         find_versions(line, str, "global platform", global_platfom);
 
